@@ -9,11 +9,9 @@ import 'package:provider/provider.dart';
 import '../view/product_visualize.dart';
 import '../DB/DB.dart';
 
-
 class ProductsChange extends StatelessWidget {
-
   ProductsChange() {
-   // productModel.loadData(NotesDBworker.notesDBworker);     //per avere lista di note
+    // productModel.loadData(NotesDBworker.notesDBworker);     //per avere lista di note
   }
 
   @override
@@ -21,8 +19,9 @@ class ProductsChange extends StatelessWidget {
     return ChangeNotifierProvider.value(
       value: productModel,
       child: Consumer<ProductModel>(
-        builder: (context, notesModel, child){
-          return IndexedStack(            //permette di visualizzare solo uno dei figli in base a index
+        builder: (context, notesModel, child) {
+          return IndexedStack(
+            //permette di visualizzare solo uno dei figli in base a index
             index: notesModel.stackIndex,
             children: [ProductsView(), AddView()],
           );

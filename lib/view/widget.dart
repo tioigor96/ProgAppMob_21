@@ -1,5 +1,6 @@
 //widget riutilizzabili in diverse schermate
 
+import 'package:appmobile/assets/constants.dart' as Constants;
 import 'package:flutter/material.dart';
 import '../common/colors.dart';
 import '../model/product_model.dart';
@@ -8,7 +9,7 @@ class ReusableWidget {
   //App bar
   static getAppBar() {
     return AppBar(
-      title: const Text('Kambusapp',
+      title: const Text(Constants.appName,
           style: TextStyle(
               color: Colors.white) //da commentare se voglio titolo nero
           ),
@@ -42,7 +43,7 @@ class ReusableWidget {
             productModel.prodottoSelezionato = Product();
             productModel.setStackIndex(0);
           }),
-      title: const Text('AppName',
+      title: const Text(Constants.appName,
           style: TextStyle(
               color: Colors.white) //da commentare se voglio titolo nero
           ),
