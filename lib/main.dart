@@ -7,30 +7,25 @@ import 'view/product_visualize.dart';
 import 'common/colors.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();                          //obbligatorio per poter aggiungere codice prima di runApp
-  Directory docsDir = await getApplicationDocumentsDirectory();       //get del path di DB
+  WidgetsFlutterBinding
+      .ensureInitialized(); //obbligatorio per poter aggiungere codice prima di runApp
+  Directory docsDir =
+      await getApplicationDocumentsDirectory(); //get del path di DB
   utils.docsDir = docsDir;
   runApp(AppMobile());
 }
 
 class AppMobile extends StatelessWidget {
   @override
-
-
-
   Widget build(BuildContext context) {
-
     return MaterialApp(
-      title: '',                    //AGGIUNGERE
-      theme: ThemeData(
-          primarySwatch:baseColor,
+        title: 'KambusApp',
+        theme: ThemeData(
+          primarySwatch: baseColor,
           appBarTheme: AppBarTheme(
-          iconTheme: IconThemeData(color: Colors.white),
+            iconTheme: IconThemeData(color: Colors.white),
+          ),
         ),
-      ),
-      home: ProductsChange()
-    );
-
+        home: ProductsChange());
   }
 }
-
