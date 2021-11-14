@@ -1,9 +1,7 @@
 //definizione di prodotti
 
 import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-//import 'package:notebook/db/notes_db_worker.dart';
 
 class Product {
   int id = 0;
@@ -11,7 +9,7 @@ class Product {
   String quantita = "";
   String? marca;
   double? prezzo;
-  DateTime? scadenza;
+  String? scadenza;
   String? barcode;
 }
 
