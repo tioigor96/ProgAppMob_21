@@ -1,7 +1,7 @@
 //parte del codice che specifica le diverse pagine tra cui navigare
 
-import 'package:appmobile/model/product_model.dart';
-import 'package:appmobile/view/add_view.dart';
+import 'package:Kambusapp/model/product_model.dart';
+import 'package:Kambusapp/view/add_view.dart';
 import 'package:flutter/material.dart';
 import '../common/colors.dart';
 import 'widget.dart';

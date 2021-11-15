@@ -1,5 +1,5 @@
-name: appmobile
-description: A new Flutter application.
+name: Kambusapp
+description: An ordinary food tracking app.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -39,6 +39,7 @@ dependencies:
   path_provider: ^2.0.6
   provider: ^6.0.1
   datetime_picker_formfield: ^0.1.8
+  intl: ^0.15.0
 
 
 dev_dependencies:

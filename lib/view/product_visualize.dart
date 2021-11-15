@@ -1,6 +1,6 @@
 //visualizzaizone lista di prodotti
 
-import 'package:appmobile/model/product_model.dart';
+import 'package:Kambusapp/model/product_model.dart';
 import 'package:flutter/material.dart';
 import '../common/colors.dart';
 import 'widget.dart';

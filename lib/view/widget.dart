@@ -1,6 +1,6 @@
 //widget riutilizzabili in diverse schermate
 
-import 'package:appmobile/assets/constants.dart' as Constants;
+import 'package:Kambusapp/assets/constants.dart' as Constants;
 import 'package:flutter/material.dart';
 import '../common/colors.dart';
 import '../model/product_model.dart';

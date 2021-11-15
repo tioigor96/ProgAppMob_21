@@ -1,23 +1,23 @@
 //schermata inserimento di un prodotto
 
-import 'package:appmobile/model/product_model.dart';
+import 'package:Kambusapp/model/product_model.dart';
 import 'package:flutter/material.dart';
 import '../common/colors.dart';
 import 'widget.dart';
 
 // import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-// import 'package:intl/date_symbol_data_local.dart';
-// import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
-class AddView extends StatelessWidget {
-  // final format = DateFormat("yyyy-MM-dd");
+class AddView extends StatefulWidget {
+  @override
+  State<AddView> createState() => _AddViewState();
+}
 
+class _AddViewState extends State<AddView> {
   GlobalKey<FormState> _formKey = new GlobalKey();
+  var _scadenza = null;
 
-
-  //i dati inseriti nei form vengono momentaneamente salvati in productModel.prodottoSelezionato
-  //TODO salvare in DB
-  //TODO aggiornare stato dopo apertura calendar per inserire data in input field
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,50 +33,55 @@ class AddView extends StatelessWidget {
                 TextFormField(
                   decoration:
                       InputDecoration(labelText: "Nome", hintText: "Pane"),
-                  initialValue: productModel.prodottoSelezionato == null ? null : productModel.prodottoSelezionato!.nome,
-                  validator: (String? inValue){
-                       if(inValue!.length == 0){
-                          return "Inserire nome";
-                       }
-                       return null;
-                    },
-                  onChanged: (String inValue){
+                  initialValue: productModel.prodottoSelezionato == null
+                      ? null
+                      : productModel.prodottoSelezionato!.nome,
+                  validator: (String? inValue) {
+                    if (inValue!.length == 0) {
+                      return "Inserire nome";
+                    }
+                    return null;
+                  },
+                  onChanged: (String inValue) {
                     productModel.prodottoSelezionato!.nome = inValue;
                   },
                 ),
                 TextFormField(
                   decoration:
                       InputDecoration(labelText: "Quantità", hintText: "100g"),
-                  initialValue: productModel.prodottoSelezionato == null ? null : productModel.prodottoSelezionato!.quantita,
-                  validator: (String? inValue){
-                    if(inValue!.length == 0){
+                  initialValue: productModel.prodottoSelezionato == null
+                      ? null
+                      : productModel.prodottoSelezionato!.quantita,
+                  validator: (String? inValue) {
+                    if (inValue!.length == 0) {
                       return "Inserire quantità";
                     }
                     return null;
                   },
-                  onChanged: (String inValue){
+                  onChanged: (String inValue) {
                     productModel.prodottoSelezionato!.quantita = inValue;
                   },
                 ),
-
                 TextFormField(
-                  onTap: () { _selezionaData(context).then((value) => productModel.prodottoSelezionato!.scadenza=value);},
-                  decoration:
-                  InputDecoration(labelText: "Scadenza"),
-                  initialValue: productModel.prodottoSelezionato == null ? null : productModel.prodottoSelezionato!.scadenza,
-                  validator: (String? inValue){
-                    if(inValue!.length == 0){
+                  onTap: () {
+                    _selezionaData(context);
+                  },
+                  decoration: InputDecoration(labelText: "Scadenza"),
+                  initialValue: _scadenza,
+                  validator: (String? inValue) {
+                    if (inValue!.length == 0) {
                       return "Inserire scadenza";
                     }
                     return null;
                   },
-
                 ),
                 TextFormField(
                   decoration: InputDecoration(
                       labelText: "Marca", hintText: "Kambusa Industries"),
-                  initialValue: productModel.prodottoSelezionato == null ? null : productModel.prodottoSelezionato!.marca,
-                  onChanged: (String inValue){
+                  initialValue: productModel.prodottoSelezionato == null
+                      ? null
+                      : productModel.prodottoSelezionato!.marca,
+                  onChanged: (String inValue) {
                     productModel.prodottoSelezionato!.marca = inValue;
                   },
                 ),
@@ -84,16 +89,21 @@ class AddView extends StatelessWidget {
                   keyboardType: TextInputType.number,
                   decoration:
                       InputDecoration(labelText: "Prezzo", hintText: "1.30"),
-                  initialValue: productModel.prodottoSelezionato == null ? "" : productModel.prodottoSelezionato!.marca,
-                  onChanged: (String inValue){
-                    productModel.prodottoSelezionato!.prezzo = double.parse(inValue);
+                  initialValue: productModel.prodottoSelezionato == null
+                      ? ""
+                      : productModel.prodottoSelezionato!.marca,
+                  onChanged: (String inValue) {
+                    productModel.prodottoSelezionato!.prezzo =
+                        double.parse(inValue);
                   },
                 ),
                 TextFormField(
                   decoration: InputDecoration(
                       labelText: "BarCode", hintText: "8012345789"),
-                  initialValue: productModel.prodottoSelezionato == null ? null : productModel.prodottoSelezionato!.barcode,
-                  onChanged: (String inValue){
+                  initialValue: productModel.prodottoSelezionato == null
+                      ? null
+                      : productModel.prodottoSelezionato!.barcode,
+                  onChanged: (String inValue) {
                     productModel.prodottoSelezionato!.barcode = inValue;
                   },
                 ),
@@ -102,9 +112,10 @@ class AddView extends StatelessWidget {
                   children: [
                     ElevatedButton(
                         child: Text("Salva"),
-                        onPressed: ()
-                            { _formKey.currentState!.validate();
-                              print("QUI DEVO SALVARE E PRIMA VALIDARE!");}),
+                        onPressed: () {
+                          _formKey.currentState!.validate();
+                          print("QUI DEVO SALVARE E PRIMA VALIDARE!");
+                        }),
                     ElevatedButton(
                         onPressed: () => {print("QUI DEVO USCIRE")},
                         child: Text("Annulla"))
@@ -118,34 +129,30 @@ class AddView extends StatelessWidget {
     );
   }
 
-
-
-
-  Future<String> _selezionaData(BuildContext context) async {
+  Future<void> _selezionaData(BuildContext context) async {
     DateTime? selectedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2021),
-      lastDate: DateTime(2032),
-      //Builder per mettere testo bianco
-      builder: (BuildContext context, Widget ?child) {
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2021),
+        lastDate: DateTime(2032),
+        //Builder per mettere testo bianco
+        builder: (BuildContext context, Widget? child) {
           return Theme(
             data: ThemeData(
               textTheme: TextTheme(
                 subtitle1: TextStyle(color: Colors.white),
               ),
               colorScheme: ColorScheme.light(
-                  primary: baseColor,
+                primary: baseColor,
               ),
             ),
-            child: child ??Text(""),
+            child: child ?? Text(""),
           );
-        }
-    );
-    return selectedDate.toString();
+        });
+    setState(() {
+      _scadenza = DateFormat("yyyy-MM-dd").format(selectedDate);
+      print(
+          "passa ${_scadenza}"); //TODO: non segna nel campo con il setState.....
+    });
   }
-
-
 }
-
-

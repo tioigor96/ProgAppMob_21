@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'common/utils.dart' as utils;
-import 'package:appmobile/assets/constants.dart' as Constants;
+import 'package:Kambusapp/assets/constants.dart' as Constants;
 import 'package:path_provider/path_provider.dart';
 import 'view/product_view_change.dart';
 import 'view/product_visualize.dart';
