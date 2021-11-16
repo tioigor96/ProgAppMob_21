@@ -63,6 +63,7 @@ class _AddViewState extends State<AddView> {
                   },
                 ),
                 TextFormField(
+                  key: Key(_scadenza.toString()),
                   onTap: () {
                     _selezionaData(context);
                   },
@@ -151,8 +152,6 @@ class _AddViewState extends State<AddView> {
         });
     setState(() {
       _scadenza = DateFormat("yyyy-MM-dd").format(selectedDate);
-      print(
-          "passa ${_scadenza}"); //TODO: non segna nel campo con il setState.....
     });
   }
 }
