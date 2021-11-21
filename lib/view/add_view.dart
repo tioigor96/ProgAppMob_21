@@ -137,7 +137,7 @@ class _AddViewState extends State<AddView> {
                           onPressed: () {
                             _formKey.currentState!.validate();
                             _save();
-                            productModel.setStackIndex(0);
+                            productModel.setStackIndex(0); //TODO da spostare in _save
                           }),
                     ],
                   ),
