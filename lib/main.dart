@@ -21,6 +21,7 @@ void main() async {
 class AppMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("mi piacciono i widgets");
     return MaterialApp(
         title: Constants.appName,
         theme: ThemeData(
