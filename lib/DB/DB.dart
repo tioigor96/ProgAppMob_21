@@ -7,43 +7,63 @@ import '../model/product_model.dart';
 
 class DBProdotti {
 
+  late Database _db;
+  int creato=0;
+
   DBProdotti._();              //costrutore con nome privato
+
   static final DBProdotti dbProdotti = DBProdotti._();         //creo istanza
 
-  Database? _db;
+
+
+ /* Database _createDB ()
+  {
+    openDatabase(join(utils.docsDir!.path, "prodotti.db"),
+    onCreate: (inDB, version) {
+      return inDB.execute(
+  'CREATE TABLE dogs(id INTEGER PRIMARY KEY, name TEXT, age INTEGER)',
+  );
+  },
+    // Set the version. This executes the onCreate function and provides a
+    // path to perform database upgrades and downgrades.
+    version: 1,
+    );
+  }*/
+
 
 
   //tutte le operazioni su DB sono asincrone
-  Future<Database?> _getDB() async {
-    if(_db==null){        //se non ho inizializzato db, inizializzo
-      String path = join(utils.docsDir!.path, "prodotti.db");     //percorso di file con D.
-      _db = await openDatabase(path, version: 1,              //apro DB
-          onCreate: (Database inDB, int inVersion) async {
-            await inDB.execute("CREATE TABLE IF NOT EXISTS notes ("
-                "id INTEGER PRIMARY KEY,"
-                "nome TEXT,"
-                "quantita TEXT,"
-                "marca TEXT,"
-                "prezzo REAL"
-                "scadenza TEXT"
-                "barcode TEXT"
-                ")");
-          });
-    }
-    return _db;
+  Future<Database> _getDB() async {
+      _db = await openDatabase(
+        join(await getDatabasesPath(), 'prodotti.db'),
+        onCreate: (db, version) {
+          return db.execute(
+            'CREATE TABLE IF NOT EXISTS prodotti (id INTEGER PRIMARY KEY, nome TEXT, quantita TEXT, marca TEXT, prezzo REAL, scadenza TEXT, barcode TEXT)',
+          );
+        },
+        version: 1,
+      );
+      return _db;
+  }
+
+
+  //trasforma map in prodotto
+  Product productFromMap(Map inMap){
+    Product prod = Product();
+    prod.id = inMap["id"];
+    prod.nome = inMap["nome"];
+    prod.quantita = inMap["quantita"];
+    prod.scadenza = inMap["scadenza"];
+    prod.marca = inMap["marca"];
+    prod.prezzo = inMap["prezzo"];
+    prod.barcode = inMap["barcode"];
+
+    print(prod.nome+" "+prod.quantita+" "+prod.scadenza.toString()+" "+prod.marca.toString()+" "+prod.prezzo.toString()+" "+prod.barcode.toString());
+
+    return prod;
   }
 
   /*
-  //trasforma map in note
-  Note noteFromMap(Map inMap){
-    Note note = Note();
-    note.id = inMap["id"];
-    note.title = inMap["title"];
-    note.content = inMap["content"];
-    note.color = inMap["color"];
-    return note;
-  }
-
   //da note a map
   Map<String, dynamic> noteToMap(Note inNote) {
     Map<String, dynamic> map = Map<String, dynamic>();
@@ -53,36 +73,38 @@ class DBProdotti {
     map["color"] = inNote.color;
     return map;
   }
+*/
 
-  //creazione nuova nota
-  Future create(Note inNote) async {
+  //inserimento prodotto
+  Future create(Product nuovo) async {
     Database db = await _getDB();       //ottenere DB
-    var val = await db.rawQuery("SELECT MAX(id) + 1 AS id FROM notes");         //rawquery per cassaggio diretto di query come stringa
-    int id = val.first["id"];       //first perchè ritorna tutti gli id massimi
+    var val = await db.rawQuery("SELECT MAX(id) + 1 AS id FROM prodotti");         //rawquery per cassaggio diretto di query come stringa
+    var id = val.first["id"];       //first perchè ritorna tutti gli id massimi
     if (id==null){
       id = 1;
     }
     return await db.rawInsert(
-        "INSERT INTO notes (id, title, content, color) "
-            "VALUES (?, ?, ?, ?)",
-        [id, inNote.title, inNote.content, inNote.color]
+        "INSERT INTO prodotti (id, nome, quantita, marca, prezzo, scadenza, barcode) "
+            "VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [id, nuovo.nome, nuovo. quantita, nuovo.marca, nuovo.prezzo, nuovo.scadenza, nuovo.barcode]
     );
   }
 
+
   //estrarre nota
-  Future<Note> get(int inID) async {
+  Future<Product> get(int inID) async {
     Database db = await _getDB();
-    var rec = await db.query("notes", where: "id = ?", whereArgs: [inID]);      //non passo query ma sfrutto parametri
-    return noteFromMap(rec.first);         //conversione da map a note
+    var rec = await db.query("prodotti");      //non passo query ma sfrutto parametri
+    return productFromMap(rec.first);         //conversione da map a note
   }
 
   Future<List> getAll() async {
     Database db = await _getDB();
-    var recs = await db.query("notes");
-    var list = recs.isEmpty ? [] : recs.map((m) => noteFromMap(m)).toList();     //è un if in linea
+    var recs = await db.query("prodotti");
+    var list = recs.isEmpty ? [] : recs.map((m) => productFromMap(m)).toList();
     return list;
   }
-
+/*
   Future update(Note inNote) async {
     Database db = await _getDB();
     return await db.update("notes", noteToMap(inNote), where: "id = ?", whereArgs: [inNote.id]);    //da note a map
@@ -93,4 +115,10 @@ class DBProdotti {
     return await db.delete("notes", where: "id = ?", whereArgs: [inID]);
   }
 */
+
+  Future deleteAll () async
+  {
+    Database db = await _getDB();
+    return await db.delete("prodotti");
+  }
 }

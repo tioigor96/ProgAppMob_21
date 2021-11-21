@@ -2,6 +2,7 @@
 
 import 'package:Kambusapp/model/product_model.dart';
 import 'package:Kambusapp/view/add_view.dart';
+import 'package:Kambusapp/view/search_view.dart';
 import 'package:flutter/material.dart';
 import '../common/colors.dart';
 import 'widget.dart';
@@ -11,7 +12,7 @@ import '../DB/DB.dart';
 
 class ProductsChange extends StatelessWidget {
   ProductsChange() {
-    // productModel.loadData(NotesDBworker.notesDBworker);     //per avere lista di note
+     productModel.caricaProdotti(DBProdotti.dbProdotti);     //per avere lista di note
   }
 
   @override
@@ -22,8 +23,8 @@ class ProductsChange extends StatelessWidget {
         builder: (context, notesModel, child) {
           return IndexedStack(
             //permette di visualizzare solo uno dei figli in base a index
-            index: notesModel.stackIndex,
-            children: [ProductsView(), AddView()],
+            index: productModel.stackIndex,
+            children: [ProductsView(), AddView(), SearchView()],
           );
         },
       ),
