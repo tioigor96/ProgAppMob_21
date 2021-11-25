@@ -3,35 +3,32 @@
 import 'dart:ffi';
 import 'package:flutter/material.dart';
 
-
 class Product {
   int id = 0;
   String nome = "";
   String quantita = "";
   String? marca;
   double? prezzo;
+  String? prezzoString;
   late String scadenza;
   String? barcode;
 
-  Product()
-  {
-    scadenza="";
+  Product() {
+    scadenza = "";
   }
 }
 
-
-
 class ProductModel extends ChangeNotifier {
   int stackIndex = 0;
-  List listaProdotti = [];              //lista dei prodotti inseriti da utente
-  Product? prodottoSelezionato;          //prodotto da modificare o visualizzare
+  List listaProdotti = []; //lista dei prodotti inseriti da utente
+  Product? prodottoSelezionato; //prodotto da modificare o visualizzare
 
-  ProductModel()
-  {
-    prodottoSelezionato=new Product();
+  ProductModel() {
+    prodottoSelezionato = new Product();
   }
 
-  void setStackIndex(int inStackIndex){                 //per modificare stack index
+  void setStackIndex(int inStackIndex) {
+    //per modificare stack index
     stackIndex = inStackIndex;
     notifyListeners();
   }
@@ -40,9 +37,6 @@ class ProductModel extends ChangeNotifier {
     listaProdotti = await inDatabaseWorker.getAll();
     notifyListeners();
   }
-
 }
 
 ProductModel productModel = ProductModel();
-
-
