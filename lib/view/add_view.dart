@@ -153,9 +153,9 @@ class _AddViewState extends State<AddView> {
   Future<void> _selezionaData(BuildContext context) async {
     DateTime? selectedDate = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2021),
-        lastDate: DateTime(2032),
+        initialDate: DateUtils.addDaysToDate(DateTime.now(), 1),
+        firstDate: DateUtils.addDaysToDate(DateTime.now(), 1),
+        lastDate: DateUtils.addDaysToDate(DateTime.now(), 3650),
         //Builder per mettere testo bianco
         builder: (BuildContext context, Widget? child) {
           return Theme(
@@ -172,7 +172,8 @@ class _AddViewState extends State<AddView> {
         });
     setState(() {
      // _scadenza = DateFormat("yyyy-MM-dd").format(selectedDate);
-      productModel.prodottoSelezionato!.scadenza=DateFormat("yyyy-MM-dd").format(selectedDate);
+      productModel.prodottoSelezionato!.scadenza =
+          DateFormat("yyyy-MM-dd").format(selectedDate!);
     });
   }
 }
