@@ -10,14 +10,7 @@ import 'widget.dart';
 //import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
-class AddView extends StatefulWidget {
-  @override
-  State<AddView> createState() => _AddViewState();
-}
-
-int errorFlag = 0;
-
-class _AddViewState extends State<AddView> {
+class AddView extends StatelessWidget {
   GlobalKey<FormState> _formKey = new GlobalKey();
 
   @override
@@ -40,7 +33,6 @@ class _AddViewState extends State<AddView> {
                       : productModel.prodottoSelezionato!.nome,
                   validator: (String? inValue) {
                     if (inValue!.length == 0) {
-                      errorFlag=1;
                       return "Inserire nome";
                     }
                     return null;
@@ -57,7 +49,6 @@ class _AddViewState extends State<AddView> {
                       : productModel.prodottoSelezionato!.quantita,
                   validator: (String? inValue) {
                     if (inValue!.length == 0) {
-                      errorFlag=1;
                       return "Inserire quantità";
                     }
                     return null;
@@ -67,19 +58,20 @@ class _AddViewState extends State<AddView> {
                   },
                 ),
                 TextFormField(
-                  key: Key(productModel.prodottoSelezionato!.scadenza.toString()),
+                  key: Key(
+                      productModel.prodottoSelezionato!.scadenza.toString()),
                   onTap: () {
                     _selezionaData(context);
                   },
                   decoration: InputDecoration(labelText: "Scadenza"),
-                  initialValue: productModel.prodottoSelezionato!.scadenza,                                                  validator: (String? inValue) {
+                  initialValue: productModel.prodottoSelezionato!.scadenza,
+                  validator: (String? inValue) {
                     if (inValue!.length == 0) {
-                      errorFlag=1;
                       return "Inserire scadenza";
                     }
-                    if(DateTime.parse(productModel.prodottoSelezionato!.scadenza).isBefore(DateTime.now()))
-                    {
-                      errorFlag=1;
+                    if (DateTime.parse(
+                            productModel.prodottoSelezionato!.scadenza)
+                        .isBefore(DateTime.now())) {
                       return "Prodotto già scaduto! Verificare la data inserita";
                     }
                     return null;
@@ -123,21 +115,22 @@ class _AddViewState extends State<AddView> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       ElevatedButton(
-                          onPressed: () {
-                              //torno a visualizzazione prodotti
-                              _controllo();
-                              productModel.setStackIndex(0);
-                            },
-                          child: Text("Annulla"),
-                          style: ElevatedButton.styleFrom(
-                            primary: secondColor[1],
-                ),),
+                        onPressed: () {
+                          //torno a visualizzazione prodotti
+                          productModel.setStackIndex(0);
+                        },
+                        child: Text("Annulla"),
+                        style: ElevatedButton.styleFrom(
+                          primary: secondColor[1],
+                        ),
+                      ),
                       ElevatedButton(
                           child: Text("Conferma"),
                           onPressed: () {
-                            _formKey.currentState!.validate();
-                            _save();
-                            productModel.setStackIndex(0); //TODO da spostare in _save
+                            if (_formKey.currentState!.validate()) {
+                              _save();
+                              productModel.setStackIndex(0);
+                            }
                           }),
                     ],
                   ),
@@ -170,35 +163,18 @@ class _AddViewState extends State<AddView> {
             child: child ?? Text(""),
           );
         });
-    setState(() {
-     // _scadenza = DateFormat("yyyy-MM-dd").format(selectedDate);
-      productModel.prodottoSelezionato!.scadenza =
-          DateFormat("yyyy-MM-dd").format(selectedDate!);
-    });
+    productModel.prodottoSelezionato!.scadenza =
+        DateFormat("yyyy-MM-dd").format(selectedDate!);
+    productModel.setStackIndex(1);
   }
 }
 
-void _save() async
-{
-  if(productModel.prodottoSelezionato!.id == -1) {
-    if(errorFlag==0) {
-      print("nuovo prodotto: " + productModel.prodottoSelezionato!.nome);
-      await DBProdotti.dbProdotti.create(productModel.prodottoSelezionato!);
-    }
-    else {
-        errorFlag=0;
-    }
-  }
-  else {
+void _save() async {
+  if (productModel.prodottoSelezionato!.id == -1) {
+    await DBProdotti.dbProdotti.create(productModel.prodottoSelezionato!);
+  } else {
     print("modifico");
     //await NotesDBworker.notesDBworker.update(notesModel.noteBeingEdited);
   }
-
   productModel.caricaProdotti(DBProdotti.dbProdotti);
-}
-
-
-//TODO eliminare
-void _controllo() async{
-  await DBProdotti.dbProdotti.getAll();
 }
