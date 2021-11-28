@@ -2,9 +2,11 @@
 
 import 'package:Kambusapp/assets/constants.dart' as Constants;
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import '../common/colors.dart';
 import '../model/product_model.dart';
 import '../common/utils.dart' as utils;
+import 'package:expansion_tile_card/expansion_tile_card.dart';
 
 class ReusableWidget {
   //App bar
@@ -13,7 +15,7 @@ class ReusableWidget {
       title: const Text(Constants.appName,
           style: TextStyle(
               color: Colors.white) //da commentare se voglio titolo nero
-      ),
+          ),
       actions: <Widget>[
         IconButton(
             icon: Icon(
@@ -22,8 +24,7 @@ class ReusableWidget {
             onPressed: () {
               productModel.setStackIndex(2);
               print("2");
-            }
-        ),
+            }),
         IconButton(
           icon: Icon(
             Icons.more_vert,
@@ -47,7 +48,7 @@ class ReusableWidget {
       title: const Text(Constants.appName,
           style: TextStyle(
               color: Colors.white) //da commentare se voglio titolo nero
-      ),
+          ),
       actions: <Widget>[
         IconButton(
           icon: Icon(
@@ -68,152 +69,358 @@ class ReusableWidget {
     );
   }
 
-  static getSearchAppBar()
-  {
-    return AppBar(
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              productModel.setStackIndex(0);
-            }),
-        title: Container(
-          width: double.infinity,
-          height: 40,
-          decoration: BoxDecoration(
-              color: Colors.transparent, borderRadius: BorderRadius.circular(5)),
-          child: Center(
-            child: TextField(
-              style: TextStyle(color: Colors.white),            //da commentare se voglio scrivere in nero
-              decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                        Icons.search,
-                        color: Colors.white
-                    ),
-                    onPressed: () {
-                    },
-                  ),
-                  hintText: 'Cerca...',
-                  hintStyle: TextStyle(color: Colors.white),
-                  border: InputBorder.none),
+/*
+  static getSearchAppBar() {
+    return
+  }
+*/
+  static getExpansionProduct(p) {
+    return Column(
+      children: [
+        ExpansionTile(
+          title: getTitle(p),
+          subtitle: TextFormField(
+            enabled: false,
+            initialValue: p.quantita,
+            readOnly: true,
+            decoration: new InputDecoration(
+              border: InputBorder.none,
+              labelText: "Quantità",
+              labelStyle: TextStyle(color: Colors.grey),
+              floatingLabelBehavior: FloatingLabelBehavior.always,
             ),
           ),
-        ));
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+              child: Column(
+                children: [
+                  TextFormField(
+                    enabled: false,
+                    initialValue: p.scadenza,
+                    readOnly: true,
+                    decoration: new InputDecoration(
+                      border: InputBorder.none,
+                      labelText: "Scadenza",
+                      labelStyle: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                  TextFormField(
+                    enabled: false,
+                    initialValue: p.marca == null ? " " : p.marca,
+                    readOnly: true,
+                    decoration: new InputDecoration(
+                      border: InputBorder.none,
+                      labelText: "Marca",
+                      labelStyle: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                  TextFormField(
+                    enabled: false,
+                    initialValue:
+                        p.prezzo == null ? " " : "€ " + p.prezzo.toString(),
+                    readOnly: true,
+                    decoration: new InputDecoration(
+                      border: InputBorder.none,
+                      labelText: "Prezzo",
+                      labelStyle: TextStyle(color: Colors.grey),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () {
+                            productModel.prodottoSelezionato=p;
+                            //TODO set stack index per modifica
+                          }),
+                      IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            //TODO eliminare
+                          }),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 
- static getExpansionProduct (p)
- {
-   return Column(
-     children: [ExpansionTile(
-       title: getTitle(p),
-       subtitle:TextFormField(
-         enabled: false,
-         initialValue:p.quantita,
-         readOnly: true,
-         decoration: new InputDecoration(
-           border: InputBorder.none,
-           labelText: "Quantità",
-           labelStyle: TextStyle(
-               color: Colors.grey
-           ),
-           floatingLabelBehavior:FloatingLabelBehavior.always,
-         ),
-       ),
-       children: <Widget>[
-         Padding(
-           padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-           child: Column(
-             children: [TextFormField(
-               enabled: false,
-               initialValue:p.scadenza,
-               readOnly: true,
-               decoration: new InputDecoration(
-                 border: InputBorder.none,
-                 labelText: "Scadenza",
-                 labelStyle: TextStyle(
-                     color: Colors.grey
-                 ),
-               ),
-             ),
-               TextFormField(
-                 enabled: false,
-                 initialValue:p.marca==null
-                     ? " "
-                     : p.marca,
-                 readOnly: true,
-                 decoration: new InputDecoration(
-                   border: InputBorder.none,
-                   labelText: "Marca",
-                   labelStyle: TextStyle(
-                       color: Colors.grey
-                   ),
-                 ),
-               ),
-               TextFormField(
-                 enabled: false,
-                 initialValue: p.prezzo==null
-                     ? " "
-                     : "€ " + p.prezzo.toString(),
-                 readOnly: true,
-                 decoration: new InputDecoration(
-                   border: InputBorder.none,
-                   labelText: "Prezzo",
-                   labelStyle: TextStyle(
-                       color: Colors.grey
-                   ),
-                 ),
-               ),
-             Row(
-               mainAxisAlignment: MainAxisAlignment.end,
-               children: [
-                 IconButton(
-                     icon: Icon(Icons.edit),
-                     onPressed: () {
-                       //TODO set stack index per modifica
-                     }),
-                 IconButton(
-                     icon: Icon(Icons.delete),
-                     onPressed: () {
-                       //TODO eliminare
-                     }),
+  //pallino a destra
+  static getExpansionProduct2(p) {
+    return Column(
+      children: [
+        ExpansionTile(
+          title: getTitleBallRight(p),
+          controlAffinity: ListTileControlAffinity.leading,
+          subtitle: TextFormField(
+            enabled: false,
+            initialValue: p.quantita,
+            readOnly: true,
+            decoration: new InputDecoration(
+              border: InputBorder.none,
+              labelText: "Quantità",
+              labelStyle: TextStyle(color: baseColor),
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+            ),
+          ),
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.fromLTRB(75, 0, 15, 0),
+              child: Column(
+                children: [
+                  TextFormField(
+                    enabled: false,
+                    initialValue: p.scadenza,
+                    readOnly: true,
+                    decoration: new InputDecoration(
+                      border: InputBorder.none,
+                      labelText: "Scadenza",
+                      labelStyle: TextStyle(color: baseColor),
+                    ),
+                  ),
+                  TextFormField(
+                    enabled: false,
+                    initialValue: p.marca == null ? " " : p.marca,
+                    readOnly: true,
+                    decoration: new InputDecoration(
+                      border: InputBorder.none,
+                      labelText: "Marca",
+                      labelStyle: TextStyle(color: baseColor),
+                    ),
+                  ),
+                  TextFormField(
+                    enabled: false,
+                    initialValue:
+                        p.prezzo == null ? " " : "€ " + p.prezzo.toString(),
+                    readOnly: true,
+                    decoration: new InputDecoration(
+                      border: InputBorder.none,
+                      labelText: "Prezzo",
+                      labelStyle: TextStyle(color: baseColor),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () {
+                            //TODO set stack index per modifica
+                          }),
+                      IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            //TODO eliminare
+                          }),
+                    ],
+                  ),
                 ],
-             )],
-           ),
-         ),
-       ],
-     ),],
-   );
- }
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 
+  //riga colorata
+  static getExpansionProduct3(p) {
+    return Column(
+      children: [
+        GestureDetector(
+          onLongPressDown: (d){
+            //TODO: qui implemento il long press
+            print("long press");
+            },
+          child: ExpansionTile(
+            title: getTitleBallRight(p),
+            controlAffinity: ListTileControlAffinity.leading,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.fromLTRB(72, 0, 15, 0),
+                child: Column(
+                  children: [
+                    TextFormField(
+                      enabled: false,
+                      initialValue: p.quantita,
+                      readOnly: true,
+                      decoration: new InputDecoration(
+                        border: InputBorder.none,
+                        labelText: "Quantità",
+                        labelStyle: TextStyle(color: baseColor),
+                      ),
+                    ),
+                    TextFormField(
+                      enabled: false,
+                      initialValue: p.scadenza,
+                      readOnly: true,
+                      decoration: new InputDecoration(
+                        border: InputBorder.none,
+                        labelText: "Scadenza",
+                        labelStyle: TextStyle(color: baseColor),
+                      ),
+                    ),
+                    TextFormField(
+                      enabled: false,
+                      initialValue: p.marca == null ? " " : p.marca,
+                      readOnly: true,
+                      decoration: new InputDecoration(
+                        border: InputBorder.none,
+                        labelText: "Marca",
+                        labelStyle: TextStyle(color: baseColor),
+                      ),
+                    ),
+                    TextFormField(
+                      enabled: false,
+                      initialValue:
+                          p.prezzo == null ? " " : "€ " + p.prezzo.toString(),
+                      readOnly: true,
+                      decoration: new InputDecoration(
+                        border: InputBorder.none,
+                        labelText: "Prezzo",
+                        labelStyle: TextStyle(color: baseColor),
+                      ),
+                    ),
+                    ButtonBar(
+                      alignment: MainAxisAlignment.end,
+                      buttonHeight: 52.0,
+                      buttonMinWidth: 90.0,
+                      children: <Widget>[
+                        TextButton(
+                          onPressed: () {
 
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              Icon(Icons.edit),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 2.0),
+                              ),
+                            ],
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
 
-  static getTitle(Product p)
-  {
-      if((DateTime.parse(p.scadenza).difference(DateTime.now()).inDays) + 1 <= utils.notificaRossa)
-      {
-          return Row(
-            children: [
-              Container(
-                width: 20,
-                height: 20,
-                decoration: BoxDecoration(
-                  color: thirdColor[700],
-                  borderRadius: BorderRadius.all(Radius.circular(100)),
+                          },
+                          child: Column(
+                            children: <Widget>[
+                              Icon(Icons.delete),
+                              Padding(
+                                padding: EdgeInsets.symmetric(vertical: 2.0),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              Container(
-                width: 10,
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+
+  static getTitle(Product p) {
+    if ((DateTime.parse(p.scadenza).difference(DateTime.now()).inDays) + 1 <=
+        utils.notificaRossa) {
+      return Row(
+        children: [
+          Container(
+            width: 20,
+            height: 20,
+            decoration: BoxDecoration(
+              color: thirdColor[700],
+              borderRadius: BorderRadius.all(Radius.circular(100)),
+            ),
+          ),
+          Container(
+            width: 10,
+          ),
+          Text(p.nome.capitalize()),
+        ],
+      );
+    } else {
+      if ((DateTime.parse(p.scadenza).difference(DateTime.now()).inDays) + 1 <=
+          utils.notificaGialla) {
+        return Row(
+          children: [
+            Container(
+              width: 20,
+              height: 20,
+              decoration: BoxDecoration(
+                color: secondColor[600],
+                borderRadius: BorderRadius.all(Radius.circular(100)),
               ),
-              Text(p.nome.capitalize()),],
-          );
+            ),
+            Container(
+              width: 10,
+            ),
+            Text(p.nome.capitalize()),
+          ],
+        );
+      } else {
+        Row(
+          children: [
+            Container(
+              width: 20,
+              height: 20,
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.all(Radius.circular(100)),
+              ),
+            ),
+            Container(
+              width: 10,
+            ),
+            Text(p.nome.capitalize()),
+          ],
+        );
       }
-      else
-      {
-        if((DateTime.parse(p.scadenza).difference(DateTime.now()).inDays) + 1 <= utils.notificaGialla)
-        {
-          return Row(
-            children: [
-              Container(
+    }
+  }
+
+  static getTitleBallRight(Product p) {
+    if ((DateTime.parse(p.scadenza).difference(DateTime.now()).inDays) + 1 <=
+        utils.notificaRossa) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(p.nome.capitalize()),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+            child: Container(
+              // padding: EdgeInsets.fromLTRB(0, 200, 200, 0),
+              width: 20,
+              height: 20,
+              decoration: BoxDecoration(
+                color: thirdColor[700],
+                borderRadius: BorderRadius.all(Radius.circular(100)),
+              ),
+            ),
+          ),
+        ],
+      );
+    } else {
+      if ((DateTime.parse(p.scadenza).difference(DateTime.now()).inDays) + 1 <=
+          utils.notificaGialla) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(p.nome.capitalize()),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: Container(
                 width: 20,
                 height: 20,
                 decoration: BoxDecoration(
@@ -221,19 +428,24 @@ class ReusableWidget {
                   borderRadius: BorderRadius.all(Radius.circular(100)),
                 ),
               ),
-              Container(
-                width: 10,
+            ),
+          ],
+        );
+      } else {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(p.nome.capitalize()),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: Container(
+                width: 20,
+                height: 20,
               ),
-              Text(p.nome.capitalize()),],
-          );
-        }
-        else
-        {
-            return Text(p.nome.capitalize());
-        }
+            ),
+          ],
+        );
       }
+    }
   }
-
-
 }
-

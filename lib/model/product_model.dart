@@ -37,6 +37,13 @@ class ProductModel extends ChangeNotifier {
     listaProdotti = await inDatabaseWorker.getAll();
     notifyListeners();
   }
+
+  void setProdotti(List prodotti)
+  {
+    listaProdotti=prodotti;
+    notifyListeners();
+  }
+
 }
 
 ProductModel productModel = ProductModel();

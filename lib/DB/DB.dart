@@ -1,5 +1,7 @@
 //interazione con db
 
+//TODO? un minimo di escape delle stringhe?
+
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import '../common/utils.dart' as utils;
@@ -115,6 +117,31 @@ class DBProdotti {
     var list = recs.isEmpty ? [] : recs.map((m) => productFromMap(m)).toList();
     return list;
   }
+
+  Future<List> searchFromDB(String param, int selected) async
+  {
+    String query="";
+    switch(selected)
+    {
+      case 1:
+        query="SELECT * FROM prodotti WHERE quantita LIKE '%"+param+"%'";
+        break;
+      case 2:
+        query="SELECT * FROM prodotti WHERE quantita LIKE '%"+param+"%'";
+        break;
+      default:
+        query="SELECT * FROM prodotti WHERE nome LIKE '%"+param+"%'";
+        break;
+    }
+
+    Database db = await _getDB();
+    var recs = await db.rawQuery(query);
+    var list = recs.isEmpty ? [] : recs.map((m) => productFromMap(m)).toList();
+    return list;
+  }
+
+
+
 
 /*
   Future update(Note inNote) async {

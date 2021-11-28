@@ -1,5 +1,8 @@
 //schermata inserimento di un prodotto
 
+//TODO? Vogliamo fare in modo che una volta completato un field ci sia l'autofocus a quello successivo?
+//TODO: Implementare modifica in DB
+
 import 'package:Kambusapp/DB/DB.dart';
 import 'package:Kambusapp/model/product_model.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +40,7 @@ class AddView extends StatelessWidget {
                     }
                     return null;
                   },
+                  textInputAction: TextInputAction.next,
                   onChanged: (String inValue) {
                     productModel.prodottoSelezionato!.nome = inValue;
                   },
@@ -47,6 +51,7 @@ class AddView extends StatelessWidget {
                   initialValue: productModel.prodottoSelezionato == null
                       ? null
                       : productModel.prodottoSelezionato!.quantita,
+                  textInputAction: TextInputAction.next,
                   validator: (String? inValue) {
                     if (inValue!.length == 0) {
                       return "Inserire quantità";
@@ -63,6 +68,7 @@ class AddView extends StatelessWidget {
                   onTap: () {
                     _selezionaData(context);
                   },
+                  textInputAction: TextInputAction.next,
                   decoration: InputDecoration(labelText: "Scadenza"),
                   initialValue: productModel.prodottoSelezionato!.scadenza,
                   validator: (String? inValue) {
@@ -83,6 +89,7 @@ class AddView extends StatelessWidget {
                   initialValue: productModel.prodottoSelezionato == null
                       ? null
                       : productModel.prodottoSelezionato!.marca,
+                  textInputAction: TextInputAction.next,
                   onChanged: (String inValue) {
                     productModel.prodottoSelezionato!.marca = inValue;
                   },
@@ -93,7 +100,8 @@ class AddView extends StatelessWidget {
                       InputDecoration(labelText: "Prezzo", hintText: "1.30"),
                   initialValue: productModel.prodottoSelezionato == null
                       ? ""
-                      : productModel.prodottoSelezionato!.marca,
+                      : productModel.prodottoSelezionato!.prezzo.toString(),
+                  textInputAction: TextInputAction.next,
                   onChanged: (String inValue) {
                     productModel.prodottoSelezionato!.prezzo =
                         double.parse(inValue);
@@ -105,6 +113,7 @@ class AddView extends StatelessWidget {
                   initialValue: productModel.prodottoSelezionato == null
                       ? null
                       : productModel.prodottoSelezionato!.barcode,
+                  textInputAction: TextInputAction.next,
                   onChanged: (String inValue) {
                     productModel.prodottoSelezionato!.barcode = inValue;
                   },
