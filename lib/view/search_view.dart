@@ -27,6 +27,7 @@ class _SearchViewState extends State<SearchView> {
               icon: Icon(Icons.arrow_back),
               onPressed: () {
                 msgController.clear();
+                productModel.caricaProdotti(DBProdotti.dbProdotti);
                 productModel.setStackIndex(0);
               }),
           title: Container(

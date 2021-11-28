@@ -7,6 +7,7 @@ import '../common/colors.dart';
 import '../model/product_model.dart';
 import '../common/utils.dart' as utils;
 import 'package:expansion_tile_card/expansion_tile_card.dart';
+import '../DB/DB.dart';
 
 class ReusableWidget {
   //App bar
@@ -43,6 +44,7 @@ class ReusableWidget {
       leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
+            productModel.caricaProdotti(DBProdotti.dbProdotti);
             productModel.setStackIndex(0);
           }),
       title: const Text(Constants.appName,

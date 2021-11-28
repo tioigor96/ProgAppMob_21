@@ -127,13 +127,14 @@ class DBProdotti {
         query="SELECT * FROM prodotti WHERE quantita LIKE '%"+param+"%'";
         break;
       case 2:
-        query="SELECT * FROM prodotti WHERE quantita LIKE '%"+param+"%'";
+        query="SELECT * FROM prodotti WHERE marca LIKE '%"+param+"%'";
         break;
       default:
         query="SELECT * FROM prodotti WHERE nome LIKE '%"+param+"%'";
         break;
     }
 
+    print(query);
     Database db = await _getDB();
     var recs = await db.rawQuery(query);
     var list = recs.isEmpty ? [] : recs.map((m) => productFromMap(m)).toList();
