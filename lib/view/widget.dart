@@ -24,7 +24,6 @@ class ReusableWidget {
             ),
             onPressed: () {
               productModel.setStackIndex(2);
-              print("2");
             }),
         IconButton(
           icon: Icon(
@@ -57,7 +56,7 @@ class ReusableWidget {
             Icons.search,
           ),
           onPressed: () {
-            // do something
+            productModel.setStackIndex(2);
           },
         ),
         IconButton(
@@ -134,8 +133,8 @@ class ReusableWidget {
                       IconButton(
                           icon: Icon(Icons.edit),
                           onPressed: () {
-                            productModel.prodottoSelezionato=p;
-                            //TODO set stack index per modifica
+                            productModel.prodottoSelezionato = p;
+                            productModel.setStackIndex(1);
                           }),
                       IconButton(
                           icon: Icon(Icons.delete),
@@ -213,7 +212,8 @@ class ReusableWidget {
                       IconButton(
                           icon: Icon(Icons.edit),
                           onPressed: () {
-                            //TODO set stack index per modifica
+                            productModel.prodottoSelezionato = p;
+                            productModel.setStackIndex(1);
                           }),
                       IconButton(
                           icon: Icon(Icons.delete),
@@ -296,7 +296,8 @@ class ReusableWidget {
                       children: <Widget>[
                         TextButton(
                           onPressed: () {
-
+                            productModel.prodottoSelezionato = p;
+                            productModel.setStackIndex(1);
                           },
                           child: Column(
                             children: <Widget>[

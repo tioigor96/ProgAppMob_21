@@ -54,7 +54,9 @@ class DBProdotti {
     prod.prezzo = inMap["prezzo"];
     prod.barcode = inMap["barcode"];
 
-    print(prod.nome +
+    print(prod.id.toString() +
+        " " +
+        prod.nome +
         " " +
         prod.quantita +
         " " +
@@ -69,17 +71,19 @@ class DBProdotti {
     return prod;
   }
 
-  /*
-  //da note a map
-  Map<String, dynamic> noteToMap(Note inNote) {
+
+  //da prodotto a map
+  Map<String, dynamic> productToMap(Product p) {
     Map<String, dynamic> map = Map<String, dynamic>();
-    map["id"] = inNote.id;
-    map["title"] = inNote.title;
-    map["content"] = inNote.content;
-    map["color"] = inNote.color;
+    map["id"] = p.id;
+    map["nome"] = p.nome;
+    map["quantita"] = p.quantita;
+    map["scadenza"] = p.scadenza;
+    map["prezzo"] = p.prezzo;
+    map["barcode"] = p.barcode;
     return map;
   }
-*/
+
 
   //inserimento prodotto
   Future create(Product nuovo) async {
@@ -144,12 +148,13 @@ class DBProdotti {
 
 
 
-/*
-  Future update(Note inNote) async {
+
+  Future update(Product nuovo) async {
     Database db = await _getDB();
-    return await db.update("notes", noteToMap(inNote), where: "id = ?", whereArgs: [inNote.id]);    //da note a map
+    return await db.update("prodotti", productToMap(nuovo), where: "id = ?", whereArgs: [nuovo.id]);    //da note a map
   }
 
+/*
   Future delete(int inID) async {
     Database db = await _getDB();
     return await db.delete("notes", where: "id = ?", whereArgs: [inID]);

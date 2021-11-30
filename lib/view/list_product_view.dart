@@ -2,7 +2,7 @@
 Per cambiare tipo di visualizzazione richiamare un expansionProduct diverso
  */
 
-//TODO implementare bottoni per eliminazione e modifica
+//TODO implementare bottoni per eliminazione (aggiungendo il codice in widget)
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -46,10 +46,9 @@ class ListProductState extends State<ListProduct> {
           },
           confirmDismiss: (direction) async {
             if (direction == DismissDirection.startToEnd) {
-              /// edit item
               return true;
             } else if (direction == DismissDirection.endToStart) {
-              /// delete
+              //modifico
               productModel.prodottoSelezionato = p;
               productModel.setStackIndex(1);
               return false;

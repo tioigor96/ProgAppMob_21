@@ -1,7 +1,6 @@
 //schermata inserimento di un prodotto
 
 //TODO? Vogliamo fare in modo che una volta completato un field ci sia l'autofocus a quello successivo?
-//TODO: Implementare modifica in DB
 
 import 'package:Kambusapp/DB/DB.dart';
 import 'package:Kambusapp/model/product_model.dart';
@@ -98,7 +97,8 @@ class AddView extends StatelessWidget {
                   keyboardType: TextInputType.number,
                   decoration:
                       InputDecoration(labelText: "Prezzo", hintText: "1.30"),
-                  initialValue: productModel.prodottoSelezionato == null
+                  //TODO sistamare: in modifica appare null su text field
+                  initialValue: productModel.prodottoSelezionato!.id <= 0
                       ? ""
                       : productModel.prodottoSelezionato!.prezzo.toString(),
                   textInputAction: TextInputAction.next,
@@ -183,7 +183,7 @@ void _save() async {
     await DBProdotti.dbProdotti.create(productModel.prodottoSelezionato!);
   } else {
     print("modifico");
-    //await NotesDBworker.notesDBworker.update(notesModel.noteBeingEdited);
+    await DBProdotti.dbProdotti.update(productModel.prodottoSelezionato!);
   }
   productModel.caricaProdotti(DBProdotti.dbProdotti);
 }

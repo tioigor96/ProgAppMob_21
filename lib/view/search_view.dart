@@ -1,5 +1,4 @@
 /*Schermata di ricerca
-TODO: sitemare il bottom overflow!
  */
 
 import 'package:Kambusapp/DB/DB.dart';
@@ -102,7 +101,7 @@ class _SearchViewState extends State<SearchView> {
               ],
             ),
           ),
-          ListProduct(),
+          Expanded(child: ListProduct()),
         ],
       ),
       floatingActionButton: FloatingActionButton(
