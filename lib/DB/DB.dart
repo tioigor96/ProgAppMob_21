@@ -2,6 +2,7 @@
 
 //TODO? un minimo di escape delle stringhe?
 
+import 'package:Kambusapp/model/setting_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import '../common/utils.dart' as utils;
@@ -109,15 +110,16 @@ class DBProdotti {
   }
 
   //estrarre nota
-  Future<Product> get(int inID) async {
+ /* Future<Product> get(int inID) async {
     Database db = await _getDB();
     var rec = await db.query("prodotti"); //non passo query ma sfrutto parametri
     return productFromMap(rec.first); //conversione da map a note
-  }
+  }*/
 
-  Future<List> getAll() async {
+  Future<List> getAll(Setting impostazioni) async {
     Database db = await _getDB();
-    var recs = await db.query("prodotti");
+    String order = impostazioni.ordinamento+" "+impostazioni.ascDesc;
+    var recs = await db.query("prodotti", orderBy: order);
     var list = recs.isEmpty ? [] : recs.map((m) => productFromMap(m)).toList();
     return list;
   }

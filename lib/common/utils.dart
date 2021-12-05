@@ -13,9 +13,17 @@ extension StringExtension on String {
   }
 }
 
-bool intToBool(int b)
+int BoolToInt(bool b)
 {
-  if(b==1)
+  if(b)
+    return 1;
+  else
+    return 0;
+}
+
+bool intToBool(int i)
+{
+  if(i==1)
     return true;
   else
     return false;

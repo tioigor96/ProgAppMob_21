@@ -1,6 +1,8 @@
 //definizione di prodotti
 
 import 'dart:ffi';
+import 'package:Kambusapp/model/setting_model.dart';
+import 'package:Kambusapp/model/setting_model.dart';
 import 'package:flutter/material.dart';
 
 class Product {
@@ -43,7 +45,7 @@ class ProductModel extends ChangeNotifier {
   }
 
   void caricaProdotti(dynamic inDatabaseWorker) async {
-    listaProdotti = await inDatabaseWorker.getAll();
+    listaProdotti = await inDatabaseWorker.getAll(impostazioni);
     notifyListeners();
   }
 

@@ -7,6 +7,7 @@ import 'package:Kambusapp/view/add_view.dart';
 import 'package:Kambusapp/view/search_view.dart';
 import 'package:flutter/material.dart';
 import '../common/colors.dart';
+import 'order_view.dart';
 import 'widget.dart';
 import 'package:provider/provider.dart';
 import '../view/product_visualize.dart';
@@ -29,7 +30,7 @@ class ProductsChange extends StatelessWidget {
           return IndexedStack(
             //permette di visualizzare solo uno dei figli in base a index
             index: productModel.stackIndex,
-            children: [ProductsView(), AddView(), SearchView(), SettingsView()],
+            children: [ProductsView(), AddView(), SearchView(), SettingsView(), OrderView()],
           );
         },
       ),

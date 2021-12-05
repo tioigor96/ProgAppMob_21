@@ -2,6 +2,7 @@
 
 import 'package:Kambusapp/DB/DB.dart';
 import 'package:Kambusapp/DB/DBSetting.dart';
+import 'package:Kambusapp/common/utils.dart';
 import 'package:Kambusapp/model/product_model.dart';
 import 'package:Kambusapp/model/setting_model.dart';
 import 'package:Kambusapp/view/list_product_view.dart';
@@ -34,11 +35,11 @@ class _SettingsViewState extends State<SettingsView> {
               secondary: Icon(Icons.notifications, color: baseColor),
               onChanged: (value) {
                 setState(() {
-                  impostazioni.notifiche = value;
+                  impostazioni.notifiche = BoolToInt(value);
                   DBSetting.dbSettings.update(impostazioni);
                 });
               },
-              value: impostazioni.notifiche,
+              value: intToBool(impostazioni.notifiche),
             ),
             //Divider(),
             /*ListTile(

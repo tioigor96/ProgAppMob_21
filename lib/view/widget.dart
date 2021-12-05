@@ -38,7 +38,7 @@ class ReusableWidget {
               PopupMenuItem(
                 child: Text("Impostazioni visualizzazione"),
                 onTap: (){
-                  //TODO richiamare schermata ordinamento
+                  productModel.setStackIndex(4);
                 },
                 value: 2,
               )
@@ -82,7 +82,7 @@ class ReusableWidget {
               PopupMenuItem(
                 child: Text("Impostazioni visualizzazione"),
                 onTap: (){
-                  //TODO richiamare schermata ordinamento
+                  productModel.setStackIndex(4);
                 },
                 value: 2,
               )

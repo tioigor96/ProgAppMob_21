@@ -21,10 +21,10 @@ class DBSetting {
       join(await getDatabasesPath(), 'impostazioni.db'),
       onCreate: (db, version) {
         db.execute(
-          'CREATE TABLE IF NOT EXISTS impostazioni (id INTEGER PRIMARY KEY, notifiche INT, gialla INT, rossa INT)',
+          'CREATE TABLE IF NOT EXISTS impostazioni (id INTEGER PRIMARY KEY, notifiche INT, gialla INT, rossa INT, ordinamento STRING, crescente STRING)',
         );
         db.execute(
-          'INSERT INTO impostazioni (notifiche, gialla, rossa) values (1, 5, 3)',
+          'INSERT INTO impostazioni (notifiche, gialla, rossa, ordinamento, crescente) values (1, 5, 3, \'nome\', \'asc\')',
         );
       },
       version: 1,
@@ -37,7 +37,9 @@ class DBSetting {
     Setting impostazioni = Setting();
     impostazioni.notificaRossa=inMap['rossa'];
     impostazioni.notificaGialla=inMap['gialla'];
-    impostazioni.notifiche=utils.intToBool(inMap['notifiche']);
+    impostazioni.notifiche=inMap['notifiche'];
+    impostazioni.ordinamento=inMap['ordinamento'];
+    impostazioni.ascDesc=inMap['crescente'];
 
 
     print("stampo impostazioni: " +impostazioni.notifiche.toString() +
@@ -55,6 +57,8 @@ class DBSetting {
     map["notifiche"] = i.notifiche;
     map["gialla"] = i.notificaGialla;
     map["rossa"] = i.notificaRossa;
+    map["ordinamento"] = i.ordinamento;
+    map["crescente"] = i.ascDesc;
     return map;
   }
 
