@@ -15,6 +15,8 @@ class Product {
   late String scadenza;
   String? barcode;
 
+  bool selezionato = false;             //uso in eliminazione multipla
+
   Product() {
     scadenza = "";
   }
@@ -53,6 +55,19 @@ class ProductModel extends ChangeNotifier {
     listaProdotti = prodotti;
     notifyListeners();
   }
+
+  void eliminaProdotto(dynamic inDatabaseWorker, int id) async{
+      await inDatabaseWorker.delete(id);
+  }
+
+  void eliminaMultiplo(dynamic inDatabaseWorker) {
+    for (int i = 0; i < this.listaProdotti.length; i++) {
+      if (this.listaProdotti.elementAt(i).selezionato) {
+        eliminaProdotto(inDatabaseWorker, this.listaProdotti.elementAt(i).id);
+      }
+    }
+  }
+
 
 }
 

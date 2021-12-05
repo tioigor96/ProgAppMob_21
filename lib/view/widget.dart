@@ -28,22 +28,21 @@ class ReusableWidget {
             }),
         PopupMenuButton(
             itemBuilder: (context) => [
-              PopupMenuItem(
-                child: Text("Impostazioni notifiche"),
-                onTap: (){
-                  productModel.setStackIndex(3);
-                },
-                value: 1,
-              ),
-              PopupMenuItem(
-                child: Text("Impostazioni visualizzazione"),
-                onTap: (){
-                  productModel.setStackIndex(4);
-                },
-                value: 2,
-              )
-            ]
-        )
+                  PopupMenuItem(
+                    child: Text("Impostazioni notifiche"),
+                    onTap: () {
+                      productModel.setStackIndex(3);
+                    },
+                    value: 1,
+                  ),
+                  PopupMenuItem(
+                    child: Text("Impostazioni visualizzazione"),
+                    onTap: () {
+                      productModel.setStackIndex(4);
+                    },
+                    value: 2,
+                  )
+                ])
       ],
     );
   }
@@ -72,32 +71,27 @@ class ReusableWidget {
         ),
         PopupMenuButton(
             itemBuilder: (context) => [
-              PopupMenuItem(
-                child: Text("Impostazioni notifiche"),
-                onTap: (){
-                  productModel.setStackIndex(3);
-                },
-                value: 1,
-              ),
-              PopupMenuItem(
-                child: Text("Impostazioni visualizzazione"),
-                onTap: (){
-                  productModel.setStackIndex(4);
-                },
-                value: 2,
-              )
-            ]
+                  PopupMenuItem(
+                    child: Text("Impostazioni notifiche"),
+                    onTap: () {
+                      productModel.setStackIndex(3);
+                    },
+                    value: 1,
+                  ),
+                  PopupMenuItem(
+                    child: Text("Impostazioni visualizzazione"),
+                    onTap: () {
+                      productModel.setStackIndex(4);
+                    },
+                    value: 2,
+                  )
+                ]
         )
-      ]
-      ,
+      ],
     );
   }
 
-/*
-  static getSearchAppBar() {
-    return
-  }
-*/
+
   static getExpansionProduct(p) {
     return Column(
       children: [
@@ -162,7 +156,8 @@ class ReusableWidget {
                       IconButton(
                           icon: Icon(Icons.delete),
                           onPressed: () {
-                            //TODO eliminare
+                            productModel.eliminaProdotto(DBProdotti.dbProdotti, p.id);
+                            productModel.caricaProdotti(DBProdotti.dbProdotti);
                           }),
                     ],
                   )
@@ -241,7 +236,8 @@ class ReusableWidget {
                       IconButton(
                           icon: Icon(Icons.delete),
                           onPressed: () {
-                            //TODO eliminare
+                            productModel.eliminaProdotto(DBProdotti.dbProdotti, p.id);
+                            productModel.caricaProdotti(DBProdotti.dbProdotti);
                           }),
                     ],
                   ),
@@ -254,15 +250,15 @@ class ReusableWidget {
     );
   }
 
-
   static getExpansionProduct3(p) {
     return Column(
       children: [
         GestureDetector(
-          onLongPressDown: (d){
-            //TODO: qui implemento il long press
-            print("long press");
-            },
+          onLongPress: () {
+            //productModel.prodottoSelezionato=p;
+            p.selezionato = true;
+            productModel.setStackIndex(5);
+          },
           child: ExpansionTile(
             title: getTitleBallRight(p),
             controlAffinity: ListTileControlAffinity.leading,
@@ -333,7 +329,8 @@ class ReusableWidget {
                         ),
                         TextButton(
                           onPressed: () {
-
+                            productModel.eliminaProdotto(DBProdotti.dbProdotti, p.id);
+                            productModel.caricaProdotti(DBProdotti.dbProdotti);
                           },
                           child: Column(
                             children: <Widget>[
@@ -355,7 +352,6 @@ class ReusableWidget {
       ],
     );
   }
-
 
   static getTitle(Product p) {
     if ((DateTime.parse(p.scadenza).difference(DateTime.now()).inDays) + 1 <=
@@ -474,4 +470,5 @@ class ReusableWidget {
       }
     }
   }
+
 }

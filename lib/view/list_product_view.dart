@@ -2,8 +2,7 @@
 Per cambiare tipo di visualizzazione richiamare un expansionProduct diverso
  */
 
-//TODO implementare bottoni per eliminazione (aggiungendo il codice in widget)
-
+import 'package:Kambusapp/DB/DB.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:Kambusapp/model/product_model.dart';
@@ -32,12 +31,13 @@ class ListProductState extends State<ListProduct> {
       itemBuilder: (context, index) {
         Product p = productModel.listaProdotti[index];
         return Dismissible(
-          key: Key(p.id.toString()),
-          //direction: DismissDirection.startToEnd,
+          key: UniqueKey(),
+        //direction: DismissDirection.startToEnd,
           onDismissed: (direction) {
             setState(() {
-              //TODO eliminare da lista e da DB
-              //p.items.removeAt(index);
+              //p.removeAt(index);
+              productModel.eliminaProdotto(DBProdotti.dbProdotti, p.id);
+              productModel.caricaProdotti(DBProdotti.dbProdotti);
             });
 
             // Then show a snackbar.
@@ -96,5 +96,11 @@ class ListProductState extends State<ListProduct> {
         );
       },
     );
+  }
+
+  void elimina(p) async {
+    print("elimino "+p.nome);
+    await DBProdotti.dbProdotti.delete(p.id);
+    productModel.caricaProdotti(DBProdotti.dbProdotti);
   }
 }

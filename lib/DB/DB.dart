@@ -43,7 +43,6 @@ class DBProdotti {
     return _db;
   }
 
-
   //trasforma map in prodotto
   Product productFromMap(Map inMap) {
     Product prod = Product();
@@ -72,7 +71,6 @@ class DBProdotti {
     return prod;
   }
 
-
   //da prodotto a map
   Map<String, dynamic> productToMap(Product p) {
     Map<String, dynamic> map = Map<String, dynamic>();
@@ -84,7 +82,6 @@ class DBProdotti {
     map["barcode"] = p.barcode;
     return map;
   }
-
 
   //inserimento prodotto
   Future create(Product nuovo) async {
@@ -110,7 +107,7 @@ class DBProdotti {
   }
 
   //estrarre nota
- /* Future<Product> get(int inID) async {
+  /* Future<Product> get(int inID) async {
     Database db = await _getDB();
     var rec = await db.query("prodotti"); //non passo query ma sfrutto parametri
     return productFromMap(rec.first); //conversione da map a note
@@ -118,25 +115,23 @@ class DBProdotti {
 
   Future<List> getAll(Setting impostazioni) async {
     Database db = await _getDB();
-    String order = impostazioni.ordinamento+" "+impostazioni.ascDesc;
+    String order = impostazioni.ordinamento + " " + impostazioni.ascDesc;
     var recs = await db.query("prodotti", orderBy: order);
     var list = recs.isEmpty ? [] : recs.map((m) => productFromMap(m)).toList();
     return list;
   }
 
-  Future<List> searchFromDB(String param, int selected) async
-  {
-    String query="";
-    switch(selected)
-    {
+  Future<List> searchFromDB(String param, int selected) async {
+    String query = "";
+    switch (selected) {
       case 1:
-        query="SELECT * FROM prodotti WHERE quantita LIKE '%"+param+"%'";
+        query = "SELECT * FROM prodotti WHERE quantita LIKE '%" + param + "%'";
         break;
       case 2:
-        query="SELECT * FROM prodotti WHERE marca LIKE '%"+param+"%'";
+        query = "SELECT * FROM prodotti WHERE marca LIKE '%" + param + "%'";
         break;
       default:
-        query="SELECT * FROM prodotti WHERE nome LIKE '%"+param+"%'";
+        query = "SELECT * FROM prodotti WHERE nome LIKE '%" + param + "%'";
         break;
     }
 
@@ -147,27 +142,19 @@ class DBProdotti {
     return list;
   }
 
-
-
-
-
   Future update(Product nuovo) async {
     Database db = await _getDB();
-    return await db.update("prodotti", productToMap(nuovo), where: "id = ?", whereArgs: [nuovo.id]);    //da note a map
+    return await db.update("prodotti", productToMap(nuovo),
+        where: "id = ?", whereArgs: [nuovo.id]); //da note a map
   }
 
-/*
   Future delete(int inID) async {
     Database db = await _getDB();
-    return await db.delete("notes", where: "id = ?", whereArgs: [inID]);
+    return await db.delete("prodotti", where: "id = ?", whereArgs: [inID]);
   }
-*/
 
   Future deleteAll() async {
     Database db = await _getDB();
     return await db.delete("prodotti");
   }
-
-
-
 }
