@@ -9,7 +9,6 @@ import '../model/product_model.dart';
 
 class DBProdotti {
   late Database _db;
-  int creato = 0;
 
   DBProdotti._(); //costrutore con nome privato
 
@@ -42,6 +41,7 @@ class DBProdotti {
     );
     return _db;
   }
+
 
   //trasforma map in prodotto
   Product productFromMap(Map inMap) {
@@ -165,4 +165,7 @@ class DBProdotti {
     Database db = await _getDB();
     return await db.delete("prodotti");
   }
+
+
+
 }

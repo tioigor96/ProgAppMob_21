@@ -44,6 +44,7 @@ dependencies:
   intl: 0.17.0
   flutter_slidable: ^1.1.0
   expansion_tile_card: ^2.0.0
+  flutter_settings_screens: ^0.3.2-null-safety
 
 dev_dependencies:
   flutter_test:

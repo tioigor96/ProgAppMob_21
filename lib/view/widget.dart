@@ -1,6 +1,7 @@
 //widget riutilizzabili in diverse schermate
 
 import 'package:Kambusapp/assets/constants.dart' as Constants;
+import 'package:Kambusapp/model/setting_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import '../common/colors.dart';
@@ -25,14 +26,24 @@ class ReusableWidget {
             onPressed: () {
               productModel.setStackIndex(2);
             }),
-        IconButton(
-          icon: Icon(
-            Icons.more_vert,
-          ),
-          onPressed: () {
-            // do something
-          },
-        ),
+        PopupMenuButton(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: Text("Impostazioni notifiche"),
+                onTap: (){
+                  productModel.setStackIndex(3);
+                },
+                value: 1,
+              ),
+              PopupMenuItem(
+                child: Text("Impostazioni visualizzazione"),
+                onTap: (){
+                  //TODO richiamare schermata ordinamento
+                },
+                value: 2,
+              )
+            ]
+        )
       ],
     );
   }
@@ -59,14 +70,26 @@ class ReusableWidget {
             productModel.setStackIndex(2);
           },
         ),
-        IconButton(
-            icon: Icon(
-              Icons.more_vert,
-            ),
-            onPressed: () {
-              // do something
-            }),
-      ],
+        PopupMenuButton(
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                child: Text("Impostazioni notifiche"),
+                onTap: (){
+                  productModel.setStackIndex(3);
+                },
+                value: 1,
+              ),
+              PopupMenuItem(
+                child: Text("Impostazioni visualizzazione"),
+                onTap: (){
+                  //TODO richiamare schermata ordinamento
+                },
+                value: 2,
+              )
+            ]
+        )
+      ]
+      ,
     );
   }
 
@@ -231,7 +254,7 @@ class ReusableWidget {
     );
   }
 
-  //riga colorata
+
   static getExpansionProduct3(p) {
     return Column(
       children: [
@@ -336,7 +359,7 @@ class ReusableWidget {
 
   static getTitle(Product p) {
     if ((DateTime.parse(p.scadenza).difference(DateTime.now()).inDays) + 1 <=
-        utils.notificaRossa) {
+        impostazioni.notificaRossa) {
       return Row(
         children: [
           Container(
@@ -355,7 +378,7 @@ class ReusableWidget {
       );
     } else {
       if ((DateTime.parse(p.scadenza).difference(DateTime.now()).inDays) + 1 <=
-          utils.notificaGialla) {
+          impostazioni.notificaGialla) {
         return Row(
           children: [
             Container(
@@ -395,7 +418,7 @@ class ReusableWidget {
 
   static getTitleBallRight(Product p) {
     if ((DateTime.parse(p.scadenza).difference(DateTime.now()).inDays) + 1 <=
-        utils.notificaRossa) {
+        impostazioni.notificaRossa) {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -416,7 +439,7 @@ class ReusableWidget {
       );
     } else {
       if ((DateTime.parse(p.scadenza).difference(DateTime.now()).inDays) + 1 <=
-          utils.notificaGialla) {
+          impostazioni.notificaGialla) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

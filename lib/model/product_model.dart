@@ -16,6 +16,15 @@ class Product {
   Product() {
     scadenza = "";
   }
+
+
+  String prezzoToString() {
+    if (prezzo == null) {
+      return "";
+    } else {
+      return prezzo.toString();
+    }
+  }
 }
 
 class ProductModel extends ChangeNotifier {
@@ -38,9 +47,8 @@ class ProductModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setProdotti(List prodotti)
-  {
-    listaProdotti=prodotti;
+  void setProdotti(List prodotti) {
+    listaProdotti = prodotti;
     notifyListeners();
   }
 

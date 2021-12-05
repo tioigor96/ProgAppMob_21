@@ -97,10 +97,9 @@ class AddView extends StatelessWidget {
                   keyboardType: TextInputType.number,
                   decoration:
                       InputDecoration(labelText: "Prezzo", hintText: "1.30"),
-                  //TODO sistamare: in modifica appare null su text field
                   initialValue: productModel.prodottoSelezionato!.id <= 0
                       ? ""
-                      : productModel.prodottoSelezionato!.prezzo.toString(),
+                      : productModel.prodottoSelezionato!.prezzoToString(),
                   textInputAction: TextInputAction.next,
                   onChanged: (String inValue) {
                     productModel.prodottoSelezionato!.prezzo =
