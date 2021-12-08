@@ -22,7 +22,7 @@ class _SettingsViewState extends State<SettingsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ReusableWidget.getBackAppBar(),
+      appBar: ReusableWidget.getBackNoSearchAppBar(),
       body: Container(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
         child: Column(
@@ -118,16 +118,6 @@ class _SettingsViewState extends State<SettingsView> {
                 )),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          productModel.prodottoSelezionato = Product();
-          productModel.prodottoSelezionato!.id = -1;
-          productModel.setStackIndex(1);
-        },
-        backgroundColor: secondColor,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }

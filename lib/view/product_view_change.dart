@@ -1,6 +1,7 @@
 //parte del codice che specifica le diverse pagine tra cui navigare
 
 import 'package:Kambusapp/DB/DBSetting.dart';
+import 'package:Kambusapp/model/page_manager.dart';
 import 'package:Kambusapp/model/product_model.dart';
 import 'package:Kambusapp/model/setting_model.dart';
 import 'package:Kambusapp/view/add_view.dart';
@@ -20,6 +21,7 @@ class ProductsChange extends StatelessWidget {
      impostazioni.aggiorna(DBSetting.dbSettings);             //info notifiche
      print(impostazioni.notificaGialla);
      productModel.caricaProdotti(DBProdotti.dbProdotti);     //per avere lista di note
+     manager.nuovaPagina(0);
   }
 
   @override

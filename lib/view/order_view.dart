@@ -20,7 +20,7 @@ class _OrderViewState extends State<OrderView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ReusableWidget.getBackAppBar(),
+      appBar: ReusableWidget.getBackNoSearchAppBar(),
       body: Container(
         child: Column(
           children: [
@@ -97,16 +97,6 @@ class _OrderViewState extends State<OrderView> {
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          productModel.prodottoSelezionato = Product();
-          productModel.prodottoSelezionato!.id = -1;
-          productModel.setStackIndex(1);
-        },
-        backgroundColor: secondColor,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }

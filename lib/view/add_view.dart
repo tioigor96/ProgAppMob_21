@@ -3,6 +3,7 @@
 //TODO? Vogliamo fare in modo che una volta completato un field ci sia l'autofocus a quello successivo?
 
 import 'package:Kambusapp/DB/DB.dart';
+import 'package:Kambusapp/model/page_manager.dart';
 import 'package:Kambusapp/model/product_model.dart';
 import 'package:flutter/material.dart';
 import '../common/colors.dart';
@@ -125,7 +126,7 @@ class AddView extends StatelessWidget {
                       ElevatedButton(
                         onPressed: () {
                           //torno a visualizzazione prodotti
-                          productModel.setStackIndex(0);
+                          productModel.setStackIndex(manager.precedente());
                         },
                         child: Text("Annulla"),
                         style: ElevatedButton.styleFrom(
@@ -137,7 +138,7 @@ class AddView extends StatelessWidget {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               _save();
-                              productModel.setStackIndex(0);
+                              productModel.setStackIndex(manager.precedente());
                             }
                           }),
                     ],

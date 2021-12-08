@@ -1,6 +1,8 @@
 //widget riutilizzabili in diverse schermate
+//TODO cambiare titolo appbar in base a schermata
 
 import 'package:Kambusapp/assets/constants.dart' as Constants;
+import 'package:Kambusapp/model/page_manager.dart';
 import 'package:Kambusapp/model/setting_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -14,7 +16,7 @@ class ReusableWidget {
   //App bar
   static getAppBar() {
     return AppBar(
-      title: const Text(Constants.appName,
+      title: Text(manager.getAppName(),
           style: TextStyle(
               color: Colors.white) //da commentare se voglio titolo nero
           ),
@@ -25,6 +27,7 @@ class ReusableWidget {
             ),
             onPressed: () {
               productModel.setStackIndex(2);
+              manager.nuovaPagina(2);
             }),
         PopupMenuButton(
             itemBuilder: (context) => [
@@ -32,6 +35,7 @@ class ReusableWidget {
                     child: Text("Impostazioni notifiche"),
                     onTap: () {
                       productModel.setStackIndex(3);
+                      manager.nuovaPagina(3);
                     },
                     value: 1,
                   ),
@@ -39,6 +43,7 @@ class ReusableWidget {
                     child: Text("Impostazioni visualizzazione"),
                     onTap: () {
                       productModel.setStackIndex(4);
+                      manager.nuovaPagina(4);
                     },
                     value: 2,
                   )
@@ -54,9 +59,9 @@ class ReusableWidget {
           icon: Icon(Icons.arrow_back),
           onPressed: () {
             productModel.caricaProdotti(DBProdotti.dbProdotti);
-            productModel.setStackIndex(0);
+            productModel.setStackIndex(manager.precedente());
           }),
-      title: const Text(Constants.appName,
+      title: Text(manager.getAppName(),
           style: TextStyle(
               color: Colors.white) //da commentare se voglio titolo nero
           ),
@@ -67,6 +72,7 @@ class ReusableWidget {
           ),
           onPressed: () {
             productModel.setStackIndex(2);
+            manager.nuovaPagina(2);
           },
         ),
         PopupMenuButton(
@@ -75,6 +81,7 @@ class ReusableWidget {
                     child: Text("Impostazioni notifiche"),
                     onTap: () {
                       productModel.setStackIndex(3);
+                      manager.nuovaPagina(3);
                     },
                     value: 1,
                   ),
@@ -82,12 +89,29 @@ class ReusableWidget {
                     child: Text("Impostazioni visualizzazione"),
                     onTap: () {
                       productModel.setStackIndex(4);
+                      manager.nuovaPagina(4);
                     },
                     value: 2,
                   )
                 ]
         )
       ],
+    );
+  }
+
+
+  static getBackNoSearchAppBar() {
+    return AppBar(
+      leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            productModel.caricaProdotti(DBProdotti.dbProdotti);
+            productModel.setStackIndex(manager.precedente());
+          }),
+      title: Text(manager.getAppName(),
+          style: TextStyle(
+              color: Colors.white) //da commentare se voglio titolo nero
+      ),
     );
   }
 
@@ -152,6 +176,7 @@ class ReusableWidget {
                           onPressed: () {
                             productModel.prodottoSelezionato = p;
                             productModel.setStackIndex(1);
+                            manager.nuovaPagina(1);
                           }),
                       IconButton(
                           icon: Icon(Icons.delete),
@@ -232,6 +257,7 @@ class ReusableWidget {
                           onPressed: () {
                             productModel.prodottoSelezionato = p;
                             productModel.setStackIndex(1);
+                            manager.nuovaPagina(1);
                           }),
                       IconButton(
                           icon: Icon(Icons.delete),
@@ -258,6 +284,7 @@ class ReusableWidget {
             //productModel.prodottoSelezionato=p;
             p.selezionato = true;
             productModel.setStackIndex(5);
+            manager.nuovaPagina(5);
           },
           child: ExpansionTile(
             title: getTitleBallRight(p),
@@ -317,6 +344,7 @@ class ReusableWidget {
                           onPressed: () {
                             productModel.prodottoSelezionato = p;
                             productModel.setStackIndex(1);
+                            manager.nuovaPagina(1);
                           },
                           child: Column(
                             children: <Widget>[

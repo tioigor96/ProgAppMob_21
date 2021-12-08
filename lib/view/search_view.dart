@@ -2,6 +2,7 @@
  */
 
 import 'package:Kambusapp/DB/DB.dart';
+import 'package:Kambusapp/model/page_manager.dart';
 import 'package:Kambusapp/model/product_model.dart';
 import 'package:flutter/material.dart';
 import '../common/colors.dart';
@@ -27,7 +28,7 @@ class _SearchViewState extends State<SearchView> {
               onPressed: () {
                 msgController.clear();
                 productModel.caricaProdotti(DBProdotti.dbProdotti);
-                productModel.setStackIndex(0);
+                productModel.setStackIndex(manager.precedente());
               }),
           title: Container(
             width: double.infinity,
@@ -107,6 +108,7 @@ class _SearchViewState extends State<SearchView> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           productModel.setStackIndex(1);
+          manager.nuovaPagina(1);
         },
         backgroundColor: secondColor,
         tooltip: 'Increment',

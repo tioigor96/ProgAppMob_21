@@ -3,6 +3,7 @@ Per cambiare tipo di visualizzazione richiamare un expansionProduct diverso
  */
 
 import 'package:Kambusapp/DB/DB.dart';
+import 'package:Kambusapp/model/page_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:Kambusapp/model/product_model.dart';
@@ -51,6 +52,7 @@ class ListProductState extends State<ListProduct> {
               //modifico
               productModel.prodottoSelezionato = p;
               productModel.setStackIndex(1);
+              manager.nuovaPagina(1);
               return false;
             }
           },

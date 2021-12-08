@@ -1,6 +1,7 @@
 //visualizzaizone lista di prodotti
 
 import 'package:Kambusapp/DB/DB.dart';
+import 'package:Kambusapp/model/page_manager.dart';
 import 'package:Kambusapp/model/product_model.dart';
 import 'package:Kambusapp/view/list_product_view.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class ProductsView extends StatelessWidget {
           productModel.prodottoSelezionato = Product();
           productModel.prodottoSelezionato!.id = -1;
           productModel.setStackIndex(1);
+          manager.nuovaPagina(1);
         },
         backgroundColor: secondColor,
         tooltip: 'Increment',

@@ -47,6 +47,7 @@ dependencies:
   flutter_settings_screens: ^0.3.2-null-safety
   settings_ui: ^1.0.0
   gizmos_settings_screen: ^0.1.0-nullsafety.2
+  stack: ^0.2.1
 
 dev_dependencies:
   flutter_test:

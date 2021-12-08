@@ -1,6 +1,7 @@
 //visualizzaizone lista di prodotti
 
 import 'package:Kambusapp/DB/DB.dart';
+import 'package:Kambusapp/model/page_manager.dart';
 import 'package:Kambusapp/model/product_model.dart';
 import 'package:Kambusapp/view/list_product_view.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class _MultipleDeleteState extends State<MultipleDelete> {
               productModel.caricaProdotti(DBProdotti.dbProdotti);
               productModel.setStackIndex(0);
             }),
-        title: const Text(Constants.appName,
+        title: Text(manager.getAppName(),
             style: TextStyle(
                 color: Colors.white) //da commentare se voglio titolo nero
         ),
@@ -38,7 +39,7 @@ class _MultipleDeleteState extends State<MultipleDelete> {
             onPressed: () {
               productModel.eliminaMultiplo(DBProdotti.dbProdotti);
               productModel.caricaProdotti(DBProdotti.dbProdotti);
-              productModel.setStackIndex(0);
+              productModel.setStackIndex(manager.precedente());
             },
           ),
           PopupMenuButton(
@@ -47,6 +48,7 @@ class _MultipleDeleteState extends State<MultipleDelete> {
                   child: Text("Impostazioni notifiche"),
                   onTap: () {
                     productModel.setStackIndex(3);
+                    manager.nuovaPagina(3);
                   },
                   value: 1,
                 ),
@@ -54,6 +56,7 @@ class _MultipleDeleteState extends State<MultipleDelete> {
                   child: Text("Impostazioni visualizzazione"),
                   onTap: () {
                     productModel.setStackIndex(4);
+                    manager.nuovaPagina(4);
                   },
                   value: 2,
                 )
@@ -70,6 +73,7 @@ class _MultipleDeleteState extends State<MultipleDelete> {
               GestureDetector(
                 onLongPress: () {
                   productModel.setStackIndex(5);
+                  manager.nuovaPagina(5);
                 },
                 child: ExpansionTile(
                   title: Text(p.nome.capitalize()),

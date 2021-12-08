@@ -1,4 +1,4 @@
 /**
  * File per le varie costanti, al massimo si elimina...
  */
-const String appName = 'Kambusapp';
+//const String appName = 'Kambusapp';
