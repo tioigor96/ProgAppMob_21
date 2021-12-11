@@ -10,6 +10,7 @@ class Manager {
   int precedente() {
     page.pop();
     print("Torno a "+page.top().toString());
+    setName();
     return page.top();
   }
 
@@ -34,12 +35,17 @@ class Manager {
         name = "Impostazioni notifiche";
       break;
       case 4 :
-         name = "Impostazioni di visualizzazione";
+         name = "Impostazioni visualizzazione";
       break;
-      case 4 :
+      case 5 :
         name = "Elimina";
       break;
     }
+  }
+
+  void changeName(String s)
+  {
+      name=s;
   }
 
   String getAppName()

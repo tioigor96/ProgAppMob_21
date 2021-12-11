@@ -53,6 +53,7 @@ class ListProductState extends State<ListProduct> {
               productModel.prodottoSelezionato = p;
               productModel.setStackIndex(1);
               manager.nuovaPagina(1);
+              manager.changeName("Modifica alimento");
               return false;
             }
           },

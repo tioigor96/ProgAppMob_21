@@ -25,7 +25,7 @@ class _MultipleDeleteState extends State<MultipleDelete> {
             icon: Icon(Icons.arrow_back),
             onPressed: () {
               productModel.caricaProdotti(DBProdotti.dbProdotti);
-              productModel.setStackIndex(0);
+              productModel.setStackIndex(manager.precedente());
             }),
         title: Text(manager.getAppName(),
             style: TextStyle(
