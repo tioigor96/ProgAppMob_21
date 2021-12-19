@@ -6,12 +6,16 @@ import 'package:Kambusapp/DB/DB.dart';
 import 'package:Kambusapp/model/page_manager.dart';
 import 'package:Kambusapp/model/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../common/colors.dart';
 import 'widget.dart';
+import 'dart:async';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:intl/intl.dart';
 
 // import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 //import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
+
 
 class AddView extends StatelessWidget {
   GlobalKey<FormState> _formKey = new GlobalKey();
@@ -114,6 +118,7 @@ class AddView extends StatelessWidget {
                       ? null
                       : productModel.prodottoSelezionato!.barcode,
                   textInputAction: TextInputAction.next,
+                  onTap: () => scanBarcodeNormal(),
                   onChanged: (String inValue) {
                     productModel.prodottoSelezionato!.barcode = inValue;
                   },
@@ -186,4 +191,30 @@ void _save() async {
     await DBProdotti.dbProdotti.update(productModel.prodottoSelezionato!);
   }
   productModel.caricaProdotti(DBProdotti.dbProdotti);
+}
+
+Future<void> scanBarcodeNormal() async {
+  String barcodeScanRes;
+  // Platform messages may fail, so we use a try/catch PlatformException.
+  try {
+    barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666', 'Cancel', true, ScanMode.BARCODE);
+    print("!");
+    print("!");
+    print("!");
+    print(barcodeScanRes);
+    productModel.prodottoSelezionato!.barcode=barcodeScanRes;
+    productModel.setStackIndex(1);
+  } on PlatformException {
+    barcodeScanRes = 'Failed to get platform version.';
+  }
+
+  // If the widget was removed from the tree while the asynchronous platform
+  // message was in flight, we want to discard the reply rather than calling
+  // setState to update our non-existent appearance.
+  /*if (!mounted) return;
+
+  setState(() {
+    _scanBarcode = barcodeScanRes;
+  });*/
 }

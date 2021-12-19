@@ -107,6 +107,8 @@ class _SearchViewState extends State<SearchView> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          productModel.prodottoSelezionato = Product();
+          productModel.prodottoSelezionato!.id = -1;
           productModel.setStackIndex(1);
           manager.nuovaPagina(1);
         },
