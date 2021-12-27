@@ -88,8 +88,12 @@ class AddView extends StatelessWidget {
                       labelText: "Marca", hintText: "Kambusa Industries"),
                   initialValue: productModel.prodottoSelezionato!.marca /*== null
                       ? null
+<<<<<<< Updated upstream
                   textInputAction: TextInputAction.next,
                       : productModel.prodottoSelezionato!.marca,
+=======
+                      : productModel.prodottoSelezionato!.marca*/,
+>>>>>>> Stashed changes
                   onChanged: (String inValue) {
                     productModel.prodottoSelezionato!.marca = inValue;
                   },
