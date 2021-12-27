@@ -86,14 +86,9 @@ class AddView extends StatelessWidget {
                 TextFormField(
                   decoration: InputDecoration(
                       labelText: "Marca", hintText: "Kambusa Industries"),
-                  initialValue: productModel.prodottoSelezionato!.marca /*== null
+                  initialValue: productModel.prodottoSelezionato == null
                       ? null
-<<<<<<< Updated upstream
-                  textInputAction: TextInputAction.next,
                       : productModel.prodottoSelezionato!.marca,
-=======
-                      : productModel.prodottoSelezionato!.marca*/,
->>>>>>> Stashed changes
                   onChanged: (String inValue) {
                     productModel.prodottoSelezionato!.marca = inValue;
                   },
