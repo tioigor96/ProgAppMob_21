@@ -1,6 +1,6 @@
 //visualizzaizone lista di prodotti
 
-import 'package:Kambusapp/DB/DB.dart';
+import 'package:Kambusapp/DB/db.dart';
 import 'package:Kambusapp/model/page_manager.dart';
 import 'package:Kambusapp/model/product_model.dart';
 import 'package:Kambusapp/view/list_product_view.dart';

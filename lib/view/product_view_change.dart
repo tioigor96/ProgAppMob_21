@@ -14,7 +14,7 @@ import 'widget.dart';
 import 'package:provider/provider.dart';
 import '../view/product_visualize.dart';
 import '../view/settings_view.dart';
-import '../DB/DB.dart';
+import '../DB/db.dart';
 
 class ProductsChange extends StatelessWidget {
   ProductsChange() {

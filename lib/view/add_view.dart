@@ -2,7 +2,7 @@
 
 //TODO? Vogliamo fare in modo che una volta completato un field ci sia l'autofocus a quello successivo?
 
-import 'package:Kambusapp/DB/DB.dart';
+import 'package:Kambusapp/DB/db.dart';
 import 'package:Kambusapp/model/page_manager.dart';
 import 'package:Kambusapp/model/product_model.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,6 @@ import 'package:intl/intl.dart';
 
 // import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 //import 'package:intl/date_symbol_data_local.dart';
-
 
 class AddView extends StatelessWidget {
   GlobalKey<FormState> _formKey = new GlobalKey();
@@ -199,12 +198,17 @@ Future<void> scanBarcodeNormal() async {
   try {
     barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
         '#ff6666', 'Cancel', true, ScanMode.BARCODE);
-    print("!");
-    print("!");
-    print("!");
-    print(barcodeScanRes);
-    productModel.prodottoSelezionato!.barcode=barcodeScanRes;
-    productModel.setStackIndex(1);
+    // print("!");
+    // print("!");
+    // print("!");
+    // print(barcodeScanRes);
+    DBProdotti.dbProdotti.get_from_barcode(barcodeScanRes).then((value) {
+      productModel.prodottoSelezionato!.barcode = value.barcode;//TODO: controlla prima di riassegnare
+      productModel.setStackIndex(1);
+    });
+    // productModel.prodottoSelezionato!.barcode =
+    //     (barcodeScanRes == "-1" ? "" : barcodeScanRes);
+    // print(alredyinserted.id);
   } on PlatformException {
     barcodeScanRes = 'Failed to get platform version.';
   }

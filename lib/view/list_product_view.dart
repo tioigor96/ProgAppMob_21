@@ -2,7 +2,7 @@
 Per cambiare tipo di visualizzazione richiamare un expansionProduct diverso
  */
 
-import 'package:Kambusapp/DB/DB.dart';
+import 'package:Kambusapp/DB/db.dart';
 import 'package:Kambusapp/model/page_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

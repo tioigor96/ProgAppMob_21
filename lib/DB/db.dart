@@ -34,8 +34,21 @@ class DBProdotti {
     _db = await openDatabase(
       join(await getDatabasesPath(), 'prodotti.db'),
       onCreate: (db, version) {
+        db.execute("CREATE TABLE IF NOT EXISTS prodotti_bc"
+            "(nome TEXT, "
+            "quantita TEXT, "
+            "marca TEXT, "
+            "prezzo REAL, "
+            "barcode TEXT PRIMARY KEY)");
         return db.execute(
-          'CREATE TABLE IF NOT EXISTS prodotti (id INTEGER PRIMARY KEY, nome TEXT, quantita TEXT, marca TEXT, prezzo REAL, scadenza TEXT, barcode TEXT)',
+          'CREATE TABLE IF NOT EXISTS prodotti '
+          '(id INTEGER PRIMARY KEY, '
+          'nome TEXT, '
+          'quantita TEXT, '
+          'marca TEXT, '
+          'prezzo REAL, '
+          'scadenza TEXT, '
+          'barcode TEXT)',
         );
       },
       version: 1,
@@ -92,6 +105,18 @@ class DBProdotti {
     if (id == null) {
       id = 1;
     }
+    if (nuovo.barcode != null && nuovo.barcode!.length >= 10) {
+      await db.rawInsert(
+          "INSERT OR IGNORE INTO prodotti_bc (nome, quantita, marca, prezzo, barcode) "
+          "VALUES (?, ?, ?, ?, ?)",
+          [
+            nuovo.nome,
+            nuovo.quantita,
+            nuovo.marca,
+            nuovo.prezzo,
+            nuovo.barcode
+          ]);
+    }
     return await db.rawInsert(
         "INSERT INTO prodotti (id, nome, quantita, marca, prezzo, scadenza, barcode) "
         "VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -135,7 +160,7 @@ class DBProdotti {
         break;
     }
 
-    print(query);
+    //print(query);
     Database db = await _getDB();
     var recs = await db.rawQuery(query);
     var list = recs.isEmpty ? [] : recs.map((m) => productFromMap(m)).toList();
@@ -156,5 +181,21 @@ class DBProdotti {
   Future deleteAll() async {
     Database db = await _getDB();
     return await db.delete("prodotti");
+  }
+
+  Future<Product> get_from_barcode(String barcode) async {
+    Database db = await _getDB();
+    Product prod;
+    var rec = await db
+        .rawQuery("SELECT * FROM prodotti_bc WHERE barcode = ?", [barcode]);
+
+    if (rec.isNotEmpty) {
+      prod = productFromMap(rec.first);
+    } else {
+      prod = Product();
+      prod.barcode = barcode /*!= "-1" ? barcode : ""*/;
+    }
+    // print("in fnct: ${prod.barcode}");
+    return prod;
   }
 }
