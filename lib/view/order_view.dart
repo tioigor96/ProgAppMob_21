@@ -1,7 +1,7 @@
 //Schermata impostazioni
 
 import 'package:Kambusapp/DB/db.dart';
-import 'package:Kambusapp/DB/DBSetting.dart';
+import 'package:Kambusapp/DB/db_setting.dart';
 import 'package:Kambusapp/model/product_model.dart';
 import 'package:Kambusapp/model/setting_model.dart';
 import 'package:Kambusapp/view/list_product_view.dart';

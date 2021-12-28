@@ -1,4 +1,4 @@
-import 'package:Kambusapp/DB/DBSetting.dart';
+import 'package:Kambusapp/DB/db_setting.dart';
 
 class Setting {
   int notifiche = 1;

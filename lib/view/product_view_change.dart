@@ -1,6 +1,6 @@
 //parte del codice che specifica le diverse pagine tra cui navigare
 
-import 'package:Kambusapp/DB/DBSetting.dart';
+import 'package:Kambusapp/DB/db_setting.dart';
 import 'package:Kambusapp/model/page_manager.dart';
 import 'package:Kambusapp/model/product_model.dart';
 import 'package:Kambusapp/model/setting_model.dart';
