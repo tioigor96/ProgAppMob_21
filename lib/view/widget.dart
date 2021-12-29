@@ -1,5 +1,4 @@
 //widget riutilizzabili in diverse schermate
-//TODO cambiare titolo appbar in base a schermata
 
 import 'package:Kambusapp/assets/constants.dart' as Constants;
 import 'package:Kambusapp/model/page_manager.dart';
