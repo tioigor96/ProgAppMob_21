@@ -5,7 +5,6 @@
 import 'package:Kambusapp/model/setting_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import '../common/utils.dart' as utils;
 import '../model/product_model.dart';
 
 class DBProdotti {
@@ -66,20 +65,31 @@ class DBProdotti {
     prod.marca = inMap["marca"];
     prod.prezzo = inMap["prezzo"];
     prod.barcode = inMap["barcode"];
+    //
+    // print(prod.id.toString() +
+    //     " " +
+    //     prod.nome +
+    //     " " +
+    //     prod.quantita +
+    //     " " +
+    //     prod.scadenza.toString() +
+    //     " " +
+    //     prod.marca.toString() +
+    //     " " +
+    //     prod.prezzo.toString() +
+    //     " " +
+    //     prod.barcode.toString());
 
-    print(prod.id.toString() +
-        " " +
-        prod.nome +
-        " " +
-        prod.quantita +
-        " " +
-        prod.scadenza.toString() +
-        " " +
-        prod.marca.toString() +
-        " " +
-        prod.prezzo.toString() +
-        " " +
-        prod.barcode.toString());
+    return prod;
+  }
+
+  Product old_productFromMap(Map inMap) {
+    Product prod = Product();
+    prod.nome = inMap["nome"];
+    prod.quantita = inMap["quantita"];
+    prod.marca = inMap["marca"];
+    prod.prezzo = inMap["prezzo"];
+    prod.barcode = inMap["barcode"];
 
     return prod;
   }
@@ -190,7 +200,7 @@ class DBProdotti {
         .rawQuery("SELECT * FROM prodotti_bc WHERE barcode = ?", [barcode]);
 
     if (rec.isNotEmpty) {
-      prod = productFromMap(rec.first);
+      prod = old_productFromMap(rec.first);
     } else {
       prod = Product();
       prod.barcode = barcode /*!= "-1" ? barcode : ""*/;

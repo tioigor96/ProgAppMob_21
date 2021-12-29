@@ -101,8 +101,8 @@ class AddView extends StatelessWidget {
                   keyboardType: TextInputType.number,
                   decoration:
                       InputDecoration(labelText: "Prezzo", hintText: "1.30"),
-                  initialValue: productModel.prodottoSelezionato!.id <= 0
-                      ? ""
+                  initialValue: productModel.prodottoSelezionato == null
+                      ? null
                       : productModel.prodottoSelezionato!.prezzoToString(),
                   textInputAction: TextInputAction.next,
                   onChanged: (String inValue) {
@@ -198,17 +198,25 @@ Future<void> scanBarcodeNormal() async {
   try {
     barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
         '#ff6666', 'Cancel', true, ScanMode.BARCODE);
-    // print("!");
-    // print("!");
-    // print("!");
-    // print(barcodeScanRes);
     DBProdotti.dbProdotti.get_from_barcode(barcodeScanRes).then((value) {
-      productModel.prodottoSelezionato!.barcode = value.barcode;//TODO: controlla prima di riassegnare
+      if (productModel.prodottoSelezionato!.barcode != value.barcode) {
+        productModel.prodottoSelezionato!.barcode = value.barcode;
+      }
+      if (productModel.prodottoSelezionato!.nome == "") {
+        productModel.prodottoSelezionato!.nome = value.nome;
+      }
+      if (productModel.prodottoSelezionato!.marca == null ||
+          productModel.prodottoSelezionato!.marca == "") {
+        productModel.prodottoSelezionato!.marca = value.marca;
+      }
+      if (productModel.prodottoSelezionato!.prezzoToString() == "") {
+        productModel.prodottoSelezionato!.prezzo = value.prezzo;
+      }
+      if (productModel.prodottoSelezionato!.quantita == "") {
+        productModel.prodottoSelezionato!.quantita = value.quantita;
+      }
       productModel.setStackIndex(1);
     });
-    // productModel.prodottoSelezionato!.barcode =
-    //     (barcodeScanRes == "-1" ? "" : barcodeScanRes);
-    // print(alredyinserted.id);
   } on PlatformException {
     barcodeScanRes = 'Failed to get platform version.';
   }

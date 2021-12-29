@@ -23,11 +23,7 @@ class Product {
 
 
   String prezzoToString() {
-    if (prezzo == null) {
-      return "";
-    } else {
-      return prezzo.toString();
-    }
+    return prezzo == null ? "" : prezzo.toString();
   }
 }
 
