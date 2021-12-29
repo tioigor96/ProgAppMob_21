@@ -8,9 +8,7 @@ import 'package:Kambusapp/view/add_view.dart';
 import 'package:Kambusapp/view/multiple_delete_view.dart';
 import 'package:Kambusapp/view/search_view.dart';
 import 'package:flutter/material.dart';
-import '../common/colors.dart';
 import 'order_view.dart';
-import 'widget.dart';
 import 'package:provider/provider.dart';
 import '../view/product_visualize.dart';
 import '../view/settings_view.dart';
@@ -20,7 +18,7 @@ class ProductsChange extends StatelessWidget {
   ProductsChange() {
      impostazioni.aggiorna(DBSetting.dbSettings);             //info notifiche
      print(impostazioni.notificaGialla);
-     productModel.caricaProdotti(DBProdotti.dbProdotti);     //per avere lista di note
+     productModel.caricaProdotti(DBProdotti.dbProdotti);     //per avere lista di prodotti
      manager.nuovaPagina(0);
   }
 

@@ -13,9 +13,6 @@ import 'dart:async';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:intl/intl.dart';
 
-// import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-//import 'package:intl/date_symbol_data_local.dart';
-
 class AddView extends StatelessWidget {
   GlobalKey<FormState> _formKey = new GlobalKey();
 
@@ -141,7 +138,7 @@ class AddView extends StatelessWidget {
                           child: Text("Conferma"),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              _save();
+                              _save(context);
                               productModel.setStackIndex(manager.precedente());
                             }
                           }),
@@ -182,13 +179,17 @@ class AddView extends StatelessWidget {
   }
 }
 
-void _save() async {
+void _save(context) async {
   if (productModel.prodottoSelezionato!.id == -1) {
     await DBProdotti.dbProdotti.create(productModel.prodottoSelezionato!);
   } else {
     print("modifico");
     await DBProdotti.dbProdotti.update(productModel.prodottoSelezionato!);
   }
+  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    content: Text("Prodotto salvato correttamente! 🤟"),
+    behavior: SnackBarBehavior.floating,
+  ));
   productModel.caricaProdotti(DBProdotti.dbProdotti);
 }
 

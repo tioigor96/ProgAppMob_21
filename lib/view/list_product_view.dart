@@ -33,7 +33,7 @@ class ListProductState extends State<ListProduct> {
         Product p = productModel.listaProdotti[index];
         return Dismissible(
           key: UniqueKey(),
-        //direction: DismissDirection.startToEnd,
+          //direction: DismissDirection.startToEnd,
           onDismissed: (direction) {
             setState(() {
               //p.removeAt(index);
@@ -42,8 +42,12 @@ class ListProductState extends State<ListProduct> {
             });
 
             // Then show a snackbar.
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(p.nome.capitalize() + " eliminato")));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+                p.nome.capitalize() + " eliminato",
+              ),
+              behavior: SnackBarBehavior.floating,
+            ));
           },
           confirmDismiss: (direction) async {
             if (direction == DismissDirection.startToEnd) {
@@ -102,7 +106,7 @@ class ListProductState extends State<ListProduct> {
   }
 
   void elimina(p) async {
-    print("elimino "+p.nome);
+    print("elimino " + p.nome);
     await DBProdotti.dbProdotti.delete(p.id);
     productModel.caricaProdotti(DBProdotti.dbProdotti);
   }
