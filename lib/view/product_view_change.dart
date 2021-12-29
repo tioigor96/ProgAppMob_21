@@ -5,6 +5,7 @@ import 'package:Kambusapp/model/page_manager.dart';
 import 'package:Kambusapp/model/product_model.dart';
 import 'package:Kambusapp/model/setting_model.dart';
 import 'package:Kambusapp/view/add_view.dart';
+import 'package:Kambusapp/view/drive_backup.dart';
 import 'package:Kambusapp/view/multiple_delete_view.dart';
 import 'package:Kambusapp/view/search_view.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,7 @@ class ProductsChange extends StatelessWidget {
           return IndexedStack(
             //permette di visualizzare solo uno dei figli in base a index
             index: productModel.stackIndex,
-            children: [ProductsView(), AddView(), SearchView(), SettingsView(), OrderView(), MultipleDelete()],
+            children: [ProductsView(), AddView(), SearchView(), SettingsView(), OrderView(), MultipleDelete(), BackupView()],
           );
         },
       ),

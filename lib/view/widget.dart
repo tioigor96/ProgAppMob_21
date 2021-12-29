@@ -45,6 +45,14 @@ class ReusableWidget {
                       manager.nuovaPagina(4);
                     },
                     value: 2,
+                  ),
+                  PopupMenuItem(
+                    child: Text("Impostazioni di backup"),
+                    onTap: () {
+                      productModel.setStackIndex(6);
+                      manager.nuovaPagina(6);
+                    },
+                    value: 3,
                   )
                 ])
       ],
@@ -92,12 +100,10 @@ class ReusableWidget {
                     },
                     value: 2,
                   )
-                ]
-        )
+                ])
       ],
     );
   }
-
 
   static getBackNoSearchAppBar() {
     return AppBar(
@@ -110,10 +116,9 @@ class ReusableWidget {
       title: Text(manager.getAppName(),
           style: TextStyle(
               color: Colors.white) //da commentare se voglio titolo nero
-      ),
+          ),
     );
   }
-
 
   static getExpansionProduct(p) {
     return Column(
@@ -180,7 +185,8 @@ class ReusableWidget {
                       IconButton(
                           icon: Icon(Icons.delete),
                           onPressed: () {
-                            productModel.eliminaProdotto(DBProdotti.dbProdotti, p.id);
+                            productModel.eliminaProdotto(
+                                DBProdotti.dbProdotti, p.id);
                             productModel.caricaProdotti(DBProdotti.dbProdotti);
                           }),
                     ],
@@ -261,7 +267,8 @@ class ReusableWidget {
                       IconButton(
                           icon: Icon(Icons.delete),
                           onPressed: () {
-                            productModel.eliminaProdotto(DBProdotti.dbProdotti, p.id);
+                            productModel.eliminaProdotto(
+                                DBProdotti.dbProdotti, p.id);
                             productModel.caricaProdotti(DBProdotti.dbProdotti);
                           }),
                     ],
@@ -356,7 +363,8 @@ class ReusableWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            productModel.eliminaProdotto(DBProdotti.dbProdotti, p.id);
+                            productModel.eliminaProdotto(
+                                DBProdotti.dbProdotti, p.id);
                             productModel.caricaProdotti(DBProdotti.dbProdotti);
                           },
                           child: Column(
@@ -497,5 +505,4 @@ class ReusableWidget {
       }
     }
   }
-
 }
