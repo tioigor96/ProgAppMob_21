@@ -103,6 +103,7 @@ class DBProdotti {
     map["scadenza"] = p.scadenza;
     map["prezzo"] = p.prezzo;
     map["barcode"] = p.barcode;
+    map["marca"] = p.marca;
     return map;
   }
 
