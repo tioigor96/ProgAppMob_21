@@ -15,15 +15,25 @@ class Product {
   late String scadenza;
   String? barcode;
 
-  bool selezionato = false;             //uso in eliminazione multipla
+  bool selezionato = false; //uso in eliminazione multipla
 
   Product() {
     scadenza = "";
   }
 
-
   String prezzoToString() {
     return prezzo == null ? "" : prezzo.toString();
+  }
+
+  bool equivalent(Product p) {
+    if (nome != p.nome ||
+        marca != p.marca ||
+        prezzo != p.prezzo ||
+        quantita != p.quantita) {
+      return false;
+    }
+
+    return true;
   }
 }
 
@@ -52,8 +62,8 @@ class ProductModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void eliminaProdotto(dynamic inDatabaseWorker, int id) async{
-      await inDatabaseWorker.delete(id);
+  void eliminaProdotto(dynamic inDatabaseWorker, int id) async {
+    await inDatabaseWorker.delete(id);
   }
 
   void eliminaMultiplo(dynamic inDatabaseWorker) {
@@ -63,8 +73,6 @@ class ProductModel extends ChangeNotifier {
       }
     }
   }
-
-
 }
 
 ProductModel productModel = ProductModel();

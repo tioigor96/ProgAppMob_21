@@ -115,6 +115,9 @@ class AddView extends StatelessWidget {
                     initialValue: productModel.prodottoSelezionato == null
                         ? null
                         : productModel.prodottoSelezionato!.barcode,
+                    enabled: productModel.prodottoSelezionato!.id == -1
+                        ? true
+                        : false,
                     textInputAction: TextInputAction.next,
                     onTap: () => scanBarcodeNormal(),
                     onChanged: (String inValue) {
@@ -185,11 +188,26 @@ class AddView extends StatelessWidget {
 
 void _save(context) async {
   if (productModel.prodottoSelezionato!.id == -1) {
-    await DBProdotti.dbProdotti.create(productModel.prodottoSelezionato!);
-  } else {
-    print("modifico");
-    await DBProdotti.dbProdotti.update(productModel.prodottoSelezionato!);
+    bool snackbar =
+        await DBProdotti.dbProdotti.create(productModel.prodottoSelezionato!);
+    if (snackbar) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+            "Prodotto ${productModel.prodottoSelezionato!.nome} aggiunto e aggiornato correttamente! 🤙"),
+        behavior: SnackBarBehavior.floating,
+      ));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Prodotto aggiunto correttamente! 👌"),
+        behavior: SnackBarBehavior.floating,
+      ));
+    }
+    productModel.caricaProdotti(DBProdotti.dbProdotti);
+    return;
   }
+//qui sto modificando, prima esco per forza!
+  print("modifico");
+  await DBProdotti.dbProdotti.update(productModel.prodottoSelezionato!);
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     content: Text("Prodotto salvato correttamente! 🤟"),
     behavior: SnackBarBehavior.floating,
@@ -225,13 +243,4 @@ Future<void> scanBarcodeNormal() async {
   } on PlatformException {
     barcodeScanRes = 'Failed to get platform version.';
   }
-
-  // If the widget was removed from the tree while the asynchronous platform
-  // message was in flight, we want to discard the reply rather than calling
-  // setState to update our non-existent appearance.
-  /*if (!mounted) return;
-
-  setState(() {
-    _scanBarcode = barcodeScanRes;
-  });*/
 }

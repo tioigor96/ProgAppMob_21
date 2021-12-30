@@ -108,7 +108,9 @@ class DBProdotti {
   }
 
   //inserimento prodotto
-  Future create(Product nuovo) async {
+  /// return: true if i update the product in table prodotti_bc
+  Future<bool> create(Product nuovo) async {
+    bool result = false;
     Database db = await _getDB(); //ottenere DB
     var val = await db.rawQuery(
         "SELECT MAX(id) + 1 AS id FROM prodotti"); //rawquery per cassaggio diretto di query come stringa
@@ -117,8 +119,12 @@ class DBProdotti {
       id = 1;
     }
     if (nuovo.barcode != null && nuovo.barcode!.length >= 10) {
+      Future<Product> p = get_from_barcode(nuovo.barcode.toString());           //vedo se devo mostrare che aggiorno o cosa!
+      p.then((value) {
+        return value.equivalent(nuovo);
+      });
       await db.rawInsert(
-          "INSERT OR IGNORE INTO prodotti_bc (nome, quantita, marca, prezzo, barcode) "
+          "INSERT OR REPLACE INTO prodotti_bc (nome, quantita, marca, prezzo, barcode) "
           "VALUES (?, ?, ?, ?, ?)",
           [
             nuovo.nome,
@@ -128,7 +134,7 @@ class DBProdotti {
             nuovo.barcode
           ]);
     }
-    return await db.rawInsert(
+    await db.rawInsert(
         "INSERT INTO prodotti (id, nome, quantita, marca, prezzo, scadenza, barcode) "
         "VALUES (?, ?, ?, ?, ?, ?, ?)",
         [
@@ -140,6 +146,7 @@ class DBProdotti {
           nuovo.scadenza,
           nuovo.barcode
         ]);
+    return result;
   }
 
   //estrarre nota
@@ -204,7 +211,7 @@ class DBProdotti {
       prod = old_productFromMap(rec.first);
     } else {
       prod = Product();
-      prod.barcode = barcode /*!= "-1" ? barcode : ""*/;
+      prod.barcode = barcode;
     }
     // print("in fnct: ${prod.barcode}");
     return prod;
