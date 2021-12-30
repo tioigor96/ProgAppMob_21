@@ -67,9 +67,7 @@ class AddView extends StatelessWidget {
                   TextFormField(
                     key: Key(
                         productModel.prodottoSelezionato!.scadenza.toString()),
-                    onTap: () {
-                      _selezionaData(context);
-                    },
+                    onTap: () => _selezionaData(context),
                     textInputAction: TextInputAction.next,
                     decoration: InputDecoration(labelText: "Scadenza"),
                     initialValue: productModel.prodottoSelezionato!.scadenza,
@@ -161,6 +159,7 @@ class AddView extends StatelessWidget {
   }
 
   Future<void> _selezionaData(BuildContext context) async {
+    FocusScope.of(context).requestFocus(new FocusNode());
     DateTime? selectedDate = await showDatePicker(
         context: context,
         initialDate: DateUtils.addDaysToDate(DateTime.now(), 1),
