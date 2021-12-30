@@ -1,5 +1,5 @@
 //Schermata impostazioni
-
+//TODO: controllo giallo<rosso
 import 'package:Kambusapp/DB/db.dart';
 import 'package:Kambusapp/DB/db_setting.dart';
 import 'package:Kambusapp/common/utils.dart';
@@ -19,6 +19,8 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
+  String _ora = "10:00";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,25 +43,27 @@ class _SettingsViewState extends State<SettingsView> {
               },
               value: intToBool(impostazioni.notifiche),
             ),
-            //Divider(),
-            /*ListTile(
-            title: Row(
+            Divider(),
+            ListTile(
+              title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Icon(Icons.access_time),
                   Text("Invia notifiche alle ore"),
                   Container(
                     width: 80,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: "10:00",
-                      ),
-                      keyboardType: TextInputType.number,
+                    child: TextFormField(
+                      initialValue: _ora,
+                      onTap: () => _selezionaData(context),
+                      // decoration: InputDecoration(
+                      //   hintText: "10:00",
+                      // ),
+                      keyboardType: null,
                     ),
                   ),
                 ],
+              ),
             ),
-          ),*/
             ListTile(
                 leading: Container(
                   width: 20,
@@ -73,7 +77,8 @@ class _SettingsViewState extends State<SettingsView> {
                 trailing: DropdownButton<int>(
                   value: impostazioni.notificaGialla,
                   items: <int>[
-                    for (var i = impostazioni.notificaRossa+1; i < 22; i += 1) i
+                    for (var i = impostazioni.notificaRossa + 1; i < 22; i += 1)
+                      i
                   ].map((int value) {
                     return DropdownMenuItem<int>(
                       value: value,
@@ -106,7 +111,7 @@ class _SettingsViewState extends State<SettingsView> {
                   ].map((int value) {
                     return DropdownMenuItem<int>(
                       value: value,
-                      child: Text(value.toString()+"  "),
+                      child: Text(value.toString() + "  "),
                     );
                   }).toList(),
                   onChanged: (value) {
@@ -120,5 +125,19 @@ class _SettingsViewState extends State<SettingsView> {
         ),
       ),
     );
+  }
+
+  void _selezionaData(BuildContext context) async {
+    FocusScope.of(context).requestFocus(new FocusNode());
+    final TimeOfDay? newTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay(hour: 10, minute: 00),
+      initialEntryMode: TimePickerEntryMode.input,
+    );
+    if (newTime != null) {
+      setState(() {                     //todo: il figlio di puttana non va
+        _ora = newTime.format(context);
+      });
+    }
   }
 }
