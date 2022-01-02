@@ -119,10 +119,9 @@ class DBProdotti {
       id = 1;
     }
     if (nuovo.barcode != null && nuovo.barcode!.length >= 10) {
-      Future<Product> p = get_from_barcode(nuovo.barcode.toString());           //vedo se devo mostrare che aggiorno o cosa!
-      p.then((value) {
-        return value.equivalent(nuovo);
-      });
+      Product p = await get_from_barcode(nuovo.barcode
+          .toString()); //vedo se devo mostrare che aggiorno o cosa!
+      result = !p.equivalent(nuovo);
       await db.rawInsert(
           "INSERT OR REPLACE INTO prodotti_bc (nome, quantita, marca, prezzo, barcode) "
           "VALUES (?, ?, ?, ?, ?)",
