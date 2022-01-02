@@ -19,8 +19,6 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
-  String _ora = "10:00";
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,11 +51,17 @@ class _SettingsViewState extends State<SettingsView> {
                   Container(
                     width: 80,
                     child: TextFormField(
-                      initialValue: _ora,
+                      initialValue: impostazioni.time.format(context),
                       onTap: () => _selezionaData(context),
                       // decoration: InputDecoration(
-                      //   hintText: "10:00",
+                      //   hintText: impostazioni.time.format(context),
                       // ),
+                      // onChanged: (value) => setState(() {
+                      //   impostazioni.time = TimeOfDay(
+                      //       hour: int.parse(value.split(":")[0]),
+                      //       minute: int.parse(value.split(":")[1]));
+                      //   DBSetting.dbSettings.update(impostazioni);
+                      // }),
                       keyboardType: null,
                     ),
                   ),
@@ -121,6 +125,11 @@ class _SettingsViewState extends State<SettingsView> {
                     });
                   },
                 )),
+            Divider(),
+            Container(
+              width: 40,
+                child: Text(impostazioni.test)
+            )
           ],
         ),
       ),
@@ -129,14 +138,21 @@ class _SettingsViewState extends State<SettingsView> {
 
   void _selezionaData(BuildContext context) async {
     FocusScope.of(context).requestFocus(new FocusNode());
+    print("${impostazioni.time}");
     final TimeOfDay? newTime = await showTimePicker(
       context: context,
-      initialTime: TimeOfDay(hour: 10, minute: 00),
+      initialTime: impostazioni.time,
       initialEntryMode: TimePickerEntryMode.input,
+      cancelText: "ANNULLA",
+      hourLabelText: "ORE",
+      minuteLabelText: "MINUTI",
+      errorInvalidText: "Inserisci un'ora valida"
     );
     if (newTime != null) {
-      setState(() {                     //todo: il figlio di puttana non va
-        _ora = newTime.format(context);
+      setState(() {
+        impostazioni.time = newTime;
+        DBSetting.dbSettings.update(impostazioni);
+        impostazioni.test = newTime.format(context);
       });
     }
   }
