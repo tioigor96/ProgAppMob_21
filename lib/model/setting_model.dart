@@ -8,7 +8,6 @@ class Setting {
   String ordinamento = "nome";
   String ascDesc = "asc";
   TimeOfDay time = TimeOfDay(hour: 9, minute: 00);
-  String test = "dioca";
 
   void aggiorna(dynamic inDatabaseWorker) async {
     await inDatabaseWorker.get().then((result) {

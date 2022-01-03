@@ -46,13 +46,23 @@ class _SettingsViewState extends State<SettingsView> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(Icons.access_time),
-                  Text("Invia notifiche alle ore"),
                   Container(
-                    width: 80,
+                    child: Icon(Icons.access_time),
+                    width: 20,
+                    height: 20,
+                  ),
+                  Container(
+                    child: Text("Invia notifiche alle ore"),
+                    transform: Matrix4.translationValues(-32.5, 0, 0),  //non posso farlo così
+                  ),
+                  Container(
+                    key: UniqueKey(),
+                    width: 50,
                     child: TextFormField(
                       initialValue: impostazioni.time.format(context),
                       onTap: () => _selezionaData(context),
+                      textAlignVertical: TextAlignVertical.center,
+                      textAlign: TextAlign.right,
                       // decoration: InputDecoration(
                       //   hintText: impostazioni.time.format(context),
                       // ),
@@ -125,11 +135,6 @@ class _SettingsViewState extends State<SettingsView> {
                     });
                   },
                 )),
-            Divider(),
-            Container(
-              width: 40,
-                child: Text(impostazioni.test)
-            )
           ],
         ),
       ),
@@ -140,19 +145,17 @@ class _SettingsViewState extends State<SettingsView> {
     FocusScope.of(context).requestFocus(new FocusNode());
     print("${impostazioni.time}");
     final TimeOfDay? newTime = await showTimePicker(
-      context: context,
-      initialTime: impostazioni.time,
-      initialEntryMode: TimePickerEntryMode.input,
-      cancelText: "ANNULLA",
-      hourLabelText: "ORE",
-      minuteLabelText: "MINUTI",
-      errorInvalidText: "Inserisci un'ora valida"
-    );
+        context: context,
+        initialTime: impostazioni.time,
+        initialEntryMode: TimePickerEntryMode.input,
+        cancelText: "ANNULLA",
+        hourLabelText: "ORE",
+        minuteLabelText: "MINUTI",
+        errorInvalidText: "Inserisci un'ora valida");
     if (newTime != null) {
       setState(() {
         impostazioni.time = newTime;
         DBSetting.dbSettings.update(impostazioni);
-        impostazioni.test = newTime.format(context);
       });
     }
   }
