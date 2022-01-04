@@ -17,7 +17,6 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
-
   bool status = utils.intToBool(impostazioni.notifiche);
 
   @override
@@ -163,14 +162,15 @@ class _SettingsViewState extends State<SettingsView> {
         'daily scheduled notification body', //TODO: setta qui il testo...
         notification.nextInstanceOfTime(impostazioni.time),
         const NotificationDetails(
-          android: AndroidNotificationDetails('daily notification channel id',
-              'daily notification channel name',
-              channelDescription: 'daily notification description'),
-        ),
+            android: AndroidNotificationDetails(
+                'full screen channel id', 'full screen channel name',
+                channelDescription: 'full screen channel description',
+                priority: Priority.high,
+                importance: Importance.high,
+                fullScreenIntent: true)),
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime,
-        matchDateTimeComponents: DateTimeComponents.time);
+            UILocalNotificationDateInterpretation.absoluteTime);
   }
 
   void _selezionaData(BuildContext context) async {

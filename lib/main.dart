@@ -11,7 +11,10 @@ void main() async {
 class AppMobile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    MaterialApp ma = MaterialApp(
+    //set notification
+    notification.init();
+    
+    return MaterialApp(
         title: manager.getAppName(),
         theme: ThemeData(
           primarySwatch: baseColor,
@@ -26,18 +29,5 @@ class AppMobile extends StatelessWidget {
           ),
         ),
         home: ProductsChange());
-
-    //set notification
-    //TODO: sistema il context, va in errore
-    Future selectNotification(String? payload) async {
-      await Navigator.push(context, MaterialPageRoute<void>(builder: (context) {
-        return AppMobile();
-      }));
-    }
-
-    notification.init(selectNotification);
-
-    //start app
-    return ma;
   }
 }

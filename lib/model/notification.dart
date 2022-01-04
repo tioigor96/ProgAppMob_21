@@ -1,3 +1,4 @@
+import 'package:Kambusapp/model/product_model.dart';
 import 'package:flutter/src/material/time.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
@@ -16,7 +17,7 @@ class Notification {
 
   Notification._internal();
 
-  Future<void> init(Function(String?) selectNotification) async {
+  Future<void> init() async {
     tz.initializeTimeZones();
     final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
     tz.setLocalLocation(tz.getLocation(timeZoneName!));
@@ -28,7 +29,9 @@ class Notification {
         InitializationSettings(android: initializationSettingsAndroid);
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: selectNotification);
+        onSelectNotification: (String? payload) async {
+      productModel.setStackIndex(0);
+    });
   }
 
   TZDateTime nextInstanceOfTime(TimeOfDay time) {
