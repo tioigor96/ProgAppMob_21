@@ -57,7 +57,13 @@ class _SettingsViewState extends State<SettingsView> {
                     height: 20,
                   ),
                   Container(
-                    child: Text("Invia notifiche alle ore"),
+                    child: Text(
+                      "Invia notifiche alle ore",
+                      style: TextStyle(
+                          color: impostazioni.notifiche == 0
+                              ? Colors.grey
+                              : Colors.black),
+                    ),
                     // transform: Matrix4.translationValues(
                     //     -32.5, 0, 0), //non posso farlo così
                   ),
@@ -70,6 +76,10 @@ class _SettingsViewState extends State<SettingsView> {
                       onTap: () => _selezionaData(context),
                       textAlignVertical: TextAlignVertical.center,
                       textAlign: TextAlign.right,
+                      style: TextStyle(
+                          color: impostazioni.notifiche == 0
+                              ? Colors.grey
+                              : Colors.black),
                       // decoration: InputDecoration(
                       //   hintText: impostazioni.time.format(context),
                       // ),

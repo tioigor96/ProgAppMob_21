@@ -30,7 +30,7 @@ class DBSetting {
         );
         db.execute(
           'INSERT INTO impostazioni (notifiche, time, gialla, rossa, ordinamento, crescente) '
-              'values (1, \'09:00\', 5, 3, \'nome\', \'asc\')',
+              'values (0, \'09:00\', 5, 3, \'nome\', \'asc\')',
         );
       },
       version: 1,

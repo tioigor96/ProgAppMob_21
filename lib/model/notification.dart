@@ -1,12 +1,8 @@
-import 'dart:isolate';
-
 import 'package:Kambusapp/DB/db.dart';
 import 'package:Kambusapp/model/product_model.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/src/material/time.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Notification {
   static final Notification _notificationService = Notification._internal();
@@ -41,7 +37,9 @@ class Notification {
     if (!DateTime.now().isBefore(start)) {
       start.add(Duration(days: 1));
     }
-    DateTime.now();
+
+    print("$start");
+
     AndroidAlarmManager.periodic(
             Duration(hours: 24), notificationId, showNotification,
             exact: true,
