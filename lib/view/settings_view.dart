@@ -17,8 +17,6 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
-  bool status = utils.intToBool(impostazioni.notifiche);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,10 +35,10 @@ class _SettingsViewState extends State<SettingsView> {
                 setState(() {
                   if (value) {
                     _scheduleNotification();
-                    status = true;
+                    impostazioni.notifiche = 1;
                   } else {
                     _deleteNotification();
-                    status = false;
+                    impostazioni.notifiche = 0;
                   }
                   impostazioni.notifiche = BoolToInt(value);
                   DBSetting.dbSettings.update(impostazioni);
@@ -68,7 +66,7 @@ class _SettingsViewState extends State<SettingsView> {
                     width: 50,
                     child: (TextFormField(
                       initialValue: impostazioni.time.format(context),
-                      enabled: status,
+                      enabled: impostazioni.notifiche == 0 ? false : true,
                       onTap: () => _selezionaData(context),
                       textAlignVertical: TextAlignVertical.center,
                       textAlign: TextAlign.right,
@@ -97,6 +95,9 @@ class _SettingsViewState extends State<SettingsView> {
                   ),
                 ),
                 title: Text("Preavviso di giorni"),
+                subtitle:
+                    Text("Il pallino giallo indica il prodotto che scadrà tra"
+                        " ${impostazioni.notificaGialla} giorni"),
                 trailing: DropdownButton<int>(
                   value: impostazioni.notificaGialla,
                   items: <int>[
@@ -127,6 +128,8 @@ class _SettingsViewState extends State<SettingsView> {
                   ),
                 ),
                 title: Text("Preavviso di giorni"),
+                subtitle: Text(
+                    "Il pallino rosso indica il prodotto che scadrà tra ${impostazioni.notificaRossa} giorni"),
                 trailing: DropdownButton<int>(
                   value: impostazioni.notificaRossa,
                   items: <int>[
@@ -150,28 +153,10 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 
-  void _deleteNotification() async {
-    await notification.flutterLocalNotificationsPlugin.cancelAll();
-  }
+  void _deleteNotification() async => notification.deleteNotification();
 
-  void _scheduleNotification() async {
-    //TODO: in db fai i conteggi di alimenti che stanno per scadere e scaduti!
-    await notification.flutterLocalNotificationsPlugin.zonedSchedule(
-        0,
-        'daily scheduled notification title', //TODO: titolo
-        'daily scheduled notification body', //TODO: setta qui il testo...
-        notification.nextInstanceOfTime(impostazioni.time),
-        const NotificationDetails(
-            android: AndroidNotificationDetails(
-                'full screen channel id', 'full screen channel name',
-                channelDescription: 'full screen channel description',
-                priority: Priority.high,
-                importance: Importance.high,
-                fullScreenIntent: true)),
-        androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation:
-            UILocalNotificationDateInterpretation.absoluteTime);
-  }
+  void _scheduleNotification() async =>
+      notification.scheduleNotification(impostazioni.time);
 
   void _selezionaData(BuildContext context) async {
     FocusScope.of(context).requestFocus(new FocusNode());

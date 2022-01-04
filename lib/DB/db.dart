@@ -2,6 +2,7 @@
 
 //TODO? un minimo di escape delle stringhe?
 
+import 'package:Kambusapp/DB/db_setting.dart';
 import 'package:Kambusapp/model/setting_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -177,5 +178,44 @@ class DBProdotti {
       prod.barcode = barcode;
     }
     return prod;
+  }
+
+  Future<int> nearExpiration() async {
+    int redflag = 3, counter = 0;
+    DBSetting.dbSettings.get().then((value) => redflag = value.notificaRossa);
+    Database db = await _getDB();
+    DateTime today = DateTime.now();
+
+    List prods = await db.rawQuery("SELECT * FROM prodotti");
+    prods.forEach((e) {
+      String scadenza = e['scadenza'];
+      DateTime prodScad = DateTime(int.parse(scadenza.split("-")[0]),
+          int.parse(scadenza.split("-")[1]), int.parse(scadenza.split("-")[2]));
+
+      if (prodScad.difference(today).inDays >= 0 &&
+          prodScad.difference(today).inDays <= redflag) {
+        counter++;
+      }
+    });
+    return counter;
+  }
+
+  Future<int> expired() async {
+    int counter = 0;
+    Database db = await _getDB();
+    DateTime today = DateTime.now();
+
+    List prods = await db.rawQuery("SELECT * FROM prodotti");
+    prods.forEach((e) {
+      String scadenza = e['scadenza'];
+      DateTime prodScad = DateTime(int.parse(scadenza.split("-")[0]),
+          int.parse(scadenza.split("-")[1]), int.parse(scadenza.split("-")[2]));
+
+      if (prodScad.difference(today).inDays < 0) {
+        counter++;
+      }
+    });
+
+    return counter;
   }
 }
