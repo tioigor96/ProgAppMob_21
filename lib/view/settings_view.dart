@@ -1,17 +1,15 @@
 //Schermata impostazioni
-//TODO: controllo giallo<rosso
+
 import 'package:Kambusapp/DB/db.dart';
 import 'package:Kambusapp/DB/db_setting.dart';
 import 'package:Kambusapp/common/utils.dart';
-import 'package:Kambusapp/model/product_model.dart';
+import 'package:Kambusapp/model/notification.dart';
 import 'package:Kambusapp/model/setting_model.dart';
-import 'package:Kambusapp/view/list_product_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../common/colors.dart';
 import 'widget.dart';
 import '../common/utils.dart' as utils;
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
 class SettingsView extends StatefulWidget {
   @override
@@ -19,6 +17,9 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
+
+  bool status = utils.intToBool(impostazioni.notifiche);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +36,13 @@ class _SettingsViewState extends State<SettingsView> {
               secondary: Icon(Icons.notifications, color: baseColor),
               onChanged: (value) {
                 setState(() {
+                  if (value) {
+                    _scheduleNotification();
+                    status = true;
+                  } else {
+                    _deleteNotification();
+                    status = false;
+                  }
                   impostazioni.notifiche = BoolToInt(value);
                   DBSetting.dbSettings.update(impostazioni);
                 });
@@ -53,13 +61,15 @@ class _SettingsViewState extends State<SettingsView> {
                   ),
                   Container(
                     child: Text("Invia notifiche alle ore"),
-                    transform: Matrix4.translationValues(-32.5, 0, 0),  //non posso farlo così
+                    // transform: Matrix4.translationValues(
+                    //     -32.5, 0, 0), //non posso farlo così
                   ),
                   Container(
                     key: UniqueKey(),
                     width: 50,
-                    child: TextFormField(
+                    child: (TextFormField(
                       initialValue: impostazioni.time.format(context),
+                      enabled: status,
                       onTap: () => _selezionaData(context),
                       textAlignVertical: TextAlignVertical.center,
                       textAlign: TextAlign.right,
@@ -73,7 +83,7 @@ class _SettingsViewState extends State<SettingsView> {
                       //   DBSetting.dbSettings.update(impostazioni);
                       // }),
                       keyboardType: null,
-                    ),
+                    )),
                   ),
                 ],
               ),
@@ -141,6 +151,28 @@ class _SettingsViewState extends State<SettingsView> {
     );
   }
 
+  void _deleteNotification() async {
+    await notification.flutterLocalNotificationsPlugin.cancelAll();
+  }
+
+  void _scheduleNotification() async {
+    //TODO: in db fai i conteggi di alimenti che stanno per scadere e scaduti!
+    await notification.flutterLocalNotificationsPlugin.zonedSchedule(
+        0,
+        'daily scheduled notification title', //TODO: titolo
+        'daily scheduled notification body', //TODO: setta qui il testo...
+        notification.nextInstanceOfTime(impostazioni.time),
+        const NotificationDetails(
+          android: AndroidNotificationDetails('daily notification channel id',
+              'daily notification channel name',
+              channelDescription: 'daily notification description'),
+        ),
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+            UILocalNotificationDateInterpretation.absoluteTime,
+        matchDateTimeComponents: DateTimeComponents.time);
+  }
+
   void _selezionaData(BuildContext context) async {
     FocusScope.of(context).requestFocus(new FocusNode());
     print("${impostazioni.time}");
@@ -157,6 +189,9 @@ class _SettingsViewState extends State<SettingsView> {
         impostazioni.time = newTime;
         DBSetting.dbSettings.update(impostazioni);
       });
+      //reschedule all notifications
+      _deleteNotification();
+      _scheduleNotification();
     }
   }
 }

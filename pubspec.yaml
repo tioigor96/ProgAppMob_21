@@ -49,6 +49,8 @@ dependencies:
   gizmos_settings_screen: ^0.1.0-nullsafety.2
   stack: ^0.2.1
   flutter_barcode_scanner: ^2.0.0
+  flutter_local_notifications: ^9.2.0
+  flutter_native_timezone: ^2.0.0
 
 dev_dependencies:
   flutter_test:
