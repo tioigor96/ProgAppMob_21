@@ -14,20 +14,6 @@ class DBProdotti {
 
   static final DBProdotti dbProdotti = DBProdotti._(); //creo istanza
 
-  /* Database _createDB ()
-  {
-    openDatabase(join(utils.docsDir!.path, "prodotti.db"),
-    onCreate: (inDB, version) {
-      return inDB.execute(
-  'CREATE TABLE dogs(id INTEGER PRIMARY KEY, name TEXT, age INTEGER)',
-  );
-  },
-    // Set the version. This executes the onCreate function and provides a
-    // path to perform database upgrades and downgrades.
-    version: 1,
-    );
-  }*/
-
   //tutte le operazioni su DB sono asincrone
   Future<Database> _getDB() async {
     _db = await openDatabase(
@@ -65,20 +51,6 @@ class DBProdotti {
     prod.marca = inMap["marca"];
     prod.prezzo = inMap["prezzo"];
     prod.barcode = inMap["barcode"];
-    //
-    // print(prod.id.toString() +
-    //     " " +
-    //     prod.nome +
-    //     " " +
-    //     prod.quantita +
-    //     " " +
-    //     prod.scadenza.toString() +
-    //     " " +
-    //     prod.marca.toString() +
-    //     " " +
-    //     prod.prezzo.toString() +
-    //     " " +
-    //     prod.barcode.toString());
 
     return prod;
   }
@@ -148,13 +120,6 @@ class DBProdotti {
     return result;
   }
 
-  //estrarre nota
-  /* Future<Product> get(int inID) async {
-    Database db = await _getDB();
-    var rec = await db.query("prodotti"); //non passo query ma sfrutto parametri
-    return productFromMap(rec.first); //conversione da map a note
-  }*/
-
   Future<List> getAll(Setting impostazioni) async {
     Database db = await _getDB();
     String order = impostazioni.ordinamento + " " + impostazioni.ascDesc;
@@ -177,7 +142,6 @@ class DBProdotti {
         break;
     }
 
-    //print(query);
     Database db = await _getDB();
     var recs = await db.rawQuery(query);
     var list = recs.isEmpty ? [] : recs.map((m) => productFromMap(m)).toList();
@@ -212,7 +176,6 @@ class DBProdotti {
       prod = Product();
       prod.barcode = barcode;
     }
-    // print("in fnct: ${prod.barcode}");
     return prod;
   }
 }

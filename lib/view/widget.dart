@@ -1,14 +1,11 @@
 //widget riutilizzabili in diverse schermate
 
-import 'package:Kambusapp/assets/constants.dart' as Constants;
 import 'package:Kambusapp/model/page_manager.dart';
 import 'package:Kambusapp/model/setting_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import '../common/colors.dart';
 import '../model/product_model.dart';
 import '../common/utils.dart' as utils;
-import 'package:expansion_tile_card/expansion_tile_card.dart';
 import '../DB/DB.dart';
 
 class ReusableWidget {

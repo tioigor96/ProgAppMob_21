@@ -1,4 +1,3 @@
-import 'package:Kambusapp/DB/db_setting.dart';
 import 'package:flutter/material.dart';
 
 class Setting {

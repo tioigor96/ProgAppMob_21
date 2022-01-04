@@ -1,7 +1,5 @@
 //definizione di prodotti
 
-import 'dart:ffi';
-import 'package:Kambusapp/model/setting_model.dart';
 import 'package:Kambusapp/model/setting_model.dart';
 import 'package:flutter/material.dart';
 

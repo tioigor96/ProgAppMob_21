@@ -1,7 +1,5 @@
 //schermata inserimento di un prodotto
 
-//TODO? Vogliamo fare in modo che una volta completato un field ci sia l'autofocus a quello successivo?
-
 import 'package:Kambusapp/DB/db.dart';
 import 'package:Kambusapp/model/page_manager.dart';
 import 'package:Kambusapp/model/product_model.dart';

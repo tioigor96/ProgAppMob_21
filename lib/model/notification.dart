@@ -1,5 +1,4 @@
 import 'package:flutter/src/material/time.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:timezone/src/date_time.dart';
@@ -22,10 +21,10 @@ class Notification {
     final String? timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
     tz.setLocalLocation(tz.getLocation(timeZoneName!));
 
-    final AndroidInitializationSettings initializationSettingsAndroid =
+    const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('app_icon');
 
-    final InitializationSettings initializationSettings =
+    const InitializationSettings initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,

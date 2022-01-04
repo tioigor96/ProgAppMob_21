@@ -6,8 +6,6 @@ import 'package:Kambusapp/model/setting_model.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import '../common/utils.dart' as utils;
-import '../model/product_model.dart';
 
 class DBSetting {
   late Database _settings;
