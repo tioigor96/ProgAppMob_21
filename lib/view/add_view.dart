@@ -1,23 +1,29 @@
 //schermata inserimento di un prodotto
 
 import 'package:Kambusapp/DB/db.dart';
+import 'package:Kambusapp/common/utils.dart';
 import 'package:Kambusapp/model/page_manager.dart';
 import 'package:Kambusapp/model/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:showcaseview/showcaseview.dart';
 import '../common/colors.dart';
 import 'widget.dart';
 import 'dart:async';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:intl/intl.dart';
 
+GlobalKey barcodeHint = new GlobalKey();
+
 class AddView extends StatelessWidget {
   GlobalKey<FormState> _formKey = new GlobalKey();
+  List<String> descrizione= ["Scansiona il barcode per memorizzare il prodotto. Potrai riutilizzarlo in seguito", "Scannerizza il barcode se hai già inserito questo prodotto in precedenza"];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ReusableWidget.getBackAppBar(),
+      appBar: ReusableWidget.getBackNoSearchAppBar(),
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
         child: SingleChildScrollView(
@@ -105,20 +111,31 @@ class AddView extends StatelessWidget {
                           double.parse(inValue);
                     },
                   ),
-                  TextFormField(
-                    decoration: InputDecoration(
-                        labelText: "BarCode", hintText: "8012345789"),
-                    initialValue: productModel.prodottoSelezionato == null
-                        ? null
-                        : productModel.prodottoSelezionato!.barcode,
-                    enabled: productModel.prodottoSelezionato!.id == -1
-                        ? true
-                        : false,
-                    textInputAction: TextInputAction.next,
-                    onTap: () => scanBarcodeNormal(),
-                    onChanged: (String inValue) {
-                      productModel.prodottoSelezionato!.barcode = inValue;
-                    },
+                  Showcase(
+                    key: barcodeHint,
+                    description: descrizione[(numeroAdd-1)%2],  //"Scansiona il barcode per memorizzare il prodotto. Potrai riutilizzarlo in seguito",
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.info, color: baseColor),
+                            onPressed: () {
+                              _showInfo(context);
+                            },
+                          ),
+                          labelText: "BarCode",
+                          hintText: "8012345789"),
+                      initialValue: productModel.prodottoSelezionato == null
+                          ? null
+                          : productModel.prodottoSelezionato!.barcode,
+                      enabled: productModel.prodottoSelezionato!.id == -1
+                          ? true
+                          : false,
+                      textInputAction: TextInputAction.next,
+                      onTap: () => scanBarcodeNormal(),
+                      onChanged: (String inValue) {
+                        productModel.prodottoSelezionato!.barcode = inValue;
+                      },
+                    ),
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
@@ -155,6 +172,13 @@ class AddView extends StatelessWidget {
       ),
     );
   }
+
+  Future<int> getApertura(context) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? c = prefs.getInt('counter');
+    return c!;
+  }
+
 
   Future<void> _selezionaData(BuildContext context) async {
     FocusScope.of(context).requestFocus(new FocusNode());
@@ -240,4 +264,38 @@ Future<void> scanBarcodeNormal() async {
   } on PlatformException {
     barcodeScanRes = 'Failed to get platform version.';
   }
+}
+
+Future<void> _showInfo(context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: true,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Come usare il barcode?'),
+        content: SingleChildScrollView(
+          child: ListBody(
+            children: const <Widget>[
+              Text(
+                'Quando inserisci per la prima volta un prodotto, scansiona il suo codice a barre!',
+                textAlign: TextAlign.justify,
+              ),
+              Text(
+                'In seguito, tutte le volte che vorrai inserire lo stesso prodotto, ti basterà inquadrare il barcode e i dati verranno compilati in automatico.',
+                textAlign: TextAlign.justify,
+              ),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

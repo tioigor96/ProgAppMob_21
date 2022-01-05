@@ -1,15 +1,21 @@
 //widget riutilizzabili in diverse schermate
 
+import 'package:Kambusapp/common/utils.dart';
 import 'package:Kambusapp/model/page_manager.dart';
 import 'package:Kambusapp/model/setting_model.dart';
 import 'package:flutter/material.dart';
+import 'package:showcaseview/showcaseview.dart';
 import '../common/colors.dart';
 import '../model/product_model.dart';
 import '../common/utils.dart' as utils;
 import '../DB/DB.dart';
 
+GlobalKey chiave = GlobalKey();
+
+
 class ReusableWidget {
   //App bar
+
   static getAppBar() {
     return AppBar(
       title: Text(manager.getAppName(),
@@ -89,12 +95,10 @@ class ReusableWidget {
                     },
                     value: 2,
                   )
-                ]
-        )
+                ])
       ],
     );
   }
-
 
   static getBackNoSearchAppBar() {
     return AppBar(
@@ -107,168 +111,7 @@ class ReusableWidget {
       title: Text(manager.getAppName(),
           style: TextStyle(
               color: Colors.white) //da commentare se voglio titolo nero
-      ),
-    );
-  }
-
-
-  static getExpansionProduct(p) {
-    return Column(
-      children: [
-        ExpansionTile(
-          title: getTitle(p),
-          subtitle: TextFormField(
-            enabled: false,
-            initialValue: p.quantita,
-            readOnly: true,
-            decoration: new InputDecoration(
-              border: InputBorder.none,
-              labelText: "Quantità",
-              labelStyle: TextStyle(color: Colors.grey),
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
           ),
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-              child: Column(
-                children: [
-                  TextFormField(
-                    enabled: false,
-                    initialValue: p.scadenza,
-                    readOnly: true,
-                    decoration: new InputDecoration(
-                      border: InputBorder.none,
-                      labelText: "Scadenza",
-                      labelStyle: TextStyle(color: Colors.grey),
-                    ),
-                  ),
-                  TextFormField(
-                    enabled: false,
-                    initialValue: p.marca == null ? " " : p.marca,
-                    readOnly: true,
-                    decoration: new InputDecoration(
-                      border: InputBorder.none,
-                      labelText: "Marca",
-                      labelStyle: TextStyle(color: Colors.grey),
-                    ),
-                  ),
-                  TextFormField(
-                    enabled: false,
-                    initialValue:
-                        p.prezzo == null ? " " : "€ " + p.prezzo.toString(),
-                    readOnly: true,
-                    decoration: new InputDecoration(
-                      border: InputBorder.none,
-                      labelText: "Prezzo",
-                      labelStyle: TextStyle(color: Colors.grey),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () {
-                            productModel.prodottoSelezionato = p;
-                            productModel.setStackIndex(1);
-                            manager.nuovaPagina(1);
-                          }),
-                      IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            productModel.eliminaProdotto(DBProdotti.dbProdotti, p.id);
-                            productModel.caricaProdotti(DBProdotti.dbProdotti);
-                          }),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  //pallino a destra
-  static getExpansionProduct2(p) {
-    return Column(
-      children: [
-        ExpansionTile(
-          title: getTitleBallRight(p),
-          controlAffinity: ListTileControlAffinity.leading,
-          subtitle: TextFormField(
-            enabled: false,
-            initialValue: p.quantita,
-            readOnly: true,
-            decoration: new InputDecoration(
-              border: InputBorder.none,
-              labelText: "Quantità",
-              labelStyle: TextStyle(color: baseColor),
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
-          ),
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(75, 0, 15, 0),
-              child: Column(
-                children: [
-                  TextFormField(
-                    enabled: false,
-                    initialValue: p.scadenza,
-                    readOnly: true,
-                    decoration: new InputDecoration(
-                      border: InputBorder.none,
-                      labelText: "Scadenza",
-                      labelStyle: TextStyle(color: baseColor),
-                    ),
-                  ),
-                  TextFormField(
-                    enabled: false,
-                    initialValue: p.marca == null ? " " : p.marca,
-                    readOnly: true,
-                    decoration: new InputDecoration(
-                      border: InputBorder.none,
-                      labelText: "Marca",
-                      labelStyle: TextStyle(color: baseColor),
-                    ),
-                  ),
-                  TextFormField(
-                    enabled: false,
-                    initialValue:
-                        p.prezzo == null ? " " : "€ " + p.prezzo.toString(),
-                    readOnly: true,
-                    decoration: new InputDecoration(
-                      border: InputBorder.none,
-                      labelText: "Prezzo",
-                      labelStyle: TextStyle(color: baseColor),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                          icon: Icon(Icons.edit),
-                          onPressed: () {
-                            productModel.prodottoSelezionato = p;
-                            productModel.setStackIndex(1);
-                            manager.nuovaPagina(1);
-                          }),
-                      IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            productModel.eliminaProdotto(DBProdotti.dbProdotti, p.id);
-                            productModel.caricaProdotti(DBProdotti.dbProdotti);
-                          }),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 
@@ -353,7 +196,8 @@ class ReusableWidget {
                         ),
                         TextButton(
                           onPressed: () {
-                            productModel.eliminaProdotto(DBProdotti.dbProdotti, p.id);
+                            productModel.eliminaProdotto(
+                                DBProdotti.dbProdotti, p.id);
                             productModel.caricaProdotti(DBProdotti.dbProdotti);
                           },
                           child: Column(
@@ -439,27 +283,32 @@ class ReusableWidget {
   static getTitleBallRight(Product p) {
     if ((DateTime.parse(p.scadenza).difference(DateTime.now()).inDays) + 1 <=
         impostazioni.notificaRossa) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(p.nome.capitalize()),
-          Padding(
-            padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-            child: Container(
-              // padding: EdgeInsets.fromLTRB(0, 200, 200, 0),
-              width: 20,
-              height: 20,
-              decoration: BoxDecoration(
-                color: thirdColor[700],
-                borderRadius: BorderRadius.all(Radius.circular(100)),
+      if (flag == 0) {
+        flag = 1;
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(p.nome.capitalize()),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: Showcase(
+                key: chiave,
+                description:
+                    "Segnala un prodotto in scadenza. Puoi modificare la segnalazione dalle impostazioni",
+                child: Container(
+                  // padding: EdgeInsets.fromLTRB(0, 200, 200, 0),
+                  width: 20,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color: thirdColor[700],
+                    borderRadius: BorderRadius.all(Radius.circular(100)),
+                  ),
+                ),
               ),
             ),
-          ),
-        ],
-      );
-    } else {
-      if ((DateTime.parse(p.scadenza).difference(DateTime.now()).inDays) + 1 <=
-          impostazioni.notificaGialla) {
+          ],
+        );
+      } else {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -467,16 +316,64 @@ class ReusableWidget {
             Padding(
               padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
               child: Container(
+                // padding: EdgeInsets.fromLTRB(0, 200, 200, 0),
                 width: 20,
                 height: 20,
                 decoration: BoxDecoration(
-                  color: secondColor[600],
+                  color: thirdColor[700],
                   borderRadius: BorderRadius.all(Radius.circular(100)),
                 ),
               ),
             ),
           ],
         );
+      }
+    } else {
+      if ((DateTime.parse(p.scadenza).difference(DateTime.now()).inDays) + 1 <=
+          impostazioni.notificaGialla) {
+        if (flag == 0) {
+          flag = 1;
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(p.nome.capitalize()),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                child: Showcase(
+                  key: chiave,
+                  description:
+                      "Segnala un prodotto in scadenza. Puoi modificare la segnalazione dalle impostazioni",
+                  child: Container(
+                    width: 20,
+                    height: 20,
+                    decoration: BoxDecoration(
+                      color: secondColor[600],
+                      borderRadius: BorderRadius.all(Radius.circular(100)),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        } else {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(p.nome.capitalize()),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                child: Container(
+                  width: 20,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color: secondColor[600],
+                    borderRadius: BorderRadius.all(Radius.circular(100)),
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
       } else {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -494,5 +391,4 @@ class ReusableWidget {
       }
     }
   }
-
 }

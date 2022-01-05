@@ -1,6 +1,9 @@
 import 'dart:io';
 
 Directory? docsDir;
+//int numeroAperture = 0;
+int numeroAdd = 0;
+int flag = 0;
 
 extension StringExtension on String {
   String capitalize() {

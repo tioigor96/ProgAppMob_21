@@ -2,12 +2,17 @@
  */
 
 import 'package:Kambusapp/DB/DB.dart';
+import 'package:Kambusapp/common/utils.dart';
 import 'package:Kambusapp/model/page_manager.dart';
 import 'package:Kambusapp/model/product_model.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:showcaseview/showcaseview.dart';
 import '../common/colors.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:Kambusapp/view/list_product_view.dart';
+
+import 'add_view.dart';
 
 class SearchView extends StatefulWidget {
   @override
@@ -109,7 +114,16 @@ class _SearchViewState extends State<SearchView> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
+          onPressed: () async{
+            SharedPreferences s = await SharedPreferences.getInstance();
+            int? add= s.getInt('add');
+            s.setInt('add', add! + 1);
+            print("add "+add.toString());
+            numeroAdd= add+1;
+            if(numeroAdd!<=2)
+            {
+              ShowCaseWidget.of(context)!.startShowCase([barcodeHint]);
+            }
             productModel.prodottoSelezionato = Product();
             productModel.prodottoSelezionato!.id = -1;
             productModel.setStackIndex(1);

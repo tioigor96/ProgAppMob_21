@@ -7,6 +7,8 @@ import 'package:Kambusapp/model/page_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:Kambusapp/model/product_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:showcaseview/showcaseview.dart';
 import '../common/utils.dart' as utils;
 import '../common/colors.dart';
 import 'widget.dart';
@@ -23,8 +25,35 @@ class ListProduct extends StatefulWidget {
 }
 
 class ListProductState extends State<ListProduct> {
+
+ /* @override
+  void initState()  {
+    super.initState();
+    //Start showcase view after current widget frames are drawn.
+     if(utils.flag==0)                                //togliere se problemi
+      {
+        WidgetsBinding.instance!.addPostFrameCallback((_) =>
+            ShowCaseWidget.of(context)!
+                .startShowCase([chiave]));
+        setFlag(1);
+      }
+  }*/
+
+  Future setFlag(int f) async
+  {
+    SharedPreferences s = await SharedPreferences.getInstance();
+    s.setInt('flag', f);
+  }
+
   @override
   Widget build(BuildContext context) {
+    if(utils.flag==0)                                //togliere se problemi
+        {
+      WidgetsBinding.instance!.addPostFrameCallback((_) =>
+          ShowCaseWidget.of(context)!
+              .startShowCase([chiave]));
+      setFlag(1);
+    }
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
