@@ -22,6 +22,7 @@ class AddView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("creo schermata add");
     return Scaffold(
       appBar: ReusableWidget.getBackNoSearchAppBar(),
       body: GestureDetector(

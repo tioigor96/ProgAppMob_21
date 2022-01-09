@@ -1,6 +1,5 @@
 //visualizzaizone lista di prodotti
 
-
 import 'package:Kambusapp/common/utils.dart';
 import 'package:Kambusapp/model/page_manager.dart';
 import 'package:Kambusapp/model/product_model.dart';
@@ -14,22 +13,31 @@ import 'add_view.dart';
 import 'widget.dart';
 
 class ProductsView extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ReusableWidget.getAppBar(),
       body: ListProduct(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async{
+        onPressed: () async {
           SharedPreferences s = await SharedPreferences.getInstance();
-          int? add= s.getInt('add');
+          int? add = s.getInt('add');
           s.setInt('add', add! + 1);
-          print("add "+add.toString());
-          numeroAdd= add+1;
-          if(numeroAdd!<=2)
-          {
-            ShowCaseWidget.of(context)!.startShowCase([barcodeHint]);
+          print("add " + add.toString());
+          numeroAdd = add + 1;
+          if (numeroAdd! <= 5) {
+            print("mostro showcase");
+            //ShowCaseWidget.of(context)!.startShowCase([barcodeHint]);
+            //ShowCaseWidget.of(context)!.startShowCase([barcodeHint]);
+            if (flag == 0) //togliere se problemi
+            {
+              print("showcase pallino");
+              WidgetsBinding.instance!.addPostFrameCallback((_) =>
+                  ShowCaseWidget.of(context)!
+                      .startShowCase([barcodeHint, chiave]));
+              //ShowCaseWidget.of(context)!.startShowCase([chiave]);
+              setFlag(1);
+            }
           }
           productModel.prodottoSelezionato = Product();
           productModel.prodottoSelezionato!.id = -1;
@@ -41,5 +49,10 @@ class ProductsView extends StatelessWidget {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  Future setFlag(int f) async {
+    SharedPreferences s = await SharedPreferences.getInstance();
+    s.setInt('flag', f);
   }
 }

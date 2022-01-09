@@ -4,6 +4,7 @@ Per cambiare tipo di visualizzazione richiamare un expansionProduct diverso
 
 import 'package:Kambusapp/DB/db.dart';
 import 'package:Kambusapp/model/page_manager.dart';
+import 'package:Kambusapp/view/add_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:Kambusapp/model/product_model.dart';
@@ -25,8 +26,7 @@ class ListProduct extends StatefulWidget {
 }
 
 class ListProductState extends State<ListProduct> {
-
- /* @override
+  /* @override
   void initState()  {
     super.initState();
     //Start showcase view after current widget frames are drawn.
@@ -39,21 +39,21 @@ class ListProductState extends State<ListProduct> {
       }
   }*/
 
-  Future setFlag(int f) async
-  {
-    SharedPreferences s = await SharedPreferences.getInstance();
-    s.setInt('flag', f);
-  }
+  // Future setFlag(int f) async {
+  //   SharedPreferences s = await SharedPreferences.getInstance();
+  //   s.setInt('flag', f);
+  // }
 
   @override
   Widget build(BuildContext context) {
-    if(utils.flag==0)                                //togliere se problemi
-        {
-      WidgetsBinding.instance!.addPostFrameCallback((_) =>
-          ShowCaseWidget.of(context)!
-              .startShowCase([chiave]));
-      setFlag(1);
-    }
+    // if (utils.flag == 0) //togliere se problemi
+    // {
+    //   print("showcase pallino");
+    //     WidgetsBinding.instance!.addPostFrameCallback(
+    //         (_) => ShowCaseWidget.of(context)!.startShowCase([barcodeHint, chiave]));
+    //   //ShowCaseWidget.of(context)!.startShowCase([chiave]);
+    //   setFlag(1);
+    // }
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,

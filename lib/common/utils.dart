@@ -3,7 +3,7 @@ import 'dart:io';
 Directory? docsDir;
 //int numeroAperture = 0;
 int numeroAdd = 0;
-int flag = 0;
+int flag = 1;
 
 extension StringExtension on String {
   String capitalize() {
