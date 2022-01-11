@@ -5,6 +5,7 @@ import 'package:Kambusapp/DB/DB.dart';
 import 'package:Kambusapp/common/utils.dart';
 import 'package:Kambusapp/model/page_manager.dart';
 import 'package:Kambusapp/model/product_model.dart';
+import 'package:Kambusapp/view/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -36,7 +37,6 @@ class _SearchViewState extends State<SearchView> {
                   FocusScope.of(context).requestFocus(new FocusNode());
                   productModel.caricaProdotti(DBProdotti.dbProdotti);
                   productModel.setStackIndex(manager.precedente());
-
                 }),
             title: Container(
               width: double.infinity,
@@ -52,8 +52,9 @@ class _SearchViewState extends State<SearchView> {
                   decoration: InputDecoration(
                       suffixIcon: IconButton(
                         icon: Icon(Icons.search, color: Colors.white),
-                        onPressed: () async{
-                          var prod = await DBProdotti.dbProdotti.searchFromDB(msgController.text, selected);
+                        onPressed: () async {
+                          var prod = await DBProdotti.dbProdotti
+                              .searchFromDB(msgController.text, selected);
                           productModel.setProdotti(prod);
                         },
                       ),
@@ -114,15 +115,30 @@ class _SearchViewState extends State<SearchView> {
           ],
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () async{
+          onPressed: () async {
             SharedPreferences s = await SharedPreferences.getInstance();
-            int? add= s.getInt('add');
+            int? add = s.getInt('add');
             s.setInt('add', add! + 1);
-            print("add "+add.toString());
-            numeroAdd= add+1;
-            if(numeroAdd!<=2)
-            {
-              ShowCaseWidget.of(context)!.startShowCase([barcodeHint]);
+            print("add " + add.toString());
+            numeroAdd = add + 1;
+            if (numeroAdd! <= 2) {
+              print("mostro showcase");
+              //ShowCaseWidget.of(context)!.startShowCase([barcodeHint]);
+              //ShowCaseWidget.of(context)!.startShowCase([barcodeHint]);
+              if (flag == 0) //togliere se problemi
+              {
+                print("showcase pallino");
+                WidgetsBinding.instance!.addPostFrameCallback((_) =>
+                    ShowCaseWidget.of(context)!
+                        .startShowCase([barcodeHint, chiave]));
+                //ShowCaseWidget.of(context)!.startShowCase([chiave]);
+                setFlag(1);
+              }
+              else{
+                WidgetsBinding.instance!.addPostFrameCallback((_) =>
+                    ShowCaseWidget.of(context)!
+                        .startShowCase([barcodeHint]));
+              }
             }
             productModel.prodottoSelezionato = Product();
             productModel.prodottoSelezionato!.id = -1;
@@ -135,5 +151,10 @@ class _SearchViewState extends State<SearchView> {
         ),
       ),
     );
+  }
+
+  Future setFlag(int f) async {
+    SharedPreferences s = await SharedPreferences.getInstance();
+    s.setInt('flag', f);
   }
 }

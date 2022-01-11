@@ -13,7 +13,7 @@ class ArrowBack extends StatelessWidget {
         productModel.caricaProdotti(DBProdotti.dbProdotti);
         productModel.setStackIndex(manager.precedente());
         print(manager.page.length.toString());
-        if(manager.page.length<1)
+        if(manager.page.length<=1)
           return true;
         else
           return false;

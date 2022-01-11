@@ -1,4 +1,5 @@
 import 'package:Kambusapp/common/utils.dart';
+import 'package:Kambusapp/view/arrow_back.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -10,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  manager.nuovaPagina(0);
   SharedPreferences s = await SharedPreferences.getInstance();
   print("flag " + s.get('flag').toString());
   if (s.get('flag') == null) {
@@ -53,7 +55,7 @@ class AppMobile extends StatelessWidget {
           onStart: (index, key) {},
           onComplete: (index, key) {},
           blurValue: 1,
-          builder: Builder(builder: (context) => ProductsChange()),
+          builder: Builder(builder: (context) => ArrowBack()),
           autoPlay: false,
           autoPlayDelay: Duration(seconds: 3),
           autoPlayLockEnable: false,

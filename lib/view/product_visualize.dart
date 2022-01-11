@@ -25,7 +25,7 @@ class ProductsView extends StatelessWidget {
           s.setInt('add', add! + 1);
           print("add " + add.toString());
           numeroAdd = add + 1;
-          if (numeroAdd! <= 5) {
+          if (numeroAdd! <= 2) {
             print("mostro showcase");
             //ShowCaseWidget.of(context)!.startShowCase([barcodeHint]);
             //ShowCaseWidget.of(context)!.startShowCase([barcodeHint]);
@@ -37,6 +37,11 @@ class ProductsView extends StatelessWidget {
                       .startShowCase([barcodeHint, chiave]));
               //ShowCaseWidget.of(context)!.startShowCase([chiave]);
               setFlag(1);
+            }
+            else{
+              WidgetsBinding.instance!.addPostFrameCallback((_) =>
+                  ShowCaseWidget.of(context)!
+                      .startShowCase([barcodeHint]));
             }
           }
           productModel.prodottoSelezionato = Product();

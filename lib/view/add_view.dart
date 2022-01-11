@@ -118,8 +118,12 @@ class AddView extends StatelessWidget {
                     child: TextFormField(
                       decoration: InputDecoration(
                           suffixIcon: IconButton(
-                            icon: Icon(Icons.info, color: baseColor),
+                            icon: Icon(Icons.info,
+                              color: productModel.prodottoSelezionato!.id == -1
+                                ? baseColor
+                                : Colors.grey,),
                             onPressed: () {
+                              if(productModel.prodottoSelezionato!.id == -1)
                               _showInfo(context);
                             },
                           ),
