@@ -41,7 +41,7 @@ class ProductModel extends ChangeNotifier {
   Product? prodottoSelezionato; //prodotto da modificare o visualizzare
 
   ProductModel() {
-    prodottoSelezionato = new Product();
+    prodottoSelezionato = Product();
   }
 
   void setStackIndex(int inStackIndex) {
@@ -65,9 +65,9 @@ class ProductModel extends ChangeNotifier {
   }
 
   void eliminaMultiplo(dynamic inDatabaseWorker) {
-    for (int i = 0; i < this.listaProdotti.length; i++) {
-      if (this.listaProdotti.elementAt(i).selezionato) {
-        eliminaProdotto(inDatabaseWorker, this.listaProdotti.elementAt(i).id);
+    for (int i = 0; i < listaProdotti.length; i++) {
+      if (listaProdotti.elementAt(i).selezionato) {
+        eliminaProdotto(inDatabaseWorker, listaProdotti.elementAt(i).id);
       }
     }
   }

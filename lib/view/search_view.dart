@@ -16,6 +16,8 @@ import 'package:Kambusapp/view/list_product_view.dart';
 import 'add_view.dart';
 
 class SearchView extends StatefulWidget {
+  const SearchView({Key? key}) : super(key: key);
+
   @override
   State<SearchView> createState() => _SearchViewState();
 }
@@ -27,14 +29,14 @@ class _SearchViewState extends State<SearchView> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
+      onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
       child: Scaffold(
         appBar: AppBar(
             leading: IconButton(
-                icon: Icon(Icons.arrow_back),
+                icon: const Icon(Icons.arrow_back),
                 onPressed: () {
                   msgController.clear();
-                  FocusScope.of(context).requestFocus(new FocusNode());
+                  FocusScope.of(context).requestFocus(FocusNode());
                   productModel.caricaProdotti(DBProdotti.dbProdotti);
                   productModel.setStackIndex(manager.precedente());
                 }),
@@ -47,11 +49,11 @@ class _SearchViewState extends State<SearchView> {
               child: Center(
                 child: TextField(
                   controller: msgController,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                   //da commentare se voglio scrivere in nero
                   decoration: InputDecoration(
                       suffixIcon: IconButton(
-                        icon: Icon(Icons.search, color: Colors.white),
+                        icon: const Icon(Icons.search, color: Colors.white),
                         onPressed: () async {
                           var prod = await DBProdotti.dbProdotti
                               .searchFromDB(msgController.text, selected);
@@ -59,7 +61,7 @@ class _SearchViewState extends State<SearchView> {
                         },
                       ),
                       hintText: 'Cerca...',
-                      hintStyle: TextStyle(color: Colors.white),
+                      hintStyle: const TextStyle(color: Colors.white),
                       border: InputBorder.none),
                 ),
               ),
@@ -67,7 +69,7 @@ class _SearchViewState extends State<SearchView> {
         body: Column(
           children: [
             Container(
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               color: baseColor,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -84,7 +86,7 @@ class _SearchViewState extends State<SearchView> {
                         });
                       }),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                     child: GFButton(
                         color: selected == 1 ? Colors.white54 : Colors.white,
                         shape: GFButtonShape.pills,
@@ -111,7 +113,7 @@ class _SearchViewState extends State<SearchView> {
                 ],
               ),
             ),
-            Expanded(child: ListProduct()),
+            const Expanded(child: ListProduct()),
           ],
         ),
         floatingActionButton: FloatingActionButton(
@@ -119,25 +121,23 @@ class _SearchViewState extends State<SearchView> {
             SharedPreferences s = await SharedPreferences.getInstance();
             int? add = s.getInt('add');
             s.setInt('add', add! + 1);
-            print("add " + add.toString());
+            // print("add " + add.toString());
             numeroAdd = add + 1;
-            if (numeroAdd! <= 2) {
-              print("mostro showcase");
+            if (numeroAdd <= 2) {
+              // print("mostro showcase");
               //ShowCaseWidget.of(context)!.startShowCase([barcodeHint]);
               //ShowCaseWidget.of(context)!.startShowCase([barcodeHint]);
               if (flag == 0) //togliere se problemi
               {
-                print("showcase pallino");
+                // print("showcase pallino");
                 WidgetsBinding.instance!.addPostFrameCallback((_) =>
                     ShowCaseWidget.of(context)!
                         .startShowCase([barcodeHint, chiave]));
                 //ShowCaseWidget.of(context)!.startShowCase([chiave]);
                 setFlag(1);
-              }
-              else{
+              } else {
                 WidgetsBinding.instance!.addPostFrameCallback((_) =>
-                    ShowCaseWidget.of(context)!
-                        .startShowCase([barcodeHint]));
+                    ShowCaseWidget.of(context)!.startShowCase([barcodeHint]));
               }
             }
             productModel.prodottoSelezionato = Product();

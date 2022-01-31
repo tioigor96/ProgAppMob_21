@@ -1,36 +1,33 @@
 //Schermata impostazioni
 
-import 'package:Kambusapp/DB/db.dart';
 import 'package:Kambusapp/DB/db_setting.dart';
 import 'package:Kambusapp/common/utils.dart';
 import 'package:Kambusapp/model/notification.dart';
 import 'package:Kambusapp/model/setting_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:showcaseview/showcaseview.dart';
 import '../common/colors.dart';
 import 'widget.dart';
-import '../common/utils.dart' as utils;
 
 class SettingsView extends StatefulWidget {
+  const SettingsView({Key? key}) : super(key: key);
+
   @override
   State<SettingsView> createState() => _SettingsViewState();
 }
 
 class _SettingsViewState extends State<SettingsView> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: ReusableWidget.getBackNoSearchAppBar(),
       body: Container(
-        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
         child: Column(
           children: [
             SwitchListTile(
               activeColor: baseColor,
-              title: Text('Notifiche'),
-              subtitle: Text(
+              title: const Text('Notifiche'),
+              subtitle: const Text(
                   'Attiva o disattiva le notifiche per i prodotti in scadenza'),
               secondary: Icon(Icons.notifications, color: baseColor),
               onChanged: (value) {
@@ -48,10 +45,10 @@ class _SettingsViewState extends State<SettingsView> {
               },
               value: intToBool(impostazioni.notifiche),
             ),
-            Divider(),
+            const Divider(),
             ListTile(
               leading: Container(
-                child: Icon(Icons.access_time),
+                child: const Icon(Icons.access_time),
                 width: 20,
                 height: 20,
               ),
@@ -94,10 +91,10 @@ class _SettingsViewState extends State<SettingsView> {
                   height: 20,
                   decoration: BoxDecoration(
                     color: secondColor[600],
-                    borderRadius: BorderRadius.all(Radius.circular(100)),
+                    borderRadius: const BorderRadius.all(Radius.circular(100)),
                   ),
                 ),
-                title: Text("Preavviso di giorni"),
+                title: const Text("Preavviso di giorni"),
                 subtitle:
                     Text("Il pallino giallo indica il prodotto che scadrà tra"
                         " ${impostazioni.notificaGialla} giorni"),
@@ -127,10 +124,10 @@ class _SettingsViewState extends State<SettingsView> {
                   height: 20,
                   decoration: BoxDecoration(
                     color: thirdColor[700],
-                    borderRadius: BorderRadius.all(Radius.circular(100)),
+                    borderRadius: const BorderRadius.all(Radius.circular(100)),
                   ),
                 ),
-                title: Text("Preavviso di giorni"),
+                title: const Text("Preavviso di giorni"),
                 subtitle: Text(
                     "Il pallino rosso indica il prodotto che scadrà tra ${impostazioni.notificaRossa} giorni"),
                 trailing: DropdownButton<int>(
@@ -162,8 +159,8 @@ class _SettingsViewState extends State<SettingsView> {
       notification.scheduleNotification(impostazioni.time);
 
   void _selezionaData(BuildContext context) async {
-    FocusScope.of(context).requestFocus(new FocusNode());
-    print("${impostazioni.time}");
+    FocusScope.of(context).requestFocus(FocusNode());
+    // print("${impostazioni.time}");
     final TimeOfDay? newTime = await showTimePicker(
         context: context,
         initialTime: impostazioni.time,

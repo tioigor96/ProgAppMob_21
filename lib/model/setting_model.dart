@@ -6,7 +6,7 @@ class Setting {
   int notificaRossa = 0;
   String ordinamento = "nome";
   String ascDesc = "asc";
-  TimeOfDay time = TimeOfDay(hour: 9, minute: 00);
+  TimeOfDay time = const TimeOfDay(hour: 9, minute: 00);
 
   void aggiorna(dynamic inDatabaseWorker) async {
     await inDatabaseWorker.get().then((result) {
@@ -20,4 +20,4 @@ class Setting {
   }
 }
 
-Setting impostazioni = new Setting();
+Setting impostazioni = Setting();

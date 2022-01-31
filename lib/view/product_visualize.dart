@@ -13,6 +13,8 @@ import 'add_view.dart';
 import 'widget.dart';
 
 class ProductsView extends StatelessWidget {
+  const ProductsView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,25 +25,23 @@ class ProductsView extends StatelessWidget {
           SharedPreferences s = await SharedPreferences.getInstance();
           int? add = s.getInt('add');
           s.setInt('add', add! + 1);
-          print("add " + add.toString());
+          // print("add " + add.toString());
           numeroAdd = add + 1;
-          if (numeroAdd! <= 2) {
-            print("mostro showcase");
+          if (numeroAdd <= 2) {
+            // print("mostro showcase");
             //ShowCaseWidget.of(context)!.startShowCase([barcodeHint]);
             //ShowCaseWidget.of(context)!.startShowCase([barcodeHint]);
             if (flag == 0) //togliere se problemi
             {
-              print("showcase pallino");
+              // print("showcase pallino");
               WidgetsBinding.instance!.addPostFrameCallback((_) =>
                   ShowCaseWidget.of(context)!
                       .startShowCase([barcodeHint, chiave]));
               //ShowCaseWidget.of(context)!.startShowCase([chiave]);
               setFlag(1);
-            }
-            else{
+            } else {
               WidgetsBinding.instance!.addPostFrameCallback((_) =>
-                  ShowCaseWidget.of(context)!
-                      .startShowCase([barcodeHint]));
+                  ShowCaseWidget.of(context)!.startShowCase([barcodeHint]));
             }
           }
           productModel.prodottoSelezionato = Product();

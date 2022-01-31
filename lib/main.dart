@@ -13,15 +13,15 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   manager.nuovaPagina(0);
   SharedPreferences s = await SharedPreferences.getInstance();
-  print("flag " + s.get('flag').toString());
+  // print("flag " + s.get('flag').toString());
   if (s.get('flag') == null) {
-    print("null");
+    // print("null");
     s.setInt('flag', 0);
     s.setInt('add', 0);
     flag = 0;
     numeroAdd = 0;
   }
-  print("flag  " + flag.toString());
+  // print("flag  " + flag.toString());
   runApp(AppMobile());
 }
 
@@ -40,7 +40,7 @@ class AppMobile extends StatelessWidget {
       title: manager.getAppName(),
       theme: ThemeData(
         primarySwatch: baseColor,
-        appBarTheme: AppBarTheme(
+        appBarTheme: const AppBarTheme(
           iconTheme: IconThemeData(color: Colors.white),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
@@ -57,7 +57,7 @@ class AppMobile extends StatelessWidget {
           blurValue: 1,
           builder: Builder(builder: (context) => ArrowBack()),
           autoPlay: false,
-          autoPlayDelay: Duration(seconds: 3),
+          autoPlayDelay: const Duration(seconds: 3),
           autoPlayLockEnable: false,
         ),
       ),

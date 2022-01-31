@@ -88,9 +88,7 @@ class DBProdotti {
     var val = await db.rawQuery(
         "SELECT MAX(id) + 1 AS id FROM prodotti"); //rawquery per cassaggio diretto di query come stringa
     var id = val.first["id"]; //first perchè ritorna tutti gli id massimi
-    if (id == null) {
-      id = 1;
-    }
+    id ??= 1;
     if (nuovo.barcode != null && nuovo.barcode!.length >= 10) {
       Product p = await get_from_barcode(nuovo.barcode
           .toString()); //vedo se devo mostrare che aggiorno o cosa!

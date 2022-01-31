@@ -4,12 +4,8 @@ Per cambiare tipo di visualizzazione richiamare un expansionProduct diverso
 
 import 'package:Kambusapp/DB/db.dart';
 import 'package:Kambusapp/model/page_manager.dart';
-import 'package:Kambusapp/view/add_view.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:Kambusapp/model/product_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:showcaseview/showcaseview.dart';
 import '../common/utils.dart' as utils;
 import '../common/colors.dart';
 import 'widget.dart';
@@ -96,7 +92,7 @@ class ListProductState extends State<ListProduct> {
             color: thirdColor,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: [
+              children: const [
                 Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                     child: Icon(Icons.delete, color: Colors.white)),
@@ -114,7 +110,7 @@ class ListProductState extends State<ListProduct> {
             alignment: Alignment.centerRight,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [
+              children: const [
                 Text("Modifica",
                     style: TextStyle(
                         fontSize: 16,
@@ -135,7 +131,7 @@ class ListProductState extends State<ListProduct> {
   }
 
   void elimina(p) async {
-    print("elimino " + p.nome);
+    // print("elimino " + p.nome);
     await DBProdotti.dbProdotti.delete(p.id);
     productModel.caricaProdotti(DBProdotti.dbProdotti);
   }

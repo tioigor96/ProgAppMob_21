@@ -14,22 +14,25 @@ import 'dart:async';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:intl/intl.dart';
 
-GlobalKey barcodeHint = new GlobalKey();
+GlobalKey barcodeHint = GlobalKey();
 
 class AddView extends StatelessWidget {
-  GlobalKey<FormState> _formKey = new GlobalKey();
-  List<String> descrizione= ["Scansiona il barcode per memorizzare il prodotto. Potrai riutilizzarlo in seguito", "Scannerizza il barcode se hai già inserito questo prodotto in precedenza"];
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  List<String> descrizione = [
+    "Scansiona il barcode per memorizzare il prodotto. Potrai riutilizzarlo in seguito",
+    "Scannerizza il barcode se hai già inserito questo prodotto in precedenza"
+  ];
 
   @override
   Widget build(BuildContext context) {
-    print("creo schermata add");
+    // print("creo schermata add");
     return Scaffold(
       appBar: ReusableWidget.getBackNoSearchAppBar(),
       body: GestureDetector(
-        onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
+        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20.0),
             child: Form(
               key: _formKey,
               child: Column(
@@ -37,12 +40,12 @@ class AddView extends StatelessWidget {
                 children: [
                   TextFormField(
                     decoration:
-                        InputDecoration(labelText: "Nome", hintText: "Pane"),
+                    const InputDecoration(labelText: "Nome", hintText: "Pane"),
                     initialValue: productModel.prodottoSelezionato == null
                         ? null
                         : productModel.prodottoSelezionato!.nome,
                     validator: (String? inValue) {
-                      if (inValue!.length == 0) {
+                      if (inValue!.isEmpty) {
                         return "Inserire nome";
                       }
                       return null;
@@ -53,14 +56,14 @@ class AddView extends StatelessWidget {
                     },
                   ),
                   TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         labelText: "Quantità", hintText: "100g"),
                     initialValue: productModel.prodottoSelezionato == null
                         ? null
                         : productModel.prodottoSelezionato!.quantita,
                     textInputAction: TextInputAction.next,
                     validator: (String? inValue) {
-                      if (inValue!.length == 0) {
+                      if (inValue!.isEmpty) {
                         return "Inserire quantità";
                       }
                       return null;
@@ -74,14 +77,14 @@ class AddView extends StatelessWidget {
                         productModel.prodottoSelezionato!.scadenza.toString()),
                     onTap: () => _selezionaData(context),
                     textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(labelText: "Scadenza"),
+                    decoration: const InputDecoration(labelText: "Scadenza"),
                     initialValue: productModel.prodottoSelezionato!.scadenza,
                     validator: (String? inValue) {
-                      if (inValue!.length == 0) {
+                      if (inValue!.isEmpty) {
                         return "Inserire scadenza";
                       }
                       if (DateTime.parse(
-                              productModel.prodottoSelezionato!.scadenza)
+                          productModel.prodottoSelezionato!.scadenza)
                           .isBefore(DateTime.now())) {
                         return "Prodotto già scaduto! Verificare la data inserita";
                       }
@@ -89,7 +92,7 @@ class AddView extends StatelessWidget {
                     },
                   ),
                   TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         labelText: "Marca", hintText: "Kambusa Industries"),
                     initialValue: productModel.prodottoSelezionato == null
                         ? null
@@ -102,7 +105,7 @@ class AddView extends StatelessWidget {
                   TextFormField(
                     keyboardType: TextInputType.number,
                     decoration:
-                        InputDecoration(labelText: "Prezzo", hintText: "1.30"),
+                    const InputDecoration(labelText: "Prezzo", hintText: "1.30"),
                     initialValue: productModel.prodottoSelezionato == null
                         ? null
                         : productModel.prodottoSelezionato!.prezzoToString(),
@@ -114,17 +117,19 @@ class AddView extends StatelessWidget {
                   ),
                   Showcase(
                     key: barcodeHint,
-                    description: descrizione[(numeroAdd-1)%2],  //"Scansiona il barcode per memorizzare il prodotto. Potrai riutilizzarlo in seguito",
+                    description: descrizione[(numeroAdd - 1) % 2],
+                    //"Scansiona il barcode per memorizzare il prodotto. Potrai riutilizzarlo in seguito",
                     child: TextFormField(
                       decoration: InputDecoration(
                           suffixIcon: IconButton(
                             icon: Icon(Icons.info,
                               color: productModel.prodottoSelezionato!.id == -1
-                                ? baseColor
-                                : Colors.grey,),
+                                  ? baseColor
+                                  : Colors.grey,),
                             onPressed: () {
-                              if(productModel.prodottoSelezionato!.id == -1)
-                              _showInfo(context);
+                              if (productModel.prodottoSelezionato!.id == -1) {
+                                _showInfo(context);
+                              }
                             },
                           ),
                           labelText: "BarCode",
@@ -143,7 +148,7 @@ class AddView extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -152,13 +157,13 @@ class AddView extends StatelessWidget {
                             //torno a visualizzazione prodotti
                             productModel.setStackIndex(manager.precedente());
                           },
-                          child: Text("Annulla"),
+                          child: const Text("Annulla"),
                           style: ElevatedButton.styleFrom(
                             primary: secondColor[1],
                           ),
                         ),
                         ElevatedButton(
-                            child: Text("Conferma"),
+                            child: const Text("Conferma"),
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 _save(context);
@@ -178,7 +183,7 @@ class AddView extends StatelessWidget {
     );
   }
 
-  Future<int> getApertura(context) async{
+  Future<int> getApertura(context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? c = prefs.getInt('counter');
     return c!;
@@ -186,7 +191,7 @@ class AddView extends StatelessWidget {
 
 
   Future<void> _selezionaData(BuildContext context) async {
-    FocusScope.of(context).requestFocus(new FocusNode());
+    FocusScope.of(context).requestFocus(FocusNode());
     DateTime? selectedDate = await showDatePicker(
         context: context,
         initialDate: DateUtils.addDaysToDate(DateTime.now(), 1),
@@ -196,14 +201,14 @@ class AddView extends StatelessWidget {
         builder: (BuildContext context, Widget? child) {
           return Theme(
             data: ThemeData(
-              textTheme: TextTheme(
+              textTheme: const TextTheme(
                 subtitle1: TextStyle(color: Colors.white),
               ),
               colorScheme: ColorScheme.light(
                 primary: baseColor,
               ),
             ),
-            child: child ?? Text(""),
+            child: child ?? const Text(""),
           );
         });
     productModel.prodottoSelezionato!.scadenza =
@@ -215,15 +220,16 @@ class AddView extends StatelessWidget {
 void _save(context) async {
   if (productModel.prodottoSelezionato!.id == -1) {
     bool snackbar =
-        await DBProdotti.dbProdotti.create(productModel.prodottoSelezionato!);
+    await DBProdotti.dbProdotti.create(productModel.prodottoSelezionato!);
     if (snackbar) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-            "Prodotto ${productModel.prodottoSelezionato!.nome} aggiunto e aggiornato correttamente! 🤙"),
+            "Prodotto ${productModel.prodottoSelezionato!
+                .nome} aggiunto e aggiornato correttamente! 🤙"),
         behavior: SnackBarBehavior.floating,
       ));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Prodotto aggiunto correttamente! 👌"),
         behavior: SnackBarBehavior.floating,
       ));
@@ -232,9 +238,9 @@ void _save(context) async {
     return;
   }
 //qui sto modificando, prima esco per forza!
-  print("modifico");
+//   print("modifico");
   await DBProdotti.dbProdotti.update(productModel.prodottoSelezionato!);
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
     content: Text("Prodotto salvato correttamente! 🤟"),
     behavior: SnackBarBehavior.floating,
   ));

@@ -51,14 +51,14 @@ class DBSetting {
         hour: int.parse(time.split(":")[0]),
         minute: int.parse(time.split(":")[1]));
 
-    print("stampo impostazioni: " +
-        impostazioni.notifiche.toString() +
-        " " +
-        impostazioni.notificaGialla.toString() +
-        " " +
-        impostazioni.notificaRossa.toString() +
-        " " +
-        impostazioni.time.toString());
+    // print("stampo impostazioni: " +
+    //     impostazioni.notifiche.toString() +
+    //     " " +
+    //     impostazioni.notificaGialla.toString() +
+    //     " " +
+    //     impostazioni.notificaRossa.toString() +
+    //     " " +
+    //     impostazioni.time.toString());
     return impostazioni;
   }
 

@@ -15,13 +15,13 @@ import '../view/settings_view.dart';
 import '../DB/db.dart';
 
 class ProductsChange extends StatelessWidget {
-  ProductsChange() {
-     impostazioni.aggiorna(DBSetting.dbSettings);             //info notifiche
-     print(impostazioni.notificaGialla);
-     productModel.caricaProdotti(DBProdotti.dbProdotti);     //per avere lista di prodotti
-     manager.nuovaPagina(0);
+  ProductsChange({Key? key}) : super(key: key) {
+    impostazioni.aggiorna(DBSetting.dbSettings); //info notifiche
+    // print(impostazioni.notificaGialla);
+    productModel
+        .caricaProdotti(DBProdotti.dbProdotti); //per avere lista di prodotti
+    manager.nuovaPagina(0);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,14 @@ class ProductsChange extends StatelessWidget {
           return IndexedStack(
             //permette di visualizzare solo uno dei figli in base a index
             index: productModel.stackIndex,
-            children: [ProductsView(), AddView(), SearchView(), SettingsView(), OrderView(), MultipleDelete()],
+            children: [
+              ProductsView(),
+              AddView(),
+              SearchView(),
+              SettingsView(),
+              OrderView(),
+              MultipleDelete()
+            ],
           );
         },
       ),

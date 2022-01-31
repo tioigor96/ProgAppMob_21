@@ -7,27 +7,26 @@ int flag = 1;
 
 extension StringExtension on String {
   String capitalize() {
-    if(this.length>0) {
-      return "${this[0].toUpperCase()}${this.substring(1)}";
-    }
-    else {
+    if (length > 0) {
+      return "${this[0].toUpperCase()}${substring(1)}";
+    } else {
       return this;
     }
   }
 }
 
-int BoolToInt(bool b)
-{
-  if(b)
+int BoolToInt(bool b) {
+  if (b) {
     return 1;
-  else
+  } else {
     return 0;
+  }
 }
 
-bool intToBool(int i)
-{
-  if(i==1)
+bool intToBool(int i) {
+  if (i == 1) {
     return true;
-  else
+  } else {
     return false;
+  }
 }

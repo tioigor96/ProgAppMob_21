@@ -35,25 +35,28 @@ class Notification {
         DateTime.now().day, time.hour, time.minute);
 
     if (!DateTime.now().isBefore(start)) {
-      start.add(Duration(days: 1));
+      start.add(const Duration(days: 1));
     }
 
-    print("$start");
+    // print("$start");
 
     AndroidAlarmManager.periodic(
-            Duration(hours: 24), notificationId, showNotification,
+            const Duration(hours: 24), notificationId, showNotification,
             exact: true,
             rescheduleOnReboot: true,
             allowWhileIdle: true,
             wakeup: true,
             startAt: start)
-        .then((value) => print("scheduled: $value"));
+        .then((value) {
+      // print("scheduled: $value");
+    });
     // _showNotification();
   }
 
   void deleteNotification() async {
-    AndroidAlarmManager.cancel(notificationId)
-        .then((value) => print("CANCEL: $value"));
+    AndroidAlarmManager.cancel(notificationId).then((value) {
+      // print("CANCEL: $value");
+    });
   }
 
   static void showNotification() async {
@@ -63,11 +66,11 @@ class Notification {
     int nearExpiration = await DBProdotti.dbProdotti.nearExpiration();
     int expired = await DBProdotti.dbProdotti.expired();
 
-    String text = "Hai ${nearExpiration} " +
+    String text = "Hai $nearExpiration " +
         (nearExpiration == 1 ? "prodotto " : "prodotti ") +
         "in scadenza";
     text += expired > 0
-        ? " e ${expired} " +
+        ? " e $expired " +
             (nearExpiration == 1 ? "prodotto " : "prodotti ") +
             " scaduti! 😱"
         : "";
