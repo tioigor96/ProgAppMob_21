@@ -34,13 +34,13 @@ class ProductsView extends StatelessWidget {
             if (flag == 0) //togliere se problemi
             {
               // print("showcase pallino");
-              WidgetsBinding.instance!.addPostFrameCallback((_) =>
+              WidgetsBinding.instance.addPostFrameCallback((_) =>
                   ShowCaseWidget.of(context)!
                       .startShowCase([barcodeHint, chiave]));
               //ShowCaseWidget.of(context)!.startShowCase([chiave]);
               setFlag(1);
             } else {
-              WidgetsBinding.instance!.addPostFrameCallback((_) =>
+              WidgetsBinding.instance.addPostFrameCallback((_) =>
                   ShowCaseWidget.of(context)!.startShowCase([barcodeHint]));
             }
           }
