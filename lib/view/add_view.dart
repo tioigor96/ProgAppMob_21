@@ -18,6 +18,7 @@ GlobalKey barcodeHint = GlobalKey();
 
 class AddView extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey();
+
   List<String> descrizione = [
     "Scansiona il barcode per memorizzare il prodotto. Potrai riutilizzarlo in seguito",
     "Scannerizza il barcode se hai già inserito questo prodotto in precedenza"
@@ -39,8 +40,8 @@ class AddView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   TextFormField(
-                    decoration:
-                    const InputDecoration(labelText: "Nome", hintText: "Pane"),
+                    decoration: const InputDecoration(
+                        labelText: "Nome", hintText: "Pane"),
                     initialValue: productModel.prodottoSelezionato == null
                         ? null
                         : productModel.prodottoSelezionato!.nome,
@@ -84,7 +85,7 @@ class AddView extends StatelessWidget {
                         return "Inserire scadenza";
                       }
                       if (DateTime.parse(
-                          productModel.prodottoSelezionato!.scadenza)
+                              productModel.prodottoSelezionato!.scadenza)
                           .isBefore(DateTime.now())) {
                         return "Prodotto già scaduto! Verificare la data inserita";
                       }
@@ -104,8 +105,8 @@ class AddView extends StatelessWidget {
                   ),
                   TextFormField(
                     keyboardType: TextInputType.number,
-                    decoration:
-                    const InputDecoration(labelText: "Prezzo", hintText: "1.30"),
+                    decoration: const InputDecoration(
+                        labelText: "Prezzo", hintText: "1.30"),
                     initialValue: productModel.prodottoSelezionato == null
                         ? null
                         : productModel.prodottoSelezionato!.prezzoToString(),
@@ -119,13 +120,15 @@ class AddView extends StatelessWidget {
                     key: barcodeHint,
                     description: descrizione[(numeroAdd - 1) % 2],
                     //"Scansiona il barcode per memorizzare il prodotto. Potrai riutilizzarlo in seguito",
-                    child: TextFormField(
+                    child: TextField(
                       decoration: InputDecoration(
                           suffixIcon: IconButton(
-                            icon: Icon(Icons.info,
+                            icon: Icon(
+                              Icons.info,
                               color: productModel.prodottoSelezionato!.id == -1
                                   ? baseColor
-                                  : Colors.grey,),
+                                  : Colors.grey,
+                            ),
                             onPressed: () {
                               if (productModel.prodottoSelezionato!.id == -1) {
                                 _showInfo(context);
@@ -134,9 +137,14 @@ class AddView extends StatelessWidget {
                           ),
                           labelText: "BarCode",
                           hintText: "8012345789"),
-                      initialValue: productModel.prodottoSelezionato == null
+                      /*initialValue: productModel.prodottoSelezionato == null
                           ? null
-                          : productModel.prodottoSelezionato!.barcode,
+                          : productModel.prodottoSelezionato!.barcode,*/
+                      controller: TextEditingController(
+                        text: productModel.prodottoSelezionato == null
+                            ? null
+                            : productModel.prodottoSelezionato!.barcode,
+                      ),
                       enabled: productModel.prodottoSelezionato!.id == -1
                           ? true
                           : false,
@@ -189,7 +197,6 @@ class AddView extends StatelessWidget {
     return c!;
   }
 
-
   Future<void> _selezionaData(BuildContext context) async {
     FocusScope.of(context).requestFocus(FocusNode());
     DateTime? selectedDate = await showDatePicker(
@@ -220,12 +227,11 @@ class AddView extends StatelessWidget {
 void _save(context) async {
   if (productModel.prodottoSelezionato!.id == -1) {
     bool snackbar =
-    await DBProdotti.dbProdotti.create(productModel.prodottoSelezionato!);
+        await DBProdotti.dbProdotti.create(productModel.prodottoSelezionato!);
     if (snackbar) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(
-            "Prodotto ${productModel.prodottoSelezionato!
-                .nome} aggiunto e aggiornato correttamente! 🤙"),
+            "Prodotto ${productModel.prodottoSelezionato!.nome} aggiunto e aggiornato correttamente! 🤙"),
         behavior: SnackBarBehavior.floating,
       ));
     } else {
