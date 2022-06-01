@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'model/notification.dart';
 import 'model/page_manager.dart';
-import 'view/product_view_change.dart';
 import 'common/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   manager.nuovaPagina(0);
   SharedPreferences s = await SharedPreferences.getInstance();
   // print("flag " + s.get('flag').toString());
@@ -21,7 +21,9 @@ void main() async {
     flag = 0;
     numeroAdd = 0;
   }
-  // print("flag  " + flag.toString());
+
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   runApp(AppMobile());
 }
 
@@ -36,7 +38,7 @@ class AppMobile extends StatelessWidget {
     //set notification
     notification.init();
     _initAlarms();
-    return MaterialApp(
+    MaterialApp ma =  MaterialApp(
       title: manager.getAppName(),
       theme: ThemeData(
         primarySwatch: baseColor,
@@ -62,5 +64,7 @@ class AppMobile extends StatelessWidget {
         ),
       ),
     );
+    FlutterNativeSplash.remove();
+    return ma;
   }
 }
