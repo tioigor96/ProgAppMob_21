@@ -24,7 +24,8 @@ class SearchView extends StatefulWidget {
 
 class _SearchViewState extends State<SearchView> {
   var msgController = TextEditingController();
-  int selected = -1;
+  int selected = 0;
+  bool _loaded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +56,15 @@ class _SearchViewState extends State<SearchView> {
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.search, color: Colors.white),
                         onPressed: () async {
+                          setState(() {
+                            _loaded = false;
+                          });
                           var prod = await DBProdotti.dbProdotti
                               .searchFromDB(msgController.text, selected);
                           productModel.setProdotti(prod);
+                          setState(() {
+                            _loaded = true;
+                          });
                         },
                       ),
                       hintText: 'Cerca...',
@@ -113,7 +120,7 @@ class _SearchViewState extends State<SearchView> {
                 ],
               ),
             ),
-            const Expanded(child: ListProduct()),
+            Expanded(child: _loaded ? ListProduct() : Container()),
           ],
         ),
         floatingActionButton: FloatingActionButton(

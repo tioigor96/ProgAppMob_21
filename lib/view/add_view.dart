@@ -137,9 +137,6 @@ class AddView extends StatelessWidget {
                           ),
                           labelText: "BarCode",
                           hintText: "8012345789"),
-                      /*initialValue: productModel.prodottoSelezionato == null
-                          ? null
-                          : productModel.prodottoSelezionato!.barcode,*/
                       controller: TextEditingController(
                         text: productModel.prodottoSelezionato == null
                             ? null
