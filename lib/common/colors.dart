@@ -5,7 +5,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 
-MaterialColor baseColor = MaterialColor(0xFFFF8100, {
+MaterialColor baseColor = const MaterialColor(0xFFFF8100, {
   50:Color.fromRGBO(255,129,0, .1),
   100:Color.fromRGBO(255,129,0, .2),
   200:Color.fromRGBO(255,129,0, .3),
@@ -18,7 +18,7 @@ MaterialColor baseColor = MaterialColor(0xFFFF8100, {
   900:Color.fromRGBO(255, 129, 0, 1.0),
 });
 
-MaterialColor secondColor = MaterialColor(0xFFFFB300, {
+MaterialColor secondColor = const MaterialColor(0xFFFFB300, {
   1: Color.fromRGBO(255, 209, 100, 1.0), //FFD164
   50:Color.fromRGBO(255,179,0, .1),
   100:Color.fromRGBO(255,179,0, .2),
@@ -32,7 +32,7 @@ MaterialColor secondColor = MaterialColor(0xFFFFB300, {
   900:Color.fromRGBO(255, 179, 0, 1.0),
 });
 
-MaterialColor thirdColor = MaterialColor(0xFFFF2300, {
+MaterialColor thirdColor = const MaterialColor(0xFFFF2300, {
   50:Color.fromRGBO(255,35,0, .1),
   100:Color.fromRGBO(255,35,0, .2),
   200:Color.fromRGBO(255,35,0, .3),

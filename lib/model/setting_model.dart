@@ -1,4 +1,4 @@
-import 'package:Kambusapp/DB/DBSetting.dart';
+import 'package:flutter/material.dart';
 
 class Setting {
   int notifiche = 1;
@@ -6,6 +6,7 @@ class Setting {
   int notificaRossa = 0;
   String ordinamento = "nome";
   String ascDesc = "asc";
+  TimeOfDay time = const TimeOfDay(hour: 9, minute: 00);
 
   void aggiorna(dynamic inDatabaseWorker) async {
     await inDatabaseWorker.get().then((result) {
@@ -14,8 +15,9 @@ class Setting {
       notificaRossa = result.notificaRossa;
       ordinamento = result.ordinamento;
       ascDesc = result.ascDesc;
+      time = result.time;
     });
   }
 }
 
-Setting impostazioni = new Setting();
+Setting impostazioni = Setting();

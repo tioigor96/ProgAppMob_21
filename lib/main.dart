@@ -1,41 +1,70 @@
-import 'dart:io';
+import 'package:Kambusapp/common/utils.dart';
+import 'package:Kambusapp/view/arrow_back.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
-import 'common/utils.dart' as utils;
-import 'package:Kambusapp/assets/constants.dart' as Constants;
-import 'package:path_provider/path_provider.dart';
+import 'package:showcaseview/showcaseview.dart';
+import 'model/notification.dart';
 import 'model/page_manager.dart';
-import 'view/product_view_change.dart';
-import 'view/product_visualize.dart';
 import 'common/colors.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() async {
-  //WidgetsFlutterBinding
-  //    .ensureInitialized(); //obbligatorio per poter aggiungere codice prima di runApp
-  //String docsDir =
-  //    await getDatabasesPath(); //get del path di DB
- // utils.docsDir = docsDir;
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  manager.nuovaPagina(0);
+  SharedPreferences s = await SharedPreferences.getInstance();
+  // print("flag " + s.get('flag').toString());
+  if (s.get('flag') == null) {
+    // print("null");
+    s.setInt('flag', 0);
+    s.setInt('add', 0);
+    flag = 0;
+    numeroAdd = 0;
+  }
+
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   runApp(AppMobile());
 }
 
 class AppMobile extends StatelessWidget {
+  Future<void> _initAlarms() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await AndroidAlarmManager.initialize();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: manager.getAppName(),
-        theme: ThemeData(
-          primarySwatch: baseColor,
-          appBarTheme: AppBarTheme(
-            iconTheme: IconThemeData(color: Colors.white),
-          ),
-          elevatedButtonTheme: ElevatedButtonThemeData(
-              style: ElevatedButton.styleFrom(
-              //onPrimary: secondColor,
-              primary: secondColor,
-            ),
+    //set notification
+    notification.init();
+    _initAlarms();
+    MaterialApp ma =  MaterialApp(
+      title: manager.getAppName(),
+      theme: ThemeData(
+        primarySwatch: baseColor,
+        appBarTheme: const AppBarTheme(
+          iconTheme: IconThemeData(color: Colors.white),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            //onPrimary: secondColor,
+            primary: secondColor,
           ),
         ),
-        home: ProductsChange());
+      ),
+      home: Scaffold(
+        body: ShowCaseWidget(
+          onStart: (index, key) {},
+          onComplete: (index, key) {},
+          blurValue: 1,
+          builder: Builder(builder: (context) => ArrowBack()),
+          autoPlay: false,
+          autoPlayDelay: const Duration(seconds: 3),
+          autoPlayLockEnable: false,
+        ),
+      ),
+    );
+    FlutterNativeSplash.remove();
+    return ma;
   }
 }

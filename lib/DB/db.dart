@@ -2,10 +2,10 @@
 
 //TODO? un minimo di escape delle stringhe?
 
+import 'package:Kambusapp/DB/db_setting.dart';
 import 'package:Kambusapp/model/setting_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import '../common/utils.dart' as utils;
 import '../model/product_model.dart';
 
 class DBProdotti {
@@ -15,27 +15,26 @@ class DBProdotti {
 
   static final DBProdotti dbProdotti = DBProdotti._(); //creo istanza
 
-  /* Database _createDB ()
-  {
-    openDatabase(join(utils.docsDir!.path, "prodotti.db"),
-    onCreate: (inDB, version) {
-      return inDB.execute(
-  'CREATE TABLE dogs(id INTEGER PRIMARY KEY, name TEXT, age INTEGER)',
-  );
-  },
-    // Set the version. This executes the onCreate function and provides a
-    // path to perform database upgrades and downgrades.
-    version: 1,
-    );
-  }*/
-
   //tutte le operazioni su DB sono asincrone
   Future<Database> _getDB() async {
     _db = await openDatabase(
       join(await getDatabasesPath(), 'prodotti.db'),
       onCreate: (db, version) {
+        db.execute("CREATE TABLE IF NOT EXISTS prodotti_bc"
+            "(nome TEXT, "
+            "quantita TEXT, "
+            "marca TEXT, "
+            "prezzo REAL, "
+            "barcode TEXT PRIMARY KEY)");
         return db.execute(
-          'CREATE TABLE IF NOT EXISTS prodotti (id INTEGER PRIMARY KEY, nome TEXT, quantita TEXT, marca TEXT, prezzo REAL, scadenza TEXT, barcode TEXT)',
+          'CREATE TABLE IF NOT EXISTS prodotti '
+          '(id INTEGER PRIMARY KEY, '
+          'nome TEXT, '
+          'quantita TEXT, '
+          'marca TEXT, '
+          'prezzo REAL, '
+          'scadenza TEXT, '
+          'barcode TEXT)',
         );
       },
       version: 1,
@@ -54,19 +53,16 @@ class DBProdotti {
     prod.prezzo = inMap["prezzo"];
     prod.barcode = inMap["barcode"];
 
-    print(prod.id.toString() +
-        " " +
-        prod.nome +
-        " " +
-        prod.quantita +
-        " " +
-        prod.scadenza.toString() +
-        " " +
-        prod.marca.toString() +
-        " " +
-        prod.prezzo.toString() +
-        " " +
-        prod.barcode.toString());
+    return prod;
+  }
+
+  Product old_productFromMap(Map inMap) {
+    Product prod = Product();
+    prod.nome = inMap["nome"];
+    prod.quantita = inMap["quantita"];
+    prod.marca = inMap["marca"];
+    prod.prezzo = inMap["prezzo"];
+    prod.barcode = inMap["barcode"];
 
     return prod;
   }
@@ -80,19 +76,35 @@ class DBProdotti {
     map["scadenza"] = p.scadenza;
     map["prezzo"] = p.prezzo;
     map["barcode"] = p.barcode;
+    map["marca"] = p.marca;
     return map;
   }
 
   //inserimento prodotto
-  Future create(Product nuovo) async {
+  /// return: true if i update the product in table prodotti_bc
+  Future<bool> create(Product nuovo) async {
+    bool result = false;
     Database db = await _getDB(); //ottenere DB
     var val = await db.rawQuery(
         "SELECT MAX(id) + 1 AS id FROM prodotti"); //rawquery per cassaggio diretto di query come stringa
     var id = val.first["id"]; //first perchè ritorna tutti gli id massimi
-    if (id == null) {
-      id = 1;
+    id ??= 1;
+    if (nuovo.barcode != null && nuovo.barcode!.length >= 10) {
+      Product p = await get_from_barcode(nuovo.barcode
+          .toString()); //vedo se devo mostrare che aggiorno o cosa!
+      result = !p.equivalent(nuovo);
+      await db.rawInsert(
+          "INSERT OR REPLACE INTO prodotti_bc (nome, quantita, marca, prezzo, barcode) "
+          "VALUES (?, ?, ?, ?, ?)",
+          [
+            nuovo.nome,
+            nuovo.quantita,
+            nuovo.marca,
+            nuovo.prezzo,
+            nuovo.barcode
+          ]);
     }
-    return await db.rawInsert(
+    await db.rawInsert(
         "INSERT INTO prodotti (id, nome, quantita, marca, prezzo, scadenza, barcode) "
         "VALUES (?, ?, ?, ?, ?, ?, ?)",
         [
@@ -104,14 +116,8 @@ class DBProdotti {
           nuovo.scadenza,
           nuovo.barcode
         ]);
+    return result;
   }
-
-  //estrarre nota
-  /* Future<Product> get(int inID) async {
-    Database db = await _getDB();
-    var rec = await db.query("prodotti"); //non passo query ma sfrutto parametri
-    return productFromMap(rec.first); //conversione da map a note
-  }*/
 
   Future<List> getAll(Setting impostazioni) async {
     Database db = await _getDB();
@@ -135,7 +141,6 @@ class DBProdotti {
         break;
     }
 
-    print(query);
     Database db = await _getDB();
     var recs = await db.rawQuery(query);
     var list = recs.isEmpty ? [] : recs.map((m) => productFromMap(m)).toList();
@@ -156,5 +161,59 @@ class DBProdotti {
   Future deleteAll() async {
     Database db = await _getDB();
     return await db.delete("prodotti");
+  }
+
+  Future<Product> get_from_barcode(String barcode) async {
+    Database db = await _getDB();
+    Product prod;
+    var rec = await db
+        .rawQuery("SELECT * FROM prodotti_bc WHERE barcode = ?", [barcode]);
+
+    if (rec.isNotEmpty) {
+      prod = old_productFromMap(rec.first);
+    } else {
+      prod = Product();
+      prod.barcode = barcode;
+    }
+    return prod;
+  }
+
+  Future<int> nearExpiration() async {
+    int redflag = 3, counter = 0;
+    DBSetting.dbSettings.get().then((value) => redflag = value.notificaRossa);
+    Database db = await _getDB();
+    DateTime today = DateTime.now();
+
+    List prods = await db.rawQuery("SELECT * FROM prodotti");
+    prods.forEach((e) {
+      String scadenza = e['scadenza'];
+      DateTime prodScad = DateTime(int.parse(scadenza.split("-")[0]),
+          int.parse(scadenza.split("-")[1]), int.parse(scadenza.split("-")[2]));
+
+      if (prodScad.difference(today).inDays >= 0 &&
+          prodScad.difference(today).inDays <= redflag) {
+        counter++;
+      }
+    });
+    return counter;
+  }
+
+  Future<int> expired() async {
+    int counter = 0;
+    Database db = await _getDB();
+    DateTime today = DateTime.now();
+
+    List prods = await db.rawQuery("SELECT * FROM prodotti");
+    prods.forEach((e) {
+      String scadenza = e['scadenza'];
+      DateTime prodScad = DateTime(int.parse(scadenza.split("-")[0]),
+          int.parse(scadenza.split("-")[1]), int.parse(scadenza.split("-")[2]));
+
+      if (prodScad.difference(today).inDays < 0) {
+        counter++;
+      }
+    });
+
+    return counter;
   }
 }

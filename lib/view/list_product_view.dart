@@ -2,9 +2,8 @@
 Per cambiare tipo di visualizzazione richiamare un expansionProduct diverso
  */
 
-import 'package:Kambusapp/DB/DB.dart';
+import 'package:Kambusapp/DB/db.dart';
 import 'package:Kambusapp/model/page_manager.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:Kambusapp/model/product_model.dart';
 import '../common/utils.dart' as utils;
@@ -23,8 +22,34 @@ class ListProduct extends StatefulWidget {
 }
 
 class ListProductState extends State<ListProduct> {
+  /* @override
+  void initState()  {
+    super.initState();
+    //Start showcase view after current widget frames are drawn.
+     if(utils.flag==0)                                //togliere se problemi
+      {
+        WidgetsBinding.instance!.addPostFrameCallback((_) =>
+            ShowCaseWidget.of(context)!
+                .startShowCase([chiave]));
+        setFlag(1);
+      }
+  }*/
+
+  // Future setFlag(int f) async {
+  //   SharedPreferences s = await SharedPreferences.getInstance();
+  //   s.setInt('flag', f);
+  // }
+
   @override
   Widget build(BuildContext context) {
+    // if (utils.flag == 0) //togliere se problemi
+    // {
+    //   print("showcase pallino");
+    //     WidgetsBinding.instance!.addPostFrameCallback(
+    //         (_) => ShowCaseWidget.of(context)!.startShowCase([barcodeHint, chiave]));
+    //   //ShowCaseWidget.of(context)!.startShowCase([chiave]);
+    //   setFlag(1);
+    // }
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
@@ -33,7 +58,7 @@ class ListProductState extends State<ListProduct> {
         Product p = productModel.listaProdotti[index];
         return Dismissible(
           key: UniqueKey(),
-        //direction: DismissDirection.startToEnd,
+          //direction: DismissDirection.startToEnd,
           onDismissed: (direction) {
             setState(() {
               //p.removeAt(index);
@@ -42,8 +67,12 @@ class ListProductState extends State<ListProduct> {
             });
 
             // Then show a snackbar.
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(p.nome.capitalize() + " eliminato")));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+                p.nome.capitalize() + " eliminato",
+              ),
+              behavior: SnackBarBehavior.floating,
+            ));
           },
           confirmDismiss: (direction) async {
             if (direction == DismissDirection.startToEnd) {
@@ -63,7 +92,7 @@ class ListProductState extends State<ListProduct> {
             color: thirdColor,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: [
+              children: const [
                 Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                     child: Icon(Icons.delete, color: Colors.white)),
@@ -81,7 +110,7 @@ class ListProductState extends State<ListProduct> {
             alignment: Alignment.centerRight,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [
+              children: const [
                 Text("Modifica",
                     style: TextStyle(
                         fontSize: 16,
@@ -102,7 +131,7 @@ class ListProductState extends State<ListProduct> {
   }
 
   void elimina(p) async {
-    print("elimino "+p.nome);
+    // print("elimino " + p.nome);
     await DBProdotti.dbProdotti.delete(p.id);
     productModel.caricaProdotti(DBProdotti.dbProdotti);
   }

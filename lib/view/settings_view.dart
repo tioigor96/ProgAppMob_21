@@ -1,19 +1,16 @@
 //Schermata impostazioni
 
-import 'package:Kambusapp/DB/DB.dart';
-import 'package:Kambusapp/DB/DBSetting.dart';
+import 'package:Kambusapp/DB/db_setting.dart';
 import 'package:Kambusapp/common/utils.dart';
-import 'package:Kambusapp/model/product_model.dart';
+import 'package:Kambusapp/model/notification.dart';
 import 'package:Kambusapp/model/setting_model.dart';
-import 'package:Kambusapp/view/list_product_view.dart';
 import 'package:flutter/material.dart';
 import '../common/colors.dart';
 import 'widget.dart';
-import '../common/utils.dart' as utils;
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:flutter_settings_screens/flutter_settings_screens.dart';
 
 class SettingsView extends StatefulWidget {
+  const SettingsView({Key? key}) : super(key: key);
+
   @override
   State<SettingsView> createState() => _SettingsViewState();
 }
@@ -24,56 +21,88 @@ class _SettingsViewState extends State<SettingsView> {
     return Scaffold(
       appBar: ReusableWidget.getBackNoSearchAppBar(),
       body: Container(
-        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
         child: Column(
           children: [
             SwitchListTile(
               activeColor: baseColor,
-              title: Text('Notifiche'),
-              subtitle: Text(
+              title: const Text('Notifiche'),
+              subtitle: const Text(
                   'Attiva o disattiva le notifiche per i prodotti in scadenza'),
               secondary: Icon(Icons.notifications, color: baseColor),
               onChanged: (value) {
                 setState(() {
+                  if (value) {
+                    _scheduleNotification();
+                    impostazioni.notifiche = 1;
+                  } else {
+                    _deleteNotification();
+                    impostazioni.notifiche = 0;
+                  }
                   impostazioni.notifiche = BoolToInt(value);
                   DBSetting.dbSettings.update(impostazioni);
                 });
               },
               value: intToBool(impostazioni.notifiche),
             ),
-            //Divider(),
-            /*ListTile(
-            title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Icon(Icons.access_time),
-                  Text("Invia notifiche alle ore"),
-                  Container(
-                    width: 80,
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: "10:00",
-                      ),
-                      keyboardType: TextInputType.number,
-                    ),
-                  ),
-                ],
+            const Divider(),
+            ListTile(
+              leading: Container(
+                child: const Icon(Icons.access_time),
+                width: 20,
+                height: 20,
+              ),
+              title: Text(
+                "Invia notifiche alle ore",
+                style: TextStyle(
+                    color: impostazioni.notifiche == 0
+                        ? Colors.grey
+                        : Colors.black),
+              ),
+              trailing: Container(
+                key: UniqueKey(),
+                width: 50,
+                child: (TextFormField(
+                  initialValue: impostazioni.time.format(context),
+                  enabled: impostazioni.notifiche == 0 ? false : true,
+                  onTap: () => _selezionaData(context),
+                  textAlignVertical: TextAlignVertical.center,
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                      color: impostazioni.notifiche == 0
+                          ? Colors.grey
+                          : Colors.black),
+                  // decoration: InputDecoration(
+                  //   hintText: impostazioni.time.format(context),
+                  // ),
+                  // onChanged: (value) => setState(() {
+                  //   impostazioni.time = TimeOfDay(
+                  //       hour: int.parse(value.split(":")[0]),
+                  //       minute: int.parse(value.split(":")[1]));
+                  //   DBSetting.dbSettings.update(impostazioni);
+                  // }),
+                  keyboardType: null,
+                )),
+              ),
             ),
-          ),*/
             ListTile(
                 leading: Container(
                   width: 20,
                   height: 20,
                   decoration: BoxDecoration(
                     color: secondColor[600],
-                    borderRadius: BorderRadius.all(Radius.circular(100)),
+                    borderRadius: const BorderRadius.all(Radius.circular(100)),
                   ),
                 ),
-                title: Text("Preavviso di giorni"),
+                title: const Text("Preavviso di giorni"),
+                subtitle:
+                    Text("Il pallino giallo indica il prodotto che scadrà tra"
+                        " ${impostazioni.notificaGialla} giorni"),
                 trailing: DropdownButton<int>(
                   value: impostazioni.notificaGialla,
                   items: <int>[
-                    for (var i = impostazioni.notificaRossa+1; i < 22; i += 1) i
+                    for (var i = impostazioni.notificaRossa + 1; i < 22; i += 1)
+                      i
                   ].map((int value) {
                     return DropdownMenuItem<int>(
                       value: value,
@@ -95,10 +124,12 @@ class _SettingsViewState extends State<SettingsView> {
                   height: 20,
                   decoration: BoxDecoration(
                     color: thirdColor[700],
-                    borderRadius: BorderRadius.all(Radius.circular(100)),
+                    borderRadius: const BorderRadius.all(Radius.circular(100)),
                   ),
                 ),
-                title: Text("Preavviso di giorni"),
+                title: const Text("Preavviso di giorni"),
+                subtitle: Text(
+                    "Il pallino rosso indica il prodotto che scadrà tra ${impostazioni.notificaRossa} giorni"),
                 trailing: DropdownButton<int>(
                   value: impostazioni.notificaRossa,
                   items: <int>[
@@ -106,7 +137,7 @@ class _SettingsViewState extends State<SettingsView> {
                   ].map((int value) {
                     return DropdownMenuItem<int>(
                       value: value,
-                      child: Text(value.toString()+"  "),
+                      child: Text(value.toString() + "  "),
                     );
                   }).toList(),
                   onChanged: (value) {
@@ -120,5 +151,32 @@ class _SettingsViewState extends State<SettingsView> {
         ),
       ),
     );
+  }
+
+  void _deleteNotification() async => notification.deleteNotification();
+
+  void _scheduleNotification() async =>
+      notification.scheduleNotification(impostazioni.time);
+
+  void _selezionaData(BuildContext context) async {
+    FocusScope.of(context).requestFocus(FocusNode());
+    // print("${impostazioni.time}");
+    final TimeOfDay? newTime = await showTimePicker(
+        context: context,
+        initialTime: impostazioni.time,
+        initialEntryMode: TimePickerEntryMode.input,
+        cancelText: "ANNULLA",
+        hourLabelText: "ORE",
+        minuteLabelText: "MINUTI",
+        errorInvalidText: "Inserisci un'ora valida");
+    if (newTime != null) {
+      setState(() {
+        impostazioni.time = newTime;
+        DBSetting.dbSettings.update(impostazioni);
+      });
+      //reschedule all notifications
+      _deleteNotification();
+      _scheduleNotification();
+    }
   }
 }

@@ -2,14 +2,13 @@
 
 import 'package:stack/stack.dart' as stack;
 
-
 class Manager {
   stack.Stack<int> page = stack.Stack(); //pagina precedente a cui tornare
   String name = 'Kambusapp';
 
   int precedente() {
     page.pop();
-    print("Torno a "+page.top().toString());
+    // print("Torno a "+page.top().toString());
     setName();
     return page.top();
   }
@@ -21,38 +20,35 @@ class Manager {
 
   void setName() {
     int now = page.top();
-    switch(now) {
+    switch (now) {
       case 0:
         name = "Kambusapp";
-      break;
+        break;
       case 1:
         name = "Aggiungi alimento";
-      break;
+        break;
       case 2:
         name = "Cerca";
-      break;
+        break;
       case 3:
         name = "Impostazioni notifiche";
-      break;
-      case 4 :
-         name = "Impostazioni visualizzazione";
-      break;
-      case 5 :
+        break;
+      case 4:
+        name = "Impostazioni visualizzazione";
+        break;
+      case 5:
         name = "Elimina";
-      break;
+        break;
     }
   }
 
-  void changeName(String s)
-  {
-      name=s;
+  void changeName(String s) {
+    name = s;
   }
 
-  String getAppName()
-  {
+  String getAppName() {
     return name;
   }
-
 }
 
 Manager manager = Manager();
