@@ -8,6 +8,7 @@ import 'model/page_manager.dart';
 import 'common/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -38,7 +39,10 @@ class AppMobile extends StatelessWidget {
     //set notification
     notification.init();
     _initAlarms();
-    MaterialApp ma =  MaterialApp(
+    MaterialApp ma = MaterialApp(
+      localizationsDelegates: [GlobalMaterialLocalizations.delegate],
+      supportedLocales: [const Locale('en', ''), const Locale('it', '')],
+      locale: Locale("it"),
       title: manager.getAppName(),
       theme: ThemeData(
         primarySwatch: baseColor,

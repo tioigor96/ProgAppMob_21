@@ -198,6 +198,8 @@ class AddView extends StatelessWidget {
     FocusScope.of(context).requestFocus(FocusNode());
     DateTime? selectedDate = await showDatePicker(
         context: context,
+        locale: const Locale("it", "IT"),
+        initialEntryMode: DatePickerEntryMode.calendarOnly,
         initialDate: DateUtils.addDaysToDate(DateTime.now(), 1),
         firstDate: DateUtils.addDaysToDate(DateTime.now(), 1),
         lastDate: DateUtils.addDaysToDate(DateTime.now(), 3650),

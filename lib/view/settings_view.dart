@@ -164,7 +164,7 @@ class _SettingsViewState extends State<SettingsView> {
     final TimeOfDay? newTime = await showTimePicker(
         context: context,
         initialTime: impostazioni.time,
-        initialEntryMode: TimePickerEntryMode.input,
+        initialEntryMode: TimePickerEntryMode.dial,
         cancelText: "ANNULLA",
         hourLabelText: "ORE",
         minuteLabelText: "MINUTI",
